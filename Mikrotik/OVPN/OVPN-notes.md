@@ -2,7 +2,9 @@
 
 > **Important:**
     In order to work make sure for the following:
+    
     1. The Time is corrent!
+    
     2. If you are using the default configuration, that the 'defconf: drop all not coming from LAN' firewall rule is altered or disabled
     or in general that the firewall accepts connection to the OVPN server.
 
@@ -199,4 +201,8 @@ Code all together:
 
 # Create user for VPN
 /ppp secret add name=TODO password=TODO service=ovpn profile=vpn_profile
+
+# Firewall
+/ip firewall nat add chain=srcnat src-address=192.168.10.0/24 action=masquerade
+/ip firewall filter add chain=input protocol=tcp dst-port=443 action=accept
 ```
