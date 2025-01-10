@@ -14,7 +14,7 @@ Use a specific key during connection
 SSH proxy jump
 `ssh -J <user-proxy>@<domain/ip-proxy> <user-target>@<domai/ip-target>`
 
-SSh proxy jump on configuration (~/.ssh/config)
+SSh proxy jump on user configuration (~/.ssh/config)
 ```
 Host <proxy-host-name>
   HostName <IP-address>
@@ -45,3 +45,6 @@ Remote Port Forwarding: (Forward a port from your local machine to a remote mach
 
 Create an SSH SOCKS proxy for dynamic port forwarding
 `ssh -D <local_port> <user>@<hostname>`
+
+Global configuration filepath
+`/etc/ssh/ssh_config`

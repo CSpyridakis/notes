@@ -31,8 +31,3 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # Docker 
 bash <(curl -sL https://gist.githubusercontent.com/CSpyridakis/0dd4e045dcddc68496c8403c098e0c19/raw/0fda1a194f559b05d6e26311c54090abe0cba4ca/install-docker.sh)
-
-# VSCode
-
-
-# Winbox
