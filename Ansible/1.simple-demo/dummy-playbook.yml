@@ -1,0 +1,9 @@
+---
+  - name: A dummy playbook
+    hosts: servers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+      - name: ensure nano is there  
+        apt:    # This is a module
+          name: nano
+          state: latest
