@@ -48,3 +48,21 @@ Create an SSH SOCKS proxy for dynamic port forwarding
 
 Global configuration filepath
 `/etc/ssh/ssh_config`
+
+--- 
+
+Use ssh key on Github
+
+1. Run `ssh-keygen -t ed25519 -C "your_email@example.com"`
+2. `cat ~/.ssh/<keyname>.pub` and copy your key
+3. Paste it as is on your github account as an authentication key
+4. Add on your `~/.ssh/config` this:
+```
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/<keyname>
+  IdentitiesOnly yes
+```
+5. Evaluate that it is working by running `ssh -T git@github.com`
+6. For security run `chmod 400 ~/.ssh/<keyname>`
