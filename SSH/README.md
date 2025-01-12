@@ -66,3 +66,13 @@ Host github.com
 ```
 5. Evaluate that it is working by running `ssh -T git@github.com`
 6. For security run `chmod 400 ~/.ssh/<keyname>`
+7. If you have repositories that have been cloned using https, do the following
+```
+# Inspect remotes
+git remote -v
+
+# Update 
+git remote set-url origin git@github.com:Username/repository-name.git
+
+# Inspect remotes again
+```
