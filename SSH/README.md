@@ -1,7 +1,23 @@
+# SSH
 
-List keys
+## SSH Agent
+List ssh-agent keys
 `ssh-add -l`
 
+Add SSH Key to the ssh-agent
+`ssh-add </path/to/your/private/key>`
+
+Remove Key from the ssh-agent
+`ssh-add -d </path/to/your/private/key>`
+
+Start the ssh-agent
+`eval "$(ssh-agent -s)"`
+
+Restart the ssh-agent
+`eval "$(ssh-agent -k)"  # Kill the agent`
+`eval "$(ssh-agent)"     # Start a fresh instance`
+
+## Keys
 Generate new key
 `ssh-keygen -t rsa -b 4096 -C <email@domain.com>`
 
@@ -11,6 +27,7 @@ Copy key to remote
 Use a specific key during connection
 `ssh -o "IdentitiesOnly=yes" -i <key_path> -p <port> <user><hostname/ip>`
 
+## Proxy Jump
 SSH proxy jump
 `ssh -J <user-proxy>@<domain/ip-proxy> <user-target>@<domai/ip-target>`
 
@@ -31,9 +48,14 @@ Host <private-server-name>
   ProxyJump <proxy-host-name>
 ```
 
+## Configuration
 Check SSH Configuration
 `ssh -G <hostname>`
 
+Global configuration filepath
+`/etc/ssh/ssh_config`
+
+## Other connections
 Remote Command Execution
 `ssh <user>@<hostname/ip> "<command>"`
 
@@ -46,12 +68,7 @@ Remote Port Forwarding: (Forward a port from your local machine to a remote mach
 Create an SSH SOCKS proxy for dynamic port forwarding
 `ssh -D <local_port> <user>@<hostname>`
 
-Global configuration filepath
-`/etc/ssh/ssh_config`
-
---- 
-
-Use ssh key on Github
+## Use SSH key on Github
 
 1. Run `ssh-keygen -t ed25519 -C "your_email@example.com"`
 2. `cat ~/.ssh/<keyname>.pub` and copy your key
@@ -63,6 +80,7 @@ Host github.com
   User git
   IdentityFile ~/.ssh/<keyname>
   IdentitiesOnly yes
+  AddKeysToAgent no
 ```
 5. Evaluate that it is working by running `ssh -T git@github.com`
 6. For security run `chmod 400 ~/.ssh/<keyname>`
