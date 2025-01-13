@@ -80,6 +80,7 @@ Host github.com
   User git
   IdentityFile ~/.ssh/<keyname>
   IdentitiesOnly yes
+  IdentityAgent none
   AddKeysToAgent no
 ```
 5. Evaluate that it is working by running `ssh -T git@github.com`
@@ -89,7 +90,7 @@ Host github.com
 # Inspect remotes
 git remote -v
 
-# Update 
+# Update
 git remote set-url origin git@github.com:Username/repository-name.git
 
 # Inspect remotes again
