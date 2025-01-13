@@ -1,3 +1,7 @@
+# Brackets
+
+For more details regarding conditions read [this](./conditions.md).
+
 | **Construct** | **Description**                              | **When to Use**                                                             |
 |---------------|----------------------------------------------|-----------------------------------------------------------------------------|
 | `( )`         | Subshell: commands run in a separate process | When you want to isolate temporary changes, like directory changes or variables, without affecting the parent shell. |
