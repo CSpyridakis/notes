@@ -19,7 +19,9 @@ Restart the ssh-agent
 
 ## Keys
 Generate new key
-`ssh-keygen -t rsa -b 4096 -C <email@domain.com>`
+`ssh-keygen -t rsa -b 4096 -C <email@domain.com>` 
+
+Generate new key using ed25519 (best practice) `ssh-keygen -t ed25519 -C <your_email@example.com>`
 
 Copy key to remote
 `ssh-copy-id -i $<key_path> <user>@<hostname/ip>`
