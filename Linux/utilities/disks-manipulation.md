@@ -16,7 +16,7 @@ A command-line utility to create, delete, and modify disk partitions on a Linux 
 ---
 
 ## mkfs
-`mkfs` (make filesystem) is a command used to create a filesystem on a partition or disk.
+`mkfs` (make file system) is a command used to create a file system on a partition or disk.
 
 ### Format partition to `ext4`
 `sudo mkfs.ext4 <partition_path>`
@@ -27,9 +27,9 @@ where `filesystem_type` can be `ext4`, `xfs`, etc.
 ---
 
 ## mount 
-Is used to attach a filesystem to a specified mount point. 
+Is used to attach a file system to a specified mount point. 
 
-### To temporarily mount a filesystem:
+### To temporarily mount a file system:
 `sudo mount <partition_path> <mount_point_path>`
 
 ### Permanent mounting (persistent after reboot)
@@ -40,13 +40,17 @@ Is used to attach a filesystem to a specified mount point.
 2. Run `mount -a` to mount it.
 
 3. Check if it is mounted by running `df -h`.
- 
+
+Extra options:
+- `-f`: Fake skip the mount syscall.
+- `-v`: Verbose, print also some messages.
+
 ---
 
 ## umount 
-`umount` is used to unmount a mounted filesystem.
+`umount` is used to unmount a mounted file system.
 
-To unmount a filesystem:
+To unmount a file system:
 `umount <mount_point_path>`
 
 ---
