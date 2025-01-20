@@ -25,6 +25,7 @@ pids=()
 
 # Function to handle SIGINT
 function cleanup() {
+    echo
     echo "Caught Ctrl+C. Terminating active processes..."
     
     # Kill all active processes
@@ -60,24 +61,13 @@ function get_regions() {
     done
 
     # Ask the user if they want to continue
-    read -p "Do you want to continue? (y/n) " response
+    read -p "Do you want to test services on all these regions? (y/n, default value 'n'): " response
 
     # Check user's response
     if ! [[ "${response}" =~ ^[Yy]$ ]]; then
-        read -p "Do you want to provice specific regions? (y/N) " response
-        
-        if ! [[ "${response}" =~ ^[Yy]$ ]]; then
-            echo "Then the program will be terminated!"
-            exit 0
-        fi
-
-        # Provide regions to test
-        echo
-        read -p "Give regions to test: (space separated) " response
+        read -p "Give specific regions to test (default value 'us-east-1', space separated): " response
+        response="${response:-us-east-1}"
         REGIONS_TO_SCAN=${response}
-        for region in ${REGIONS_TO_SCAN}; do
-            echo "- ${region}"
-        done
     fi
 }
 get_regions
@@ -93,11 +83,14 @@ function list_ec2_instances() {
     echo_y "------  EC2 Instances ------"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
-        response=$(aws ec2 describe-instances --region "$region" --query "Reservations[].Instances[].InstanceId" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        echo "- Region: [$region]"
+        response=$(aws ec2 describe-instances --region "$region" --query "Reservations[].Instances[].[InstanceId, State.Name]" --output text)
+        [[ -z "$response" ]] && continue
+        
+        # Read the response line by line
+        while IFS=$'\t' read -r instance_id state; do
+            echo_r "  * Instance: [${instance_id}], State: [${state}]"
+        done <<< "$response"
     done
 }
 
@@ -107,10 +100,14 @@ function list_s3_buckets() {
     echo_y "============================"
     echo_y "\n------- S3 Buckets -------"
     echo_y "============================"
+    echo "- Region: [ALL]"
     response=$(aws s3api list-buckets --query "Buckets[].Name" --output text)
-    for resp in ${response}; do
-        echo_r "     * ${resp}"
-    done
+    [[ -z "$response" ]] && continue
+    
+    # Read the response line by line
+    while IFS=$'\t' read -r bucket_name; do
+        echo_r "  * Bucket Name: [${bucket_name}]"
+    done <<< "$response"
 }
 
 # Function to list active EBS volumes
@@ -120,11 +117,15 @@ function list_ebs_volumes() {
     echo_y "-------- EBS Volumes -------"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws ec2 describe-volumes --region "$region" --query "Volumes[].VolumeId" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+
+        # Read the response line by line
+        while IFS=$'\t' read -r volume_id; do
+            state=$(aws ec2 describe-volumes --region "$region" --volume-ids "$volume_id" --query "Volumes[0].State" --output text)
+            echo_r "  * Volume: [${volume_id}], State: [${state}]"
+        done <<< "$response"
     done
 }
 
@@ -135,11 +136,14 @@ function list_ebs_snapshots() {
     echo_y "------- EBS Snapshots ------"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
-        response=$(aws ec2 describe-snapshots --region "$region" --owner-ids self --query "Snapshots[].SnapshotId" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        echo "- Region: [$region]"
+        response=$(aws ec2 describe-snapshots --region "$region" --owner-ids self --query "Snapshots[].[SnapshotId, State]" --output text)
+        [[ -z "$response" ]] && continue
+
+        # Read the response line by line
+        while IFS=$'\t' read -r snapshot_id state; do
+            echo_r "  * Snapshot: [${snapshot_id}], State: [${state}]"
+        done <<< "$response"
     done
 }
 
@@ -150,11 +154,15 @@ function list_elbs() {
     echo_y "-- Elastic Load Balancers --"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws elb describe-load-balancers --region "$region" --query "LoadBalancerDescriptions[].LoadBalancerName" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+
+        # Read the response line by line
+        while IFS=$'\t' read -r load_balancer_name; do
+            details=$(aws elb describe-load-balancers --region "$region" --load-balancer-name "$load_balancer_name" --query "LoadBalancerDescriptions[0].[LoadBalancerName, DNSName, VPCId, Scheme, State.Code, AvailabilityZones[]]" --output text)
+            echo_r "  * Load Balancer: [${load_balancer_name}], Details: [${details}]"
+        done <<< "$response"
     done
 }
 
@@ -165,11 +173,14 @@ function list_rds_instances() {
     echo_y "------ RDS Instances -------"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws rds describe-db-instances --region "$region" --query "DBInstances[].DBInstanceIdentifier" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+        
+        # Read the response line by line
+        while IFS=$'\t' read -r db_instance_identifier; do
+            echo_r "  * DB instance identifier: [${db_instance_identifier}]"
+        done <<< "$response"
     done
 }
 
@@ -180,11 +191,14 @@ function list_cloudwatch_alarms() {
     echo_y "----- CloudWatch Alarms ----"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws cloudwatch describe-alarms --region "$region" --query "MetricAlarms[].AlarmName" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+
+        # Read the response line by line
+        while IFS=$'\t' read -r alarm_name; do
+            echo_r "  * Alarm name: [${alarm_name}]"
+        done <<< "$response"
     done
 }
 
@@ -195,11 +209,14 @@ function list_cloudwatch_logs() {
     echo_y "-- CloudWatch Log Groups ---"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws logs describe-log-groups --region "$region" --query "logGroups[].logGroupName" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+
+        # Read the response line by line
+        while IFS=$'\t' read -r logGroupName; do
+            echo_r "  * Log Group name: [${logGroupName}]"
+        done <<< "$response"
     done
 }
 
@@ -210,11 +227,14 @@ function list_lambda_functions() {
     echo_y "----- Lambda Functions -----"
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
-        echo "- Region: $region"
+        echo "- Region: [$region]"
         response=$(aws lambda list-functions --region "$region" --query "Functions[].FunctionName" --output text)
-        for resp in ${response}; do
-            echo_r "     * ${resp}"
-        done
+        [[ -z "$response" ]] && continue
+        
+        # Read the response line by line
+        while IFS=$'\t' read -r function_name; do
+            echo_r "  * Function name: [${function_name}]"
+        done <<< "$response"
     done
 }
 
