@@ -12,7 +12,6 @@ function echo_r(){ echo -e "${CLR_RED}$*${CLR_RST}"; }
 function echo_g(){ echo -e "${CLR_GREEN}$*${CLR_RST}"; }
 function echo_y(){ echo -e "${CLR_YELLOW}$*${CLR_RST}"; }
 
-
 # =====================================================================================
 # Dates
 # =====================================================================================
@@ -22,15 +21,19 @@ end_date=$(date -u -d "$(date +'%Y-%m-01') +1 month -1 day" +'%Y-%m-%d')
 # =====================================================================================
 # Current cost
 # =====================================================================================
-total_cost_for_this_month=0
 function get_current_costs(){
     # Fetch current and estimated billing data
     response=$(aws ce get-cost-and-usage \
         --time-period Start=$start_date,End=$end_date \
         --granularity MONTHLY \
-        --metrics "UnblendedCost" \
+        --metrics "BlendedCost" "UnblendedCost" "UsageQuantity" \
         --group-by Type=DIMENSION,Key=SERVICE \
-        --query "ResultsByTime[].Groups[].{Service:Keys[0], CurrentCost:Metrics.UnblendedCost.Amount}" \
+        --query "ResultsByTime[].Groups[].{
+            Service:Keys[0], 
+            UnblendedCost: Metrics.UnblendedCost.Amount, 
+            BlendedCost: Metrics.BlendedCost.Amount, 
+            UsageQuantity: Metrics.UsageQuantity.Amount
+            }" \
         --output json)
 
     # Check if the response is empty
@@ -46,7 +49,8 @@ function get_current_costs(){
     echo_y "  Current Billing Per Service for ($start_date to $end_date):"
     echo_y "=================================================================="
     total_cost=0
-    current_month_total=0
+    current_month_unblenced_total=0
+    current_month_blenced_total=0
 
     for row in $(echo "$response" | jq -r '.[] | @base64'); do
         _jq() {
@@ -55,26 +59,23 @@ function get_current_costs(){
 
         # Extract and print Service name and CurrentCost
         service_name=$(_jq '.Service')
-        current_cost=$(_jq '.CurrentCost')
+        unblenced_cost=$(_jq '.UnblendedCost')
+        blended_cost=$(_jq '.BlendedCost')
+        usage_quantity=$(_jq '.UsageQuantity')
 
-        echo " - Service: [$service_name] | Current Cost: [$current_cost]"
-        current_month_total=$(echo "$current_month_total + $current_cost" | bc)
+        echo_r " - Service: [$service_name]"
+        echo "   UnblendedCost: [$unblenced_cost]"
+        echo "   BlendedCost: [$blended_cost]"
+        echo "   UsageQuantity: [$usage_quantity]"
+        echo
+        current_month_unblenced_total=$(echo "$current_month_unblenced_total + $unblenced_cost" | bc)
+        current_month_blenced_total=$(echo "$current_month_blenced_total + $blended_cost" | bc)
     done
-    echo_g "Total Current Month Cost: $(echo ${current_month_total} | awk '{printf "%.4f", $0}') \$"
-
-    # Accumulate for total cost estimation
-    total_cost_for_this_month=$(echo "$total_cost_for_this_month + $current_month_total" | bc)
+    echo_g "Total Current Unblended Month Cost: $(echo ${current_month_unblenced_total} | awk '{printf "%.4f", $0}') \$"
+    echo_g "Total Current Blended Month Cost: $(echo ${current_month_blenced_total} | awk '{printf "%.4f", $0}') \$"
 }
-
 
 # =====================================================================================
 # Current cost
 # =====================================================================================
 get_current_costs
-
-echo
-echo
-echo_r "=================================================================="
-echo_r "TOTAL COST FOR ALL REGIONS ($start_date to $end_date): \
-[$(echo ${total_cost_for_this_month} | awk '{printf "%.4f", $0}')] \$"
-echo_r "=================================================================="
