@@ -393,6 +393,27 @@ mindmap
 
 [Documentation](https://mermaid.js.org/syntax/architecture)
 
+
+### Groups
+Syntax
+`group {group id}(<icon name>)[<title>] (in {parent id})?`
+
+Example:
+`group group1(cloud)[Some group]`
+
+
+### Services
+Syntax
+`service {service id}(<icon name>)[<title>] (in <parent id>)?`
+
+Example:
+`service service1(database)[My awesome service]`
+
+### Edges
+Syntax
+`{serviceId}{{group}}?:{T|B|L|R} {<}?--{>}? {T|B|L|R}:{serviceId}{{group}}`
+
+### Usage
 ```
 architecture-beta
     group api(cloud)[API]
