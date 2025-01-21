@@ -84,13 +84,28 @@ function list_ec2_instances() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws ec2 describe-instances --region "$region" --query "Reservations[].Instances[].[InstanceId, State.Name]" --output text)
+        response=$(aws ec2 describe-instances --region "$region" \
+            --query "Reservations[].Instances[].[
+                InstanceId, 
+                State.Name, 
+                ImageId, 
+                KeyName, 
+                InstanceType, 
+                PublicIpAddress]" \
+            --output text)
         [[ -z "$response" ]] && continue
         
         # Read the response line by line
-        while IFS=$'\t' read -r instance_id state; do
-            echo_r "  * Instance: [${instance_id}], State: [${state}]"
+        while read -r instance_id state ami_id key_pair instance_type public_ip; do
+            echo_r "  * Instance ID: [$instance_id]"
+            echo_r "    State: [${state:-Unknown}]"
+            echo_r "    AMI ID:[${ami_id:-None}]"
+            echo_r "    Instance Type: [${instance_type:-None}]"
+            echo_r "    Public IP: [${public_ip:-None}]"
+            echo_r "    Key Pair: [${key_pair:-None}]"
+            echo 
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -102,10 +117,11 @@ function list_s3_buckets() {
     echo_y "============================"
     echo "- Region: [ALL]"
     response=$(aws s3api list-buckets --query "Buckets[].Name" --output text)
-    [[ -z "$response" ]] && continue
+    [[ -z "$response" ]] && return
     
+    response=$(echo $response | tr -s ' ' '\n')
     # Read the response line by line
-    while IFS=$'\t' read -r bucket_name; do
+    while IFS=$' ' read -r bucket_name; do
         echo_r "  * Bucket Name: [${bucket_name}]"
     done <<< "$response"
 }
@@ -118,14 +134,22 @@ function list_ebs_volumes() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws ec2 describe-volumes --region "$region" --query "Volumes[].VolumeId" --output text)
+        response=$(aws ec2 describe-volumes --region "$region" \
+            --query "Volumes[].{
+                VolumeId:VolumeId, 
+                State:State,
+                Size:Size}" \
+            --output text)
         [[ -z "$response" ]] && continue
 
         # Read the response line by line
-        while IFS=$'\t' read -r volume_id; do
-            state=$(aws ec2 describe-volumes --region "$region" --volume-ids "$volume_id" --query "Volumes[0].State" --output text)
-            echo_r "  * Volume: [${volume_id}], State: [${state}]"
-        done <<< "$response"
+        while IFS=$'\t' read -r size state volume_id; do
+            echo_r "  * Volume: [${volume_id}]"
+            echo_r "    State: [${state:-unknown}]"
+            echo_r "    Size: [${size:-unknown}] GB"
+            echo
+        done <<< "$response" 
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -137,13 +161,22 @@ function list_ebs_snapshots() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws ec2 describe-snapshots --region "$region" --owner-ids self --query "Snapshots[].[SnapshotId, State]" --output text)
+        response=$(aws ec2 describe-snapshots --region "$region" --owner-ids self \
+            --query "Snapshots[].{
+                SnapshotId:SnapshotId, 
+                State:State, 
+                Size:VolumeSize}" \
+            --output text)
         [[ -z "$response" ]] && continue
 
         # Read the response line by line
-        while IFS=$'\t' read -r snapshot_id state; do
-            echo_r "  * Snapshot: [${snapshot_id}], State: [${state}]"
+        while IFS=$'\t' read -r size snapshot_id state; do
+            echo_r "  * Snapshot: [${snapshot_id}]"
+            echo_r "    State: [${state}]"
+            echo_r "    Size: [${size}]"
+            echo
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -155,7 +188,9 @@ function list_elbs() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws elb describe-load-balancers --region "$region" --query "LoadBalancerDescriptions[].LoadBalancerName" --output text)
+        response=$(aws elb describe-load-balancers --region "$region" \
+            --query "LoadBalancerDescriptions[].LoadBalancerName" \
+            --output text)
         [[ -z "$response" ]] && continue
 
         # Read the response line by line
@@ -163,6 +198,7 @@ function list_elbs() {
             details=$(aws elb describe-load-balancers --region "$region" --load-balancer-name "$load_balancer_name" --query "LoadBalancerDescriptions[0].[LoadBalancerName, DNSName, VPCId, Scheme, State.Code, AvailabilityZones[]]" --output text)
             echo_r "  * Load Balancer: [${load_balancer_name}], Details: [${details}]"
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -174,13 +210,24 @@ function list_rds_instances() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws rds describe-db-instances --region "$region" --query "DBInstances[].DBInstanceIdentifier" --output text)
+        response=$(aws rds describe-db-instances --region "$region" \
+            --query "DBInstances[].{
+                Identifier:DBInstanceIdentifier, 
+                Status:DBInstanceStatus, 
+                Engine:Engine, 
+                Storage:AllocatedStorage}" \
+            --output text)
         [[ -z "$response" ]] && continue
         
         # Read the response line by line
-        while IFS=$'\t' read -r db_instance_identifier; do
+        while IFS=$'\t' read -r engine db_instance_identifier status storage; do
             echo_r "  * DB instance identifier: [${db_instance_identifier}]"
+            echo_r "    Status: [${status}]"
+            echo_r "    Engine: [${engine}]"
+            echo_r "    Storage: [${storage}] GB"
+            echo
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -192,13 +239,16 @@ function list_cloudwatch_alarms() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws cloudwatch describe-alarms --region "$region" --query "MetricAlarms[].AlarmName" --output text)
+        response=$(aws cloudwatch describe-alarms --region "$region" \
+            --query "MetricAlarms[].AlarmName" \
+            --output text)
         [[ -z "$response" ]] && continue
 
         # Read the response line by line
         while IFS=$'\t' read -r alarm_name; do
             echo_r "  * Alarm name: [${alarm_name}]"
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -210,13 +260,16 @@ function list_cloudwatch_logs() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws logs describe-log-groups --region "$region" --query "logGroups[].logGroupName" --output text)
+        response=$(aws logs describe-log-groups --region "$region" \
+            --query "logGroups[].logGroupName" \
+            --output text)
         [[ -z "$response" ]] && continue
 
         # Read the response line by line
         while IFS=$'\t' read -r logGroupName; do
             echo_r "  * Log Group name: [${logGroupName}]"
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
@@ -228,13 +281,15 @@ function list_lambda_functions() {
     echo_y "============================"
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
-        response=$(aws lambda list-functions --region "$region" --query "Functions[].FunctionName" --output text)
+        response=$(aws lambda list-functions --region "$region" \
+            --query "Functions[].FunctionName" --output text)
         [[ -z "$response" ]] && continue
         
         # Read the response line by line
         while IFS=$'\t' read -r function_name; do
             echo_r "  * Function name: [${function_name}]"
         done <<< "$response"
+        echo   "  ----------------------------------------"
     done
 }
 
