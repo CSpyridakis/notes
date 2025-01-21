@@ -20,3 +20,8 @@ bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/c
 ```
 bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/ct/docker.sh)"
 ```
+
+### Reboot Portainer twice a day
+
+1. Create a new cron job: `crontab -e`
+2. `0 0,12 * * * pct stop [VMID] && pct start [VMID]`, Where VMID is the ID of your LXC container
