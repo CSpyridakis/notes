@@ -282,12 +282,17 @@ function list_lambda_functions() {
     for region in ${REGIONS_TO_SCAN}; do
         echo "- Region: [$region]"
         response=$(aws lambda list-functions --region "$region" \
-            --query "Functions[].FunctionName" --output text)
+            --query "Functions[].{
+                FunctionName:FunctionName, 
+                Runtime:Runtime}" \
+            --output text)
         [[ -z "$response" ]] && continue
         
         # Read the response line by line
-        while IFS=$'\t' read -r function_name; do
+        while IFS=$'\t' read -r function_name runtime; do
             echo_r "  * Function name: [${function_name}]"
+            echo_r "    Runtime: [${runtime}]"
+            echo
         done <<< "$response"
         echo   "  ----------------------------------------"
     done
