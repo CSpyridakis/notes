@@ -1,4 +1,6 @@
 #!/bin/bash
+# IMPORTANT!!!
+# EACH REQUEST WILL COST 0.01
 
 # =====================================================================================
 # LOGS
@@ -22,6 +24,14 @@ end_date=$(date -u -d "$(date +'%Y-%m-01') +1 month -1 day" +'%Y-%m-%d')
 # Current cost
 # =====================================================================================
 function get_current_costs(){
+    echo_r "THIS REQUEST WILL COST YOU 0.01\$."
+    read -p "Are you sure you want to continue? (y/n): " response
+
+    # Check user's response
+    if ! [[ "${response}" =~ ^[Yy]$ ]]; then
+        exit 0
+    fi
+
     # Fetch current and estimated billing data
     response=$(aws ce get-cost-and-usage \
         --time-period Start=$start_date,End=$end_date \
