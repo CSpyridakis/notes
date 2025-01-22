@@ -389,6 +389,65 @@ mindmap
 
 ---
 
+### Themes
+
+* default: `%%{init: {'theme':'default'}}%%`
+
+```mermaid
+flowchart LR
+  subgraph C["Class"]
+      direction TB
+      A["This"]
+      B["That"]
+  end
+```
+
+* neutral: `%%{init: {'theme':'neutral'}}%%`
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+flowchart LR
+  subgraph C["Class"]
+      direction TB
+      A["This"]
+      B["That"]
+  end
+```
+
+* dark: `%%{init: {'theme':'dark'}}%%`
+```mermaid
+%%{init: {'theme':'dark'}}%%
+flowchart LR
+  subgraph C["Class"]
+      direction TB
+      A["This"]
+      B["That"]
+  end
+```
+
+* forest: `%%{init: {'theme':'forest'}}%%`
+```mermaid
+%%{init: {'theme':'forest'}}%%
+flowchart LR
+  subgraph C["Class"]
+      direction TB
+      A["This"]
+      B["That"]
+  end
+```
+
+* base: `%%{init: {'theme':'base'}}%%`
+```mermaid
+%%{init: {'theme':'base'}}%%
+flowchart LR
+  subgraph C["Class"]
+      direction TB
+      A["This"]
+      B["That"]
+  end
+```
+
+---
+
 ## Architecture Diagrams
 
 [Documentation](https://mermaid.js.org/syntax/architecture)
