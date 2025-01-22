@@ -4,6 +4,44 @@ Mermaid's [Documentation](https://mermaid.js.org/).
 
 ---
 
+## Styling & Interactive Links & Icons
+
+* **Styling:** Use `class`, or `classDef` or `style`
+* **Interactive links:** click ID "link"
+* **Icons:** `fa:fa-<icon-name>` from [here](https://fontawesome.com/icons)
+
+```
+flowchart TD
+A["fa:fa-link URL Click on me fa:fa-link"] --> C[C]:::important
+B["B"]:::classB --> D["fa:fa-hashtag D"]
+class D classD;
+
+%% Interactive Links
+click A "https://google.com"
+
+%% Styling
+style A opacity:0,width:10px,height:20px,color:#007,padding:0px,margin:0px
+classDef classB,classD fill:#712,stroke:#00f,stroke-width:3px,color:#555,stroke-dasharray: 5 5,font-size:14pt;
+classDef important fill:#bbf,stroke:#f00,stroke-width:2px,color:#888,stroke-dasharray: 10 10
+```
+
+```mermaid
+flowchart TD
+A["fa:fa-link URL Click on me fa:fa-link"] --> C[C]:::important
+B["B"]:::classB --> D["fa:fa-hashtag D"]
+class D classD;
+
+%% Interactive Links
+click A "https://google.com"
+
+%% Styling
+style A opacity:0,width:10px,height:20px,color:#007,padding:0px,margin:0px
+classDef classB,classD fill:#712,stroke:#00f,stroke-width:3px,color:#555,stroke-dasharray: 5 5,font-size:14pt;
+classDef important fill:#bbf,stroke:#f00,stroke-width:2px,color:#888,stroke-dasharray: 10 10
+```
+
+---
+
 ## Flowchart
 
 ### Top to Down
