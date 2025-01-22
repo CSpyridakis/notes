@@ -20,3 +20,50 @@ Comparison between native AWS services (PaaS/SaaS) and traditional implementatio
 
 ---
 
+## Detailed Comparisons
+
+### Compute
+
+| Feature           | Elastic Beanstalk                        | EC2                                            |
+|-------------------|------------------------------------------|-----------------------------------------------|
+| Description       | Automates provisioning, scaling, and deployment. | Requires manual configuration of servers.    |
+| Use Case          | Ideal for developers who want abstraction.  | For workloads requiring complete control.     |
+
+---
+
+### Load Balancing
+
+| Feature           | Elastic Load Balancer (ELB)              | Custom Load Balancer on EC2                  |
+|-------------------|------------------------------------------|-----------------------------------------------|
+| Description       | Fully managed, auto-scaling load balancing. | Manual configuration of software like HAProxy. |
+| Ease of Use       | High: Integrates with AWS ecosystem.     | Low: Requires significant maintenance.       |
+
+---
+
+### Database
+
+| Feature           | RDS                                      | MySQL on EC2                                  |
+|-------------------|------------------------------------------|-----------------------------------------------|
+| Description       | Fully managed relational database service. | Manual setup, patching, and scaling.         |
+| Scaling           | Seamless with read replicas and Multi-AZ. | Requires manual effort to scale.             |
+
+---
+
+### File Storage
+
+| Feature           | EFS                                      | NFS on EC2                                   |
+|-------------------|------------------------------------------|-----------------------------------------------|
+| Description       | Managed, scalable, and elastic file system. | Requires manual setup and scaling efforts.   |
+| High Availability | Built-in.                                | Needs custom configuration.                  |
+
+---
+
+## Key Trade-Offs
+
+| Factor              | Native AWS Services (PaaS/SaaS)         | Traditional Implementation (IaaS)           |
+|---------------------|----------------------------------------|---------------------------------------------|
+| Operational Overhead| Very low: AWS manages infrastructure.  | High: Requires significant manual effort.   |
+| Flexibility         | Moderate: Constrained to AWS configs.  | High: Fully customizable infrastructure.    |
+| Time to Deploy      | Fast: Minimal setup required.          | Slower: Time-intensive setup.               |
+| Cost Efficiency     | Optimized for dynamic workloads.       | Potentially cheaper for steady workloads.   |
+| Vendor Lock-In      | High: Dependent on AWS services.       | Low: More portable between providers.       |
