@@ -8,11 +8,12 @@ flowchart TB
   iam --> roles["Roles"]
   iam --> policies["Policies"]
 
+
 ```
 
 --- 
 
-### Create IAM user
+### 1. Create IAM user
 1. Login to AWS
 2. Search for `IAM`
 3. In `User Managment`
@@ -26,7 +27,7 @@ flowchart TB
 11. `Create User`
 12. DONE!
 
-### Create password
+### 2. Create password
 1. Login to AWS
 2. Search for `IAM`
 3. In `User Managment`
@@ -35,10 +36,65 @@ flowchart TB
 6. `Security Credentials`
 7. `Manage console access`
    
-### Enable MFA
+### 3. Enable MFA (if needed)
 1.  Login as this user
 2.  Search `IAM`
 3. Add `MFA`
+
+---
+
+## Access Management
+
+```mermaid
+flowchart LR
+
+  console["Management Console"]
+  cli["CLI"]
+  api["API"]
+
+  console--> iam
+  cli --> iam
+  api --> iam
+
+  subgraph awsAccount["AWS Account"]
+    direction LR
+
+    subgraph resources[" "]
+      direction LR
+        ec2
+        S3
+        IAM
+    end
+
+    subgraph policies[" "]
+      direction TB
+      identPolicy["Identity Policy"]
+      resouPolicy["Resource Policy"]
+    end
+
+    iam["AWS IAM"] --> iamvals["Users"]
+
+    subgraph iamvals[" "]
+      direction TB
+      users["User"]
+      role["Role"]
+      federatedUser["Federated User"]
+      application["Application"]
+    end
+
+    iam --> policies
+    policies --> resources
+  end
+```
+
+
+
+* **Users**: Users gain permissions from a policy that is applied to a group.
+* **Users Groups**: Attach multiple users to a User group, in order to attach policies to this group.
+* **Roles**: Used for delegation (assumed).
+* **Policies**: What users are allowed to do.
+
+To connect via **console** we need a password (and MFA if enabled), and for **CLI** & **API** we need [access keys](../onboarding/aws-cli.md#2-create-access-keys).
 
 ---
 
@@ -52,6 +108,7 @@ flowchart LR
   end
   A --  IAM keys --> B -- IAM roles --> C
 ```
+
 ---
 
 ## CLI

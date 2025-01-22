@@ -15,6 +15,15 @@ e.g., `us-east-1a`, `us-east-1b`, `us-east-1c`
 ### Availability zones
 An Availability Zone is one or more discrete data centers within a Region. Each AZ has independent power, cooling, and networking but is connected to other AZs in the same Region through low-latency links.
 
+```mermaid
+flowchart LR
+  subgraph r1a1["Availability Zone"]
+      direction TB
+      r1a1pus["Public Subnet"]
+      r1a1prs["Private Subnet"]
+  end
+```
+
 **Use Cases:**
 - High availability architectures by distributing applications across multiple AZs.
 - Fault tolerance by replicating data in multiple AZs.
@@ -32,6 +41,7 @@ flowchart TB
         direction LR
         r2a1d1["datacenter"]
     end
+    style r2a1 fill:#BBB,stroke-width:1,margin:1px;
 
     subgraph r2a2["Availability Zone"]
         direction LR
@@ -61,6 +71,7 @@ flowchart TB
 
   reg1 <-- AWS global network --> reg2
 ```
+
 ---
 
 ## Service types
