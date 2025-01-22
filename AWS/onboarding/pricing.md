@@ -1,21 +1,19 @@
 # AWS Pricing
 
----
+## Pricing model
+Pay as you go model
 
-## CapEx (Capital Expenditures) vs OpEx (Operational Expenditures)
+| Service | Pay For | 
+| ------- | ---| 
+| Compute | Compute Time |
+| Storage | Data stored |
+| Networking | Data transfer OUT --> of the cloud* |
 
-| Aspect	| CapEx	| OpEx |
-|-------| ------| ----- |
-| Nature	| Long-term investment.	| Day-to-day operational costs. |
-| Accounting	| Depreciated/amortized over time.	| Fully expensed in the period. |
-| Cash Flow	| Large upfront cost.	| Regular, recurring payments. |
-| Examples	| Buying equipment, property.	| Rent, utilities, cloud services. |
-| Tax Treatment	| Deducted over years via depreciation.	| Fully deductible in the current year. |
-| Recap | Purchase servers | Pay as you go |
+\* **Data entering the Cloud is FREE**
 
 ---
 
-## Pricing models
+## Pricing Options
 ### 1. On Demand
 Pay for compute capacity by the hour or second with no long-term commitment
 

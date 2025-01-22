@@ -72,6 +72,8 @@ flowchart TB
   reg1 <-- AWS global network --> reg2
 ```
 
+### AWS Points of Presence (Edge Locations)
+
 ---
 
 ## Service types
@@ -99,10 +101,7 @@ Provides a managed platform for developing, running, and managing applications w
 1. **AWS Elastic Beanstalk:**  
 Automatically handles deployment, scaling, and monitoring of web applications.  
 
-2. [AWS Lambda:](../services/lambda.md)  
-Serverless compute service where you run code in response to events.  
-
-3. [AWS RDS (Relational Database Service):](../services/rds.md)
+2. [AWS RDS (Relational Database Service):](../services/rds.md)
 Managed database service for relational databases.  
 
 ---
@@ -119,6 +118,13 @@ A communication service for video conferencing, chat, and screen sharing.
 
 3. **Amazon QuickSight:**  
 A business intelligence service to create interactive dashboards and visualizations.  
+
+---
+
+### **4. Function as a Service (FaaS)**
+
+1. [AWS Lambda:](../services/lambda.md)  
+Serverless compute service where you run code in response to events.
 
 ---
 
