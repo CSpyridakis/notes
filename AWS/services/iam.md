@@ -1,5 +1,5 @@
-# IAM 
-IAM is a global service
+# Identity and Access Management (IAM) 
+IAM is a global service that handles access control to different resources.
 
 ```mermaid
 flowchart TB
@@ -104,7 +104,7 @@ To connect via **console** we need a password (and MFA if enabled), and for **CL
 Is applies to resources such as buckets.
 
 ---
-## Groups
+## Groups - Policies
 Groups contain ONLY `Users`. A `User` can be part of multiple `Groups`.
 
 Generally, the **least privilege principle** is used, which means by default nothing is allowed, and we give only the privides needed.
@@ -112,11 +112,17 @@ Generally, the **least privilege principle** is used, which means by default not
 ```mermaid
 flowchart TD
 
+%% Policies
+policy1["Policy 1"]:::policiesclass
+policy2["Policy 2"]:::policiesclass
+policy3["Policy 3"]:::policiesclass
+policy4["Policy 4"]:::policiesclass
+policy4["Inline Policy"]:::policiesclass
+
 %% Groups
 group1["Group 1"]:::groupsclass
 group2["Group 2"]:::groupsclass
 group3["Group 3"]:::groupsclass
-group4["Inline"]:::groupsclass
 
 %% Users
 user1["User 1"]:::usersclass
@@ -127,6 +133,14 @@ user5["User 5"]:::usersclass
 user6["User 6"]:::usersclass
 
 %% Connections
+policy1 --> group1
+
+policy2 --> group1
+policy2 --> group2
+
+policy3 --> group2
+policy3 --> group3
+
 group1 -.-> user1
 group1 -.-> user2
 
@@ -136,17 +150,37 @@ group2 -.-> user4
 group2 -.-> user5
 group3 -.-> user5
 
-group4 -.-> user6
+policy4 -.-> user6
 
 %% Styles
+classDef policiesclass fill:#798, color:#000
 classDef groupsclass fill:#956,stroke:#f00,stroke-width:2px,color:#111,stroke-dasharray: 10 10
 classDef usersclass fill:#778, color:#000
 
 ```
 
----
-## Policies
-
+IAM Policies structure (example)
+```
+{
+  "Version": "2012-10-17",
+  "Id": "Account-permissions <optional>",
+  "Statements": [
+    {
+      "Sid": "1 <statementID - optional>",
+      "Effect": "Allow/Deny",
+      "Principal": {
+        "AWS": ["arn:aws:iam::<AccountID>:root"]
+      },
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": ["arn:aws:s3::<bucket-name>/*"]
+    }
+  ]
+}
+```
+Where: 
+* Principal: The account/role/user on which it has effect
 
 ---
 
@@ -202,7 +236,28 @@ classDef usersclass fill:#778, color:#000
 
 ---
 
-### `Access keys` vs `Roles` example
+### `Access keys` & `Roles`
+```mermaid
+flowchart LR
+
+  console["Management Console"]
+  cli["CLI"]
+  api["SDK"]
+
+  console --> |Password + MFA| iam
+  cli --> |access keys| iam
+  api --> |access keys| iam
+
+  subgraph awsAccount["AWS Account"]
+    direction LR
+    iam["IAM"]
+  end
+```
+
+> ![IMPORTANT]
+> **ACCESS KEYS are secrets! Don't share them**
+
+Example
 ```mermaid
 flowchart LR
   A[Our computer]
@@ -212,6 +267,13 @@ flowchart LR
   end
   A --  IAM Access keys --> B -- IAM Roles --> C
 ```
+
+---
+
+### Define Password Policy for IAM users
+1. `IAM` Menu
+2. `Account settings`
+3. `Password policy` --> `Edit`
 
 ---
 
@@ -227,7 +289,6 @@ AWS IAM and IAM Identity Center, formerly AWS Single Sign-On (SSO), are both des
 | **Integration**             | Limited identity provider federation       | Integrates with enterprise identity systems  |
 | **Permissions Management**  | Policies for users, groups, and roles       | Centrally manage permissions for users       |
 | **Session Management**      | Supports long-term credentials              | Uses short-lived, federated credentials      |
-
 
 ---
 
