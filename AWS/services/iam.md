@@ -184,7 +184,51 @@ Where:
 
 ---
 
+### Access keys
+These are credentials that are intended to be used by users.
+
+```mermaid
+flowchart LR
+
+  console["Management Console"]
+  cli["CLI"]
+  api["SDK"]
+
+  console --> |Password + MFA| iam
+  cli --> |access keys| iam
+  api --> |access keys| iam
+
+  subgraph awsAccount["AWS Account"]
+    direction LR
+    iam["IAM"]
+  end
+```
+
+> [!IMPORTANT]
+> **ACCESS KEYS are secrets! Don't share them!**
+
+---
+
 ## Roles
+
+Are mostly intended to be used by services.
+
+
+Example
+```mermaid
+flowchart LR
+  A[Our computer]
+  subgraph AWS Cloud
+    B[S3]
+    C[EC2 Instance]
+  end
+  A --  IAM Access keys --> B -- IAM Roles --> C
+```
+
+Common Roles:
+* EC2 Instance
+* Lambda Function
+* CloudFormation
 
 | **Aspect**            | **Roles**                                   | **User Groups**                               |
 |-----------------------|--------------------------------------------|----------------------------------------------|
@@ -236,44 +280,38 @@ Where:
 
 ---
 
-### `Access keys` & `Roles`
-```mermaid
-flowchart LR
+### Security
 
-  console["Management Console"]
-  cli["CLI"]
-  api["SDK"]
-
-  console --> |Password + MFA| iam
-  cli --> |access keys| iam
-  api --> |access keys| iam
-
-  subgraph awsAccount["AWS Account"]
-    direction LR
-    iam["IAM"]
-  end
-```
-
-> ![IMPORTANT]
-> **ACCESS KEYS are secrets! Don't share them**
-
-Example
-```mermaid
-flowchart LR
-  A[Our computer]
-  subgraph AWS Cloud
-    B[S3]
-    C[EC2 Instance]
-  end
-  A --  IAM Access keys --> B -- IAM Roles --> C
-```
-
----
-
-### Define Password Policy for IAM users
+#### Define Password Policy for IAM users (ADMIN)
 1. `IAM` Menu
 2. `Account settings`
 3. `Password policy` --> `Edit`
+
+#### Credentials Report (ADMIN)
+1. `IAM` Menu
+2. `Access reports`
+3. `Credential report`
+
+#### Access Advisor/Last Accessed (ADMIN -> per users)
+1. `IAM` Menu
+2. `Users`
+3. Select one user
+4. `Last Accessed`
+5. This will show, which services where used by this user and when.
+
+This is very handy when we need to change the granularity of access for a user.
+
+> [!IMPORTANT]
+> Remember **least privilege principle** is used throughtout the AWS.
+
+> [!TIP]
+> **Best Practicies**
+> * Admin user only for initial account setup, and in some specific cases.
+> * Create groups and assign users to them. Create policies and assign policies to groups.
+> * Enforce password policy and make sure users have MFA enabled.
+> * Create roles to be used by services.
+> * For CLI/SKD create access keys.
+> * Audit users (Credentials Report & Last Accessed) 
 
 ---
 

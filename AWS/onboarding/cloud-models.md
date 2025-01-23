@@ -28,6 +28,6 @@ Merging private and public clouds.
 | Tax Treatment	| Deducted over years via depreciation.	| Fully deductible in the current year. |
 | Recap | Purchase servers | Pay as you go |
 
-## Shared responsibility model
+## AWS Shared responsibility model
 See: https://d1.awsstatic.com/security-center/Shared_Responsibility_Model_V2.59d1eccec334b366627e9295b304202faf7b899b.jpg
 ![Shared](https://d1.awsstatic.com/security-center/Shared_Responsibility_Model_V2.59d1eccec334b366627e9295b304202faf7b899b.jpg)

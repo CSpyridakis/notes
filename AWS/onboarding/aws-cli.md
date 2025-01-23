@@ -62,3 +62,9 @@ Then, the input will be stored in `~/.aws/credentials` and `~/.aws/config` as pl
 To verify that aws-cli is linked with your account, run.
 `aws sts get-caller-identity`
 
+---
+
+> [!TIP]
+> As an alternative, you can also use `Cloudshell` a service available on the `Management Console` that does not require `access keys`.
+>
+> However, Cloudshell is not available on all regions.
