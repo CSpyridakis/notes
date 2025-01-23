@@ -1,6 +1,14 @@
 #!/bin/bash
+
 # IMPORTANT!!!
 # EACH REQUEST WILL COST 0.01
+# 
+# PREFERABLY
+# Follow these steps:
+# 0. Login to Management Console
+# 1. `Billing and Cost Management`
+# 2. `Bills`
+# 3. `Charges by service`
 
 # =====================================================================================
 # LOGS
