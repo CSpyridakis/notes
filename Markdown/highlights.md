@@ -12,19 +12,19 @@
 ---
 
 ## Extended types
-> [!NOTE] Note title
+> [!NOTE]
 > NOTE
 
-> [!TIP] Tip title
+> [!TIP]
 > TIP
 
-> [!IMPORTANT] Important title
+> [!IMPORTANT]
 > IMPORTANT
 
-> [!WARNING] Warning title
+> [!WARNING]
 > WARNING
 
-> [!CAUTION] Caution title
+> [!CAUTION]
 > CAUTION
 
 ---
