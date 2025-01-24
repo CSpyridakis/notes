@@ -3,6 +3,11 @@ A high-performance block network storage service offered by AWS, designed to wor
 
 It provides persistent, scalable, and reliable storage that can be used for a wide variety of workloads, including databases, file systems, and applications requiring low-latency and high-throughput.
 
+> [!IMPORTANT]
+> To find differences between `EBS`, `EFS` and `Instance store` read [this](./ebs-vs-efs-vs-instance-store.md).
+
+---
+
 ```mermaid
 ---
 title: Relationship between EBS and EC2 (ER Diagram) *

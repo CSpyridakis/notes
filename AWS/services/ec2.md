@@ -9,9 +9,9 @@ What need to be configured when creating a new EC2:
 2. **CPU Cores:** [Instance type](#2-instance-type)
 3. **Ram size:** [Instance type](#2-instance-type)
 4. **Storage space:**  
-   * Network attached ([EBS](#3-amazon-elastic-block-store-ebs)/EFS)
-   * H/W (EC2 Instance store)
-5. **Network:**
+   * Network attached ([EBS](#3-amazon-elastic-block-store-ebs)/[EFS](#4-elastic-file-system))
+   * H/W ([EC2 Instance store](#4-ec2-instance-store))
+5. **Network:** Bandwidth
 6. **Firewall:** [Security Groups](#5-security-groups)
 7. **Provisioning:** (Bootstrap sequence - EC2 User Data)
 
@@ -170,7 +170,24 @@ Persistent network storage volumes that can be attached to EC2 instances.
 > By default, when creating an instance, the root volute has `Delete on termination` enabled.
 > When creating a new volume however, this is will not enabled by default when attached to an instance.
 
-### 4. Tag
+### 4. [Amazon Elastic File System (EFS)](./efs.md)
+Elastic File System  is a fully managed, scalable, and highly available network file system provided by AWS. It allows you to create file systems that can be mounted by multiple EC2 instances simultaneously, enabling shared storage across applications and services.
+
+### 5. EC2 Instance Store
+A temporary hardware block storage available for Amazon EC2 instances.
+It is physically attached to the host computer where the instance is running and provides high-performance ephemeral storage
+
+`Instance store` is good for cache or buffers.
+
+> [!IMPORTANT]
+> In case we need the data used here, we MUST take backups ourselves!.
+
+<br>
+
+> [!IMPORTANT]
+> To find differences between `EBS`, `EFS` and `Instance store` read [this](./ebs-vs-efs-vs-instance-store.md).
+
+### 6. Tag
 Key-value pairs. Good for filtering and billing.
 
 E.g.
@@ -180,7 +197,7 @@ Environment: Development
 Owner: Their name
 ```
 
-### 5. Security Groups
+### 7. Security Groups
 Virtual firewalls that control inbound and outbound traffic to EC2 instances.
 
 ```mermaid
@@ -229,7 +246,7 @@ erDiagram
 #### Limitations:
 * Depend on region/VPC combination
 
-### 6. Key Pairs
+### 8. Key Pairs
 Secure authentication for EC2 instances. A key pair consists of a public key stored on the instance and a private key used to log in.
 
 #### Steps:
@@ -248,7 +265,7 @@ without utilizing/generating a `Key Pair`. In this case though, maybe **IPv6** f
 2. Select desired instance
 3. `Connect`
 
-#### 7. IAM Roles
+#### 9. IAM Roles
 > [!CAUTION]
 > NEVER store Access keys in EC2 instances (or other resources), use roles instead!
 
