@@ -14,11 +14,14 @@ erDiagram
 ```
 
 > [!CAUTION]
-> \* This is assumed in the Certified Cloud Practitioner. In the Associate Lever "multi-attach" is possible for some EBS.
+> \* This is assumed in the Certified Cloud Practitioner. In the Associate Level "multi-attach" is possible for some EBS.
 
 ```mermaid
+---
+title: Different EBS concepts
+---
 flowchart TD
-    subgraph az2["Availability zone 2"]
+    subgraph az2["Availability zone 2 / Region"]
         direction TB
 
         az2-ebs-1[("EBS
@@ -28,6 +31,7 @@ flowchart TD
         az2-ebs-3[("EBS
                 55 Gb 
                 Un-attached")]
+        style az2-ebs-3 fill:#c88,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
 
         az2-ec2-1["EC2"]
         az2-ec2-2["EC2"]
@@ -37,13 +41,19 @@ flowchart TD
         %%az2-ebs-3 --> az2-ec2-2
     end
 
-    snap[("Snapshot")]:::snapshot
-    classDef snapshot fill:#bbf,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
-    
-    az1-ebs-3 --> snap
-    snap --> az2-ebs-1
+    az2-ebs-2 -.-> |Move to archive tier| spanparchive[("EBS
+                                 Snapshot Archive
+                                 75% Cheaper")]
+    style spanparchive fill:#933,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
 
-    subgraph az1["Availability zone 1"]
+    snap[("Snapshot")]
+    classDef snapshot fill:#bbf,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+    style snap fill:#797,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+    
+    az1-ebs-3 -.-> |Step 1: Snapshot| snap
+    snap -.-> |Step 2: Restore| az2-ebs-1
+
+    subgraph az1["Availability zone 1 / Region"]
         direction TB
 
         az1-ebs-1[("EBS
@@ -62,8 +72,13 @@ flowchart TD
     end
 ```
 
-**Volume and Instance need to be in the same Availability Zone!**
-**To move an EBS to another AZ we need first to create a snapshot**
+**Points to consider:**
+1. **Volume and Instance need to be in the same Availability Zone!**
+2. **To move an EBS to another AZ we need first to create a snapshot**
+3. **To restore from archive tier it can take 24-72 hours**
+4. **We can also enable a Recycle Bin**
+
+---
 
 ### Types of EBS Volumes
 
@@ -79,13 +94,15 @@ EBS offers different types of volumes optimized for specific use cases:
 
 Read also [EFS differences to EBS](./efs-vs-ebs.md).
 
-## Utilization Steps
+---
+
+## Utilize EBS volumes from EC2
 1. Create Volume (must me in the same Availability zone as the EC2 that to use with)
-2. Attach Volume
+2. Attach Volume to the desired EC2
 3. Login to your EC2
-4. Create partition
-5. Format partition
-6. Mount partition
+4. Create partition (e.g. `sudo fdisk -l`, then `sudo fdisk <disk_path>`)
+5. Format partition (e.g. `sudo mkfs -t <filesystem_type> <partition_path>`)
+6. Mount partition (e.g. `sudo mount <partition_path> <mount_point_path>`)
 7. Utilize
 8. At the end, umount from the EC2
 9. Then, using AWS API detach volume and delete it to stop extra charges
@@ -95,7 +112,10 @@ Read also [EFS differences to EBS](./efs-vs-ebs.md).
 It is a good practice for applications, like databases, that handle data
 to take snapshots of volumes, so, we can revert back to a previous stage.
 
-In case of a disaster, data failure:
+> [!TIP]
+> \* When creating the snapshot even thought it is not mandatory to detach the volume, it is recommended to do so.
+
+In case of a disaster or data failure, to recreate a volume from a snapshot:
 1. Stop any services that are running (EC2) 
 2. Umount partition (EC2)
 3. Rename the volume as failure or anything else for easier handling (AWS API)
@@ -103,6 +123,17 @@ In case of a disaster, data failure:
 5. Create new volume from snapshot (AWS API)
 6. Attach the newly created volume (AWS API)
 7. Mount partition (EC2)
+
+
+### Snapshot vs AMI 
+| **Aspect**                | **Amazon Machine Image (AMI)**                | **Snapshot**                                |
+|---------------------------|-----------------------------------------------|--------------------------------------------|
+| **Scope**                 | Entire EC2 instance (root + additional volumes). | Single EBS volume only.                     |
+| **Purpose**               | Launch new EC2 instances with the same setup.  | Backup or replicate specific EBS volumes.  |
+| **Components Included**   | OS, software, configurations, and volumes.     | Data stored in the specific EBS volume.    |
+| **Region Flexibility**    | AMIs can be copied across regions.             | Snapshots can be copied across regions.    |
+| **Incremental Backup**    | No. A full instance backup is created.         | Yes. Only changed blocks are saved after the first snapshot. |
+| **Usage**                 | Used to launch EC2 instances.                  | Used to create or restore EBS volumes.     |
 
 ---
 

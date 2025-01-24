@@ -20,6 +20,84 @@ What need to be configured when creating a new EC2:
 ### 1. Amazon Machine Image (AMI)
 Pre-configured templates used to launch instances. AMIs include operating systems, application servers, and applications.
 
+> [!WARNING]
+> Attach to specific region
+
+1. Public AMIs
+2. Marketplace
+3. Create your own AMI (Help lauch faster instanses)
+   ```mermaid
+    flowchart LR
+    
+    subgraph az2["Availability zone x"]
+        direction LR
+        az2-ec2-1["Instance"]
+    end
+
+    subgraph az1["Availability zone x"]
+        direction LR
+        az1-ec2-1["Instance"]
+    end
+
+    az1-ec2-1 --> |Create AMI| iam
+    iam["IAM"]
+    iam --> |Launch from AMI| az2-ec2-1
+   ```
+    There are two ways to create AMIs. Either create them manually or using Image Builder. 
+
+##### Create AMI manually
+**Steps:**
+1. First create your instance
+2. Install dependencies/applications, configure the system
+3. Then, go to `EC2` menu
+4. `Instances`
+5. Select desired instance
+6. `Action`
+7. `Image and templates`
+8. `Create image`
+9. Give a name
+
+> [!NOTE]
+> You can also right click on a resource, instead of clicking on `Action`.
+
+##### EC2 Image Builder
+
+Automates the whole process and can be automatically executed.
+
+```mermaid
+flowchart LR
+
+ec2-image-builder[["EC2 Image Builder"]]
+
+subgraph sub-instance["Maintain"]
+    direction BT
+    ec2-instance["Builder EC2 Instance"] 
+    ec2-instance -.-> |Step 2: Configure| ec2-instance
+end
+style sub-instance margin:0,padding:0,fill:#fff,stroke:#000,stroke-width:1px
+
+ami[("AMI")]
+
+subgraph test-instance["Validate"]
+    direction BT
+    test-ec2["Test EC2 Instance"]
+    test-ec2 -.-> |Step 5: Test| test-ec2
+end
+style test-instance margin:0,padding:0,fill:#fff,stroke:#000,stroke-width:1px
+
+distribute["Distribute AMI"]
+style distribute fill:#fff,stroke-width:0px
+
+%% 
+ec2-image-builder --> |Step 1: Create| sub-instance
+sub-instance --> |Step3: Create| ami
+ami --> |Step 4: Evaluate| test-instance
+test-instance --> distribute
+```
+
+> [!NOTE]
+> We only pay for the underlying resources
+
 ### 2. Instance Type
 Defines the compute, memory, storage configuration, etc. of the instance, details are available [here](https://aws.amazon.com/ec2/instance-types/).
 
@@ -198,6 +276,21 @@ erDiagram
 
 ---
 
+## EC2 Instance creation best practices
+1. Gather Requirements of the application
+   - OS, 
+   - Ram Size, CPU, Networks 
+   - Storage size
+   - Services/applications running
+   - Environment type (Dev/Prod)
+2. Create key-pairs
+    Give good names to your keys based on the project related to.
+3. Create Security Group
+4. Instance Launch
+
+---
+
+---
 
 ## CLI
 
