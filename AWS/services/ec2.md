@@ -9,7 +9,7 @@ What need to be configured when creating a new EC2:
 2. **CPU Cores:** [Instance type](#2-instance-type)
 3. **Ram size:** [Instance type](#2-instance-type)
 4. **Storage space:**  
-   * Network attached ([EBS](#3-amazon-elastic-block-store-ebs)/[EFS](#4-elastic-file-system))
+   * Network attached ([EBS](#3-amazon-elastic-block-store-ebs)/[EFS](#4-amazon-elastic-file-system-efs))
    * H/W ([EC2 Instance store](#4-ec2-instance-store))
 5. **Network:** Bandwidth
 6. **Firewall:** [Security Groups](#5-security-groups)

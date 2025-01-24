@@ -97,8 +97,6 @@ EBS offers different types of volumes optimized for specific use cases:
 | Cold HDD (sc1)                 | Lowest-cost storage for infrequently accessed data, like archival storage.                         |
 | Magnetic (Standard)            | Legacy storage option with lower performance, typically replaced by SSD or HDD options.           |
 
-Read also [EFS differences to EBS](./efs-vs-ebs.md).
-
 ---
 
 ## Utilize EBS volumes from EC2
@@ -118,7 +116,7 @@ It is a good practice for applications, like databases, that handle data
 to take snapshots of volumes, so, we can revert back to a previous stage.
 
 > [!TIP]
-> \* When creating the snapshot even thought it is not mandatory to detach the volume, it is recommended to do so.
+> When creating the snapshot even thought it is not mandatory to detach the volume, it is recommended to do so.
 
 In case of a disaster or data failure, to recreate a volume from a snapshot:
 1. Stop any services that are running (EC2) 

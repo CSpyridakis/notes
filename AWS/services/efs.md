@@ -103,3 +103,36 @@ Congrats! Now we can access this via multiple ways, as an example with IAM users
 > **efs-mount-point:** Your desired path
 
 ---
+
+## EFS Infrequent Access (EFS-IA)
+Provide lower-cost storage for files that are not frequently accessed.
+
+**Save up to 94% on file storage**
+
+Automatically move files here using lifecycle policies.
+
+```mermaid
+flowchart LR
+
+subgraph g1["EFS"]
+direction TB
+    subgraph efs-standar["EFS Standard"]
+    direction LR
+        file1
+    end
+    
+    lifecycle>"\* Lifecycle Policy"]
+
+    subgraph efs-ia["EFS IA"]
+    direction LR
+        direction LR
+        file2
+    end
+
+end
+
+file1 --> |move file*| file2 
+
+```
+
+\* Moves file based on the lifecycle policy
