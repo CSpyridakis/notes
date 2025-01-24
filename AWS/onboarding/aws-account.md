@@ -99,3 +99,8 @@ In case you want to enable more regions follow these steps.
 18. `Next`
 19. `Create Alarm`
 20. Comfirm email
+
+#### 7. Monitor IP addresses (Optional)
+1. Login to AWS
+2. Search `IP Address Manager`
+3. Create `IPAM`

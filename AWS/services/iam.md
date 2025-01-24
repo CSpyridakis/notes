@@ -207,6 +207,9 @@ flowchart LR
 > [!IMPORTANT]
 > **ACCESS KEYS are secrets! Don't share them!**
 
+> [!CAUTION]
+> NEVER store Access keys in EC2 instances (or other resources), use roles instead!
+
 ---
 
 ## Roles
