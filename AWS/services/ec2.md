@@ -164,18 +164,19 @@ Example: m5.2xlarge
 * **2xlarge**: Instance class size (higher the size --> higher the specs)
 
 ### 3. [Amazon Elastic Block Store (EBS)](./ebs.md)
-Persistent network storage volumes that can be attached to EC2 instances.
+Persistent **network block storage volumes** that can be attached to EC2 instances but specific to an Availability Zone. 
+Snapshot usage for transfers between zones and Backups.
 
 > [!NOTE]
 > By default, when creating an instance, the root volute has `Delete on termination` enabled.
 > When creating a new volume however, this is will not enabled by default when attached to an instance.
 
 ### 4. [Amazon Elastic File System (EFS)](./efs.md)
-Elastic File System  is a fully managed, scalable, and highly available network file system provided by AWS. It allows you to create file systems that can be mounted by multiple EC2 instances simultaneously, enabling shared storage across applications and services.
+Elastic File System  is a fully managed, scalable, and highly available **network file system** provided by AWS. It allows you to create file systems that can be mounted by **multiple** EC2 instances simultaneously, enabling shared storage across applications and services.
 
 ### 5. EC2 Instance Store
-A temporary hardware block storage available for Amazon EC2 instances.
-It is physically attached to the host computer where the instance is running and provides high-performance ephemeral storage
+A **temporary hardware block storage** available for Amazon EC2 instances.
+It is physically attached to the host computer where the instance is running and provides **high-performance ephemeral** storage
 
 `Instance store` is good for cache or buffers.
 
@@ -186,6 +187,7 @@ It is physically attached to the host computer where the instance is running and
 
 > [!IMPORTANT]
 > To find differences between `EBS`, `EFS` and `Instance store` read [this](./ebs-vs-efs-vs-instance-store.md).
+> Other storing services: [Amazon FSx](./fsx.md).
 
 ### 6. Tag
 Key-value pairs. Good for filtering and billing.
@@ -306,6 +308,13 @@ erDiagram
 4. Instance Launch
 
 ---
+
+> [!NOTE]
+> ❓ Whats next ❓
+> 
+> * [Elastic Load Balancer](./elb.md)
+> 
+
 
 ---
 

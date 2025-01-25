@@ -16,6 +16,22 @@ Essential characteristics of cloud computing, as defined by the National Institu
 ## Hybrid Cloud
 Merging private and public clouds.
 
+> [!NOTE]
+>
+> One of the main advantages of the cloud is **Scalability** and **High availability**.
+>
+> **Scalability** is related but is NOT the same to **High availability**
+> 
+> **Scalability** can be:
+>   * **Vertical**: Increase size of resource (limit is the hardware). E.g. 4 Cores -> 8 Cores
+>   * **Horizontal** (= elasticity): Increase the number of used resources. E.g. 1 CPU -> 3 CPUs
+>       This means that we have to handle a distributed system.
+>
+> **High availability**
+>   * Closely related to elasticity.
+>   * Running applications in independent physical systems, so, in case of a disaster, application
+>       is still running.
+
 
 ## CapEx (Capital Expenditures) vs OpEx (Operational Expenditures)
 
