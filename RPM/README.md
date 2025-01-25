@@ -1,6 +1,7 @@
-# Red Hat Enterprise Linux (RHEL)
+# RPM (Red Hat Package Manager)
+RPM based Distros
 
-| **Feature**             | **Fedora**                            | **CentOS Stream**                        | **RHEL**                                |
+| **Feature**             | **Fedora**                            | **CentOS Stream**                        | **Red Hat Enterprise Linux (RHEL)**                                |
 |-------------------------|---------------------------------------|------------------------------------------|-----------------------------------------|
 | **Purpose/Category**    | Cutting-edge, community-driven       | Rolling-release, pre-RHEL                | Enterprise-focused                      |
 | **Release Cycle**       | Rapid, 6-month releases              | Rolling (frequent updates)               | Long-term support (10 years)            |
