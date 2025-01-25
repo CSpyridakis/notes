@@ -308,13 +308,25 @@ erDiagram
 4. Instance Launch
 
 ---
-
 > [!NOTE]
 > ❓ Whats next ❓
+>
+> Read about [Scaling & High availability](../onboarding/cloud-models.md).
+> Then to implement them in AWS read the following materials.
+>
+> **Horizontal Scaling** (= elasticity): 
+>   * [Auto Scaling Groups]()
+>   * [Elastic Load Balancer](./elb.md)
+>
+> **High availability**
+>   * Auto Scaling Groups multi AZ
+>   * Load Balancer multi AZ
+>
+> | **Aspect**       | **Scalability**                                                | **Elasticity**                                          | **Agility**                                              |
+> |-------------------|----------------------------------------------------------------|--------------------------------------------------------|----------------------------------------------------------|
+> | **Focus**         | Utilize stronger hardware and increase resources               | Auto-scaling based on the load                         | Easiness of utilizing more/less resources                |
+> | **Use Case**      | Handle larger load                                             | Automation, to support pay-per-use, and optimize cost  | Fast adaptation to changes                               |
 > 
-> * [Elastic Load Balancer](./elb.md)
-> 
-
 
 ---
 

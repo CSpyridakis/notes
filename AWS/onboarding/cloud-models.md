@@ -32,6 +32,70 @@ Merging private and public clouds.
 >   * Running applications in independent physical systems, so, in case of a disaster, application
 >       is still running.
 
+```mermaid
+graph TD
+    subgraph all[" "]
+        direction RL
+
+        %% --------------------------------------------------------------------------------
+        subgraph boxdown[" "]
+            direction LR
+            low-number-of-instances[" "]:::clchidden -- **Horizontal**
+                *Scale out* ------> high-number-of-instances[" "]:::clchidden
+        end
+        subgraph boxdown2[" "]
+            direction RL
+            low-number-of-instances2[" "]:::clchidden -- **Horizontal**
+                *Scale in* ------> high-number-of-instances2[" "]:::clchidden
+        end
+        style boxdown width:0.01,height:0.01,opacity:0
+        style boxdown2 width:0.01,height:0.01,opacity:0
+        %% --------------------------------------------------------------------------------
+
+        subgraph boxup[" "]
+            direction TB
+
+            subgraph boxup-right[" "]
+                direction LR
+                subgraph boxup-right-bottom[" "]
+                    direction TB
+                    cpu["4 cores CPU"]
+                    cpu-mult@{ shape: st-rect, label: "Multiple 4 cores CPU"}
+
+                    style cpu fill:#DAA520
+                    style cpu-mult fill:#DAA520
+                end
+                style boxup-right-bottom width:0.01,height:0.01,opacity:0
+                subgraph boxup-right-top[" "]
+                    direction TB
+                    cpu2["128 cores CPU"]
+                    cpu2-mult@{ shape: st-rect, label: "Multiple 128 cores CPU"}
+
+                    style cpu2 fill:#1E90FF
+                    style cpu2-mult fill:#1E90FF
+                end
+                style boxup-right-top width:0.01,height:0.01,opacity:0
+            end
+            style boxup-right width:0.01,height:0.01,opacity:1
+
+            subgraph boxup-left1[" "]
+                direction BT
+                low-instance-size[" "]:::clchidden -- **Vertical** 
+                    *Scale up* ----> high-instance-size[" "]:::clchidden
+            end
+            subgraph boxup-left2[" "]
+                direction TB
+                low-instance-size2[" "]:::clchidden -- **Vertical** 
+                    *Scale down* ----> high-instance-size2[" "]:::clchidden
+            end
+            style boxup-left1 width:0.01,height:0.01,opacity:0
+            style boxup-left2 width:0.01,height:0.01,opacity:0
+        end
+        style boxup width:0.01,height:0.01,opacity:0
+    end
+
+    classDef clchidden opacity:0,width:0.01,height:0.01,padding:0,margin:0
+```
 
 ## CapEx (Capital Expenditures) vs OpEx (Operational Expenditures)
 
