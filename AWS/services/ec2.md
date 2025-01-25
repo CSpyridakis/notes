@@ -186,7 +186,7 @@ It is physically attached to the host computer where the instance is running and
 <br>
 
 > [!IMPORTANT]
-> To find differences between `EBS`, `EFS` and `Instance store` read [this](./ebs-vs-efs-vs-instance-store.md).
+> To find differences between [EBS](./ebs.md), [EFS](./efs.md), [Instance store](./ec2.md#5-ec2-instance-store) and [S3](./s3.md) read [this](./ebs-vs-efs-vs-instance-store-vs-s3.md).
 > Other storing services: [Amazon FSx](./fsx.md).
 
 ### 6. Tag

@@ -11,6 +11,7 @@
 | IPv4      | $0.005/hour of Public IPv4** |
 
 \* **Data entering the Cloud is FREE**
+
 \** Free for Free Tier but only for EC2 and only for 750 hours per month (ELD, RDS, etc have charges)
 
 > [!TIP]

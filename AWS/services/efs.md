@@ -2,8 +2,8 @@
 Amazon Elastic File System (EFS) is a fully managed, scalable cloud-based file storage service provided by AWS. It is designed for use with Amazon [EC2](./ec2.md) instances, containers, and on-premises servers, offering a shared file system that supports concurrent access by multiple compute resources.
 
 > [!IMPORTANT]
-> To find differences between `EBS`, `EFS` and `Instance store` read [this](./ebs-vs-efs-vs-instance-store.md).
-
+> To find differences between [EBS](./ebs.md), [EFS](./efs.md), [Instance store](./ec2.md#5-ec2-instance-store) and [S3](./s3.md) read [this](./ebs-vs-efs-vs-instance-store-vs-s3.md).
+> Other storing services: [Amazon FSx](./fsx.md).
 --- 
 ```mermaid
 flowchart TD
