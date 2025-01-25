@@ -330,6 +330,14 @@ erDiagram
 
 ---
 
+> [!TIP]
+> To monitor IP addresses:
+>
+> Search `IP Address Manager`
+> From there you are able to find public IP addresses 
+
+---
+
 ## CLI
 
 List Instances
