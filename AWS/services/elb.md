@@ -154,7 +154,7 @@ Target Group is basically a group of instances with health checks.
 4. Enable `Health checks` and modify details.
 5. Click next
 6. Select the instances you want to include
-7. Click on `Include as pending below`
+7. Click on `Include as pending below` (if not used with [ASG](./asg.md))
 8. Then click on `Create target group`
 
 ### B. Create LB
