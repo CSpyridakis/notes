@@ -85,6 +85,7 @@ echo '<!DOCTYPE html>
         <section>
             <h2>About</h2>
             <p>If you are here, then Congrats! There is a working http server on your machine.</p>
+            <p>'"My IP is: $(hostname -I)"'</p>
         </section>
         <section>
             <h2>Features</h2>
