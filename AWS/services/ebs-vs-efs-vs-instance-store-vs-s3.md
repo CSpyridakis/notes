@@ -2,7 +2,7 @@
 
 | Feature                | EFS (Elastic File System)                     | EBS (Elastic Block Store)                 | EC2 Instance Store                               | S3 (Simple Storage Service)                  |
 |------------------------|-----------------------------------------------|-------------------------------------------|---------------------------------------------|-----------------------------------------------|
-| **Type**               | Network File System                          | Block Storage                             | Ephemeral Local Storage                     | Object Storage                                |
+| **Type**               | **Network File** System                          | **Block** Storage                             | Ephemeral **Block** Local Storage                     | **Object** Storage                                |
 | **Access**             | Shared by multiple EC2 instances concurrently | Dedicated to a single EC2 instance        | Attached to a single EC2 instance           | Accessible via APIs globally                 |
 | **Persistence**        | Persistent                                   | Persistent                                | Non-persistent; data lost on instance stop  | Persistent                                   |
 | **Use Case**           | Shared file system, scalable workloads       | Persistent storage for one instance       | Temporary storage, high-speed applications  | Backups, archives, static files, big data, Hybrid Cloud storage, Applications hosting, Media hosting    |
