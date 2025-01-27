@@ -6,6 +6,8 @@ Is a **managed** database service offered by AWS that simplifies setting up, ope
 >
 > On the other hand, **AWS RDS** will handle **backups**, **upgrades**, **system patching**, etc. for us. It will also enable [vertical and horizontal scaling](../onboarding/cloud-models.md#hybrid-cloud), as well as its [high availability](../onboarding/cloud-models.md#hybrid-cloud) features.
 
+> [!IMPORTANT]
+> For **in-memory** databases use [Elasticache](./elasticache.md).
 ---
 
 ## Key Features of Amazon RDS
@@ -106,3 +108,142 @@ graph TD
 - **Minimal Management Overhead:** Designed for ease of use with automatic management features.
 - **No Capacity Planning Required:** Scales automatically to accommodate workload fluctuations.
 
+---
+## RDS Deployments
+
+### RDS Replicas
+Improve read performance and distribute the read workload across multiple nodes.
+Can scale up to 15 nodes.
+
+#### Read Data
+Application can read from all RDS
+```mermaid
+architecture-beta
+    group app(server)[Application]
+
+    service rds1(database)[Replica RDS] in app
+    service rdsmain(database)[Main RDS] in app
+    service rds2(database)[Replica RDS] in app
+    service application1(cloud)[Application] in app
+    service application2(cloud)[Application] in app
+    service application3(cloud)[Application] in app
+
+    rds1:L <-- R:rdsmain
+    rdsmain:L --> R:rds2
+
+    application1:L -- R:application2
+    application2:L -- R:application3
+
+    rds1:B --> T:application1
+    rdsmain:B --> T:application2
+    rds2:B --> T:application3
+```
+
+#### Write Data
+Application can write only in the main RDS.
+```mermaid
+architecture-beta
+    group app(server)[Application]
+
+    service rds1(database)[Replica RDS] in app
+    service rdsmain(database)[Main RDS] in app
+    service rds2(database)[Replica RDS] in app
+    service application1(cloud)[Application] in app
+    service application2(cloud)[Application] in app
+    service application3(cloud)[Application] in app
+
+    rds1:L <-- R:rdsmain
+    rdsmain:L --> R:rds2
+
+    application1:L -- R:application2
+    application2:L -- R:application3
+
+    application2:T --> B:rdsmain
+```
+
+### Multi-AZ
+Enhance high availability (failover) and durability for production workloads. Can have only 1 AZ as failover.
+```mermaid
+graph LR
+subgraph az1[Availability Zone 1]
+  rds-main@{ shape: lin-cyl, label: "RDS main"}
+end
+
+subgraph az2[Availability Zone 2]
+  rds-failover@{ shape: lin-cyl, label: "RDS failover"}
+end
+
+rds-main -.-> |Replication| rds-failover
+
+application[Application]
+
+rds-main --> |Read| application
+application --> |Write| rds-main 
+
+rds-failover <-.-> |Failover| application
+
+style rds-failover fill:#bbf,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+style rds-main fill:#797,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+```
+
+### Multi-Regions
+Provide disaster recovery and improve performance for globally distributed applications. However, there are replication costs, because we need to transfer data between regions.
+
+```mermaid
+graph LR
+
+subgraph reg2[Region2]
+  direction TB
+  rds-failover@{ shape: lin-cyl, label: "RDS failover"}
+  app2[Application]
+
+  rds-failover --> |Read| app2
+end
+
+subgraph reg1[Region 1]
+  direction TB
+  rds-main@{ shape: lin-cyl, label: "RDS main"}
+  app1[Application]
+
+  rds-main --> |Read|app1
+  app1 --> |Write| rds-main
+end
+
+app2 --> |Write| rds-main
+
+rds-main -.-> |Replication| rds-failover
+
+style rds-failover fill:#bbf,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+style rds-main fill:#797,stroke:#f00,stroke-width:2px,color:#000,stroke-dasharray: 10 10
+```
+---
+
+## Create a basic DB for testing
+Create a DB with the following options.
+- `Standard create`
+- Either `MySQL` or `PostgreSQL`
+- Templates: `Dev/Test` or `Free Tier`
+- Availability: `Single DB instance`
+- DB instance identifier: `give name`
+- Credentials management: `Self managed`
+- Instance configuration:
+  - Burstable classes
+  - `db.t3.micro`
+- Storage type: either `gp3`  or `gp2`
+- Allocated Storage: `20Gb`
+- Connectivity:
+  - `Don't connect to EC2`
+  - `IPv4`
+
+---
+
+## CLI
+
+List DB Instances
+`aws rds describe-db-instances`
+
+Create a DB Instance
+`aws rds create-db-instance --db-instance-identifier mydb --db-instance-class db.t3.micro --engine mysql --allocated-storage 20 --master-username admin --master-user-password password`
+
+Delete a DB Instance
+`aws rds delete-db-instance --db-instance-identifier mydb --skip-final-snapshot`
