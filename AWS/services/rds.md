@@ -8,6 +8,7 @@ Is a **managed** database service offered by AWS that simplifies setting up, ope
 
 > [!IMPORTANT]
 > For **in-memory** databases use [Elasticache](./elasticache.md).
+
 ---
 
 ## Key Features of Amazon RDS
