@@ -36,7 +36,7 @@
 ## [DynamoDB](./dynamodb.md)
 - Fully managed **NoSQL** database for **key/value** storage.
 - **Serverless** with high scalability and predictable performance.
-- **DAX** (DynamoDB Accelerator) provides caching for faster queries.
+- **DAX** (DynamoDB Accelerator) provides **caching** for faster queries.
 
 ---
 
@@ -45,12 +45,13 @@
 - Stores data in a **columnar format** (NOT rows), supports **Massively Parallel Processing** (MPP).
 - Integrated with BI tools for data visualization and reporting.
 - Pay-as-you-go
-- SQL interface
+- **SQL** interface
+- **Warehouse**
 - Not frequent data load, maybe every hour for example.
 
 ### Redshift Serverless
 - **Pay-as-you-go** OLAP service.
-- Automatically provisions and scales without managing warehouse infrastructure.
+- Automatically provisions and scales without managing **warehouse** infrastructure.
 - Best for **Dashboards, real-time analytics**.
 
 ---
@@ -63,7 +64,7 @@
 ---
 
 ## Athena
-- Serverless **SQL** query service for analyzing data in **Amazon S3**.
+- **Serverless SQL** query service for analyzing data in **Amazon S3**.
 - Built on **Presto**, supports standard SQL and formats like **CSV, JSON**, and Parquet.
 - Cost-effective (~$5 per TB of data scanned) can analyze compressed data too.
 - Best for Business intelligence, analytics and reporting.
@@ -88,6 +89,7 @@ athena --> |Report| quichsighe["Amazon QuickSight"]
 ---
 
 ## DocumentDB
+- **"Aurora for MongoDB"**
 - Managed **NoSQL** document database designed for **JSON** data storage.
 - Fully compatible with **MongoDB**.
 - **Automatically** replicates data across three availability zones, scales, and provides increment of 10GB.
@@ -99,12 +101,13 @@ athena --> |Report| quichsighe["Amazon QuickSight"]
 - Cryptographically verifiable **history of changes**.
 - Ideal for **financial** applications and compliance **tracking**.
 - Serverless and centralized.
+- **Finanacial Transactions Ledger**
 
 ---
 
 ## Managed Blockchain
 - Blockchain service for creating **decentralized** or **private networks**.
-- Supports Ethereum and Hyperledger Fabric.
+- Supports **Ethereum blockchains** and **Hyperledger Fabric**.
 - Eliminates the need for a **trusted authority** to verify transactions.
 
 ---
