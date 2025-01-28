@@ -500,4 +500,83 @@ Both `revert` and `reset` are used to undo changes, but they work differently an
 - git revert is safer for shared branches, as it keeps history intact.
 - git reset is powerful for local work but can rewrite history, so use it cautiously.
 - Choose the right tool depending on whether your branch is public or private.
-  
+
+---
+
+## Tags
+
+Used to mark specific points in a repository's history. They are commonly used to identify important milestones, like releases (e.g., v1.0, v2.1.3). Tags are references to specific commits and can be either **annotated** or **lightweight**.
+
+| Type | Description | Use case |
+| -----| -------- | -----------|
+| **Annotated** | Includes a message, tagger’s name, email, and a date. | Recommended for releases since it provides metadata and can be signed with GPG.
+| **Lightweight** | A simple pointer to a commit, with no metadata. | Ideal for temporary or local tags.
+
+- List all tags
+  ```bash
+  git tag
+  ```
+
+- List tags matching a pattern
+  ```bash
+  git tag -l "v1.*"
+  ```
+
+- Create Annotated Tag
+  ```bash
+  git tag -a <tagname> -m "Tag message"
+  ```
+
+- Create Lightweight Tag
+  ```bash
+  git tag <tagname>
+  ```
+
+- Tag Specific Commits
+  ```bash
+  git tag -a <tagname> <commit-hash> -m "Message"
+  ```
+
+- Push a specific tag to remote
+  ```bash
+  git push origin <tagname>
+  ```
+
+- Push all tags to remote 
+  ```bash
+  git push --tags
+  ```
+
+- Delete a tag locally
+  ```bash
+  git tag -d <tagname>
+  ```
+
+- Delete a tag on the remote:
+  ```bash
+  git push origin --delete <tagname>
+  ```
+
+- Renaming Tags
+  ```bash
+  git tag <new-tagname> <commit-hash>       # Create a new tag with the correct name
+  git tag -d <old-tagname>                  # Delete the old tag locally
+  git push origin <new-tagname>             # Push the new tag to the remote
+  git push origin --delete <old-tagname>    # Delete the old tag on the remote
+  ```
+
+- Create a signed tag
+  ```bash
+  git tag -s <tagname> -m "Message"
+  ```
+
+- Verify a signed tag
+  ```bash
+  git tag -v <tagname>
+  ```
+
+**Best Practices**
+- Use **annotated** tags for **production** releases.
+- Follow a clear naming convention (e.g., vX.Y.Z for semantic versioning).
+- Push tags to the remote as part of your release process.
+- Use signed tags for better security and verification.
