@@ -339,26 +339,45 @@ erDiagram
 
 ```
 gitGraph
-  commit
+  %% Main
+  commit id: "First" tag: "v1.1" type: REVERSE
+  commit id: "Second" tag: "v1.2" type: HIGHLIGHT
+  
+  %% Develop
   branch develop
   commit
+  commit
+
+  %% Main
   checkout main
   commit
+
+  %% Main <- Develop
   merge develop
+
+  %% Main
   commit
 ```
 
 ```mermaid
 gitGraph
-  commit
+  %% Main
+  commit id: "First" tag: "v1.1" type: REVERSE
+  commit id: "Second" tag: "v1.2" type: HIGHLIGHT
+  
+  %% Develop
   branch develop
-
   commit
+  commit
+
+  %% Main
   checkout main
-
   commit
+
+  %% Main <- Develop
   merge develop
 
+  %% Main
   commit
 ```
 ---
