@@ -112,6 +112,21 @@ git config --global log.showSignature true       # Show GPG signatures in log ou
 
 ---
 
+## Debugging & Troubleshooting
+
+| Command	| Description |
+| --------| ------------|
+| `git bisect` |	Identifies the commit that introduced a bug by performing a binary search between a known good and bad commit.
+| `git blame -L <line-start>,<line-end> <filename>` |	Shows who last modified each line of a file, helping to identify when and why changes were made.
+| `git log -S <string> --oneline` |	Searches for commits that added or removed a specific string in the code.
+| `git grep -n <branch>` | 	Searches for specific text patterns in your repository.
+| `git diff <commit1> <commit2>` |	Displays differences between commits, branches, or the working directory.
+| `git show <commit-hash>:<file-path>` |	Shows details of a specific commit/file, including changes and metadata.
+| `git reflog <branch>` |	Tracks updates to branch heads, helping to recover lost commits or branches.
+
+
+---
+
 ## Pull vs Fetch
 
 - **git fetch**: Downloads changes from the remote repository but doesn’t automatically merge them, allowing you to review changes before merging.
@@ -491,14 +506,14 @@ Both `revert` and `reset` are used to undo changes, but they work differently an
 ### Reset
 | Mode	| Effect on Staging Area	| Effect on Working | Directory	Use Case |
 | ------| ------------------------| ------------------| -------------------|
-| --soft	| Retains changes in the staging area.	| Keeps all working directory changes.	| Undo commits but keep changes staged for editing or recommitting.
-| --mixed	(Default)| Clears the staging area.	| Keeps all working directory changes.	| Default reset, undo commits and changes but don't delete them.
-| --hard |	Clears the staging area.	| Discards all working directory changes.	| Permanently delete commits and changes.
+| `--soft`	| Retains changes in the staging area.	| Keeps all working directory changes.	| Undo commits but keep changes staged for editing or recommitting.
+| `--mixed`	(Default)| Clears the staging area.	| Keeps all working directory changes.	| Default reset, undo commits and changes but don't delete them.
+| `--hard` |	Clears the staging area.	| Discards all working directory changes.	| Permanently delete commits and changes.
 
 **Key Takeaways**
 
-- git revert is safer for shared branches, as it keeps history intact.
-- git reset is powerful for local work but can rewrite history, so use it cautiously.
+- `git revert` is safer for shared branches, as it keeps history intact.
+- `git reset` is powerful for local work but can rewrite history, so use it cautiously.
 - Choose the right tool depending on whether your branch is public or private.
 
 ---
@@ -580,3 +595,67 @@ Used to mark specific points in a repository's history. They are commonly used t
 - Follow a clear naming convention (e.g., vX.Y.Z for semantic versioning).
 - Push tags to the remote as part of your release process.
 - Use signed tags for better security and verification.
+
+---
+
+## Hooks
+Git hooks are scripts that are automatically triggered by Git events, such as commits, merges, or pushes. These scripts allow you to enforce policies, automate tasks, and customize your Git workflow. 
+
+**Hooks Directory**: `.git/hooks`
+
+> [!NOTE]
+> Git provides sample hook scripts with .sample extensions (e.g., pre-commit.sample). Rename or copy them to make them executable
+
+**Types of Hooks**
+| **Type**          | **Hook Name**         | **Trigger Event**                                  | **Common Use Case**                                          |
+|--------------------|-----------------------|---------------------------------------------------|-------------------------------------------------------------|
+| **Client-Side**    | `pre-commit`         | Before a commit is recorded                       | Linting, formatting, running tests.                        |
+|                    | `prepare-commit-msg` | Before the commit message editor opens            | Modifying the default commit message template.             |
+|                    | `commit-msg`         | After the commit message is entered               | Validating the commit message format.                      |
+|                    | `pre-push`           | Before pushing to a remote                        | Running tests, checking branch protection policies.         |
+|                    | `post-merge`         | After a successful merge                          | Installing dependencies or performing cleanup tasks.        |
+|                    | `post-checkout`      | After switching branches or checking out a commit | Updating the working directory or running scripts.          |
+|                    | `pre-rebase`         | Before rebasing                                    | Validating changes or preventing dangerous rebases.         |
+| **Server-Side**    | `pre-receive`        | Before a push is accepted on the server           | Enforcing branch policies, running server-side validations. |
+|                    | `update`             | Before updating references in a push              | Validating individual refs before applying updates.         |
+|                    | `post-receive`       | After a push is accepted                          | Triggering CI/CD pipelines, notifications, or deployments.  |
+|                    | `post-update`        | After references are updated                      | Updating server-side content, like generating static pages. |
+
+- **Create hook from sample**
+  ```bash
+  mv .git/hooks/pre-commit.sample .git/hooks/pre-commit
+  chmod +x .git/hooks/pre-commit
+  ```
+
+- **Create custom hook**: Create an executable file titled as needed (see table) in the hooks directory, example:
+  ```bash
+  #!/bin/bash
+  echo "Running pre-commit checks..."
+  # Example: Lint all staged files
+  npm run lint
+  if [ $? -ne 0 ]; then
+      echo "Linting failed. Aborting commit."
+      exit 1
+  fi
+  ```
+
+- If necessary, you can bypass Git hooks using the `--no-verify` flag
+  ```bash
+  git commit --no-verify
+  git push --no-verify
+  ```
+
+**Best Practices**
+
+1. Keep Hooks Simple and Fast
+   Time-consuming tasks in hooks can frustrate developers. Offload heavy tasks to CI/CD pipelines.
+
+2. Make Hooks Portable
+   Store hooks in a shared location and symlink them during setup.
+   Example: `ln -s ../../hooks/pre-commit .git/hooks/pre-commit`
+
+3. Use Hook Managers
+  Tools like [Husky](https://typicode.github.io/husky/) or [pre-commit](https://pre-commit.com/) simplify managing hooks across teams.
+
+1. Document Hook Behavior
+  Let your team know what hooks do and how they can modify or bypass them.
