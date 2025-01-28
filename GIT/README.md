@@ -1,5 +1,97 @@
 # Git
 
+---
+
+## Configuration
+Git allows customization through its configuration system. 
+
+| File | Command to retrieve  | Description | 
+| -----| ---------------------| -----|
+| `/etc/gitconfig` | `git config --system --list` | **System-wide** applies to all users on the system
+| `~/.gitconfig` or `~/.config/git/config` | `git config --global --list` | **Global**: Current user
+| `.git/config` | `git config --local --list` | **Local**: Specific to the current repository
+
+- Manually edit configuration files:
+  ```bash
+  git config --<system/global/local> -e
+  ```
+
+- Set configurations
+  ```bash
+  git config --<system/global/local> <key> <value>
+  ```
+
+- Resetting Configurations
+  ```bash
+  git config --global --unset <key>
+  ```
+
+- Set your name and email
+  ```bash
+  git config --global user.name "Your Name"
+  git config --global user.email "you@example.com"
+  ```
+
+- Change the default branch name 
+  ```bash
+    git config --global init.defaultBranch main
+    ```
+
+- Set your preferred text editor
+  ```bash
+  git config --global core.editor "code --wait"  # VSCode (or use 'vim/nano')
+  ```
+
+- Set a merge tool for resolving conflicts:
+  ```bash
+  git config --global merge.tool "vimdiff" # Or you can use 'code'
+  ```
+
+- Credential Helper
+  ```bash
+  git config --global credential.helper cache           # Cache credentials temporarily
+  git config --global credential.helper store           # Save credentials permanently
+  git config --global credential.helper 'manager-core'  # Use the Git Credential Manager
+  ```
+
+- Aliases
+  ```bash
+  git config --global alias.st status
+  git config --global alias.co checkout
+  git config --global alias.br branch
+  git config --global alias.hist "log --oneline --graph --decorate --all"
+  ```
+
+- Define the default behavior for `git push`
+  ```bash
+  git config --global push.default simple          # Push current branch to its matching upstream
+  git config --global push.default current         # Push only the current branch
+  git config --global push.default matching        # Push all matching branches
+  ```
+
+- Define the default behavior for `git pull`
+  ```bash
+  git config --global pull.rebase true             # Set rebase as the default behavior when pulling
+  ```
+
+- Ignore changes to specific files (useful for config files with local tweaks)
+  ```bash
+  git update-index --assume-unchanged <file>
+  ```
+
+- Sign commits and tags with a GPG key:
+  ```bash
+  git config --global user.signingkey <your-gpg-key-id>
+  git config --global commit.gpgSign true
+  ```
+
+- Use a specific SSH key for Git:
+  ```bash
+  git config --global core.sshCommand "ssh -i ~/.ssh/custom_key"
+  ```
+
+---
+
 ## Log
 
 Simple
@@ -12,6 +104,12 @@ Extended
 git log --oneline --graph --decorate --all --color --date=short --stat --pretty=format:"%C(yellow)%h%Creset %C(green)(%ad)%Creset %C(blue)%an%Creset %C(red)%d%Creset - %s"
 ```
 
+Log Customization
+```bash
+git config --global log.date relative            # Show relative dates (e.g., "2 days ago")
+git config --global log.showSignature true       # Show GPG signatures in log output
+```
+
 ---
 
 ## Pull vs Fetch
@@ -21,7 +119,9 @@ git log --oneline --graph --decorate --all --color --date=short --stat --pretty=
 
 ---
 
-## Create branch
+## Branches
+
+### Create branch
 Before
 ```mermaid
 gitGraph
@@ -52,6 +152,14 @@ gitGraph
   branch develop
   commit id: " M3" type: HIGHLIGHT
 ```
+
+### Delete branch
+
+* Deletes a branch if fully merged
+`git branch -d <branch>`
+
+* Force-deletes a branch
+`git branch -D <branch> `
 
 ---
 
@@ -161,6 +269,9 @@ gitGraph
 - When you want to preserve the full history of changes.
 - Collaborative workflows where you need a clear record of branch merges.
 
+> [!TIP]
+> Prefer rebasing for feature branches to avoid complex merge conflicts.
+
 ---
 
 ## Git Rebase
@@ -233,6 +344,9 @@ gitGraph
   - If you want to cancel the rebase after a conflict:
   `git rebase --abort`
 
+> [!TIP]
+> Avoid rebasing public/shared branches to prevent rewriting history.
+ 
 ---
 
 ## Cherry-pick
@@ -326,6 +440,9 @@ gitGraph
 5. Open an editor to modify the commit message during the cherry-pick process.
 `git cherry-pick --edit <commit-hash>`
 
+> [!TIP]
+> Use sparingly to avoid cluttered history
+
 ---
 
 ## Stash
@@ -375,7 +492,7 @@ Both `revert` and `reset` are used to undo changes, but they work differently an
 | Mode	| Effect on Staging Area	| Effect on Working | Directory	Use Case |
 | ------| ------------------------| ------------------| -------------------|
 | --soft	| Retains changes in the staging area.	| Keeps all working directory changes.	| Undo commits but keep changes staged for editing or recommitting.
-| --mixed	| Clears the staging area.	| Keeps all working directory changes.	| Default reset, undo commits and changes but don't delete them.
+| --mixed	(Default)| Clears the staging area.	| Keeps all working directory changes.	| Default reset, undo commits and changes but don't delete them.
 | --hard |	Clears the staging area.	| Discards all working directory changes.	| Permanently delete commits and changes.
 
 **Key Takeaways**
@@ -383,3 +500,4 @@ Both `revert` and `reset` are used to undo changes, but they work differently an
 - git revert is safer for shared branches, as it keeps history intact.
 - git reset is powerful for local work but can rewrite history, so use it cautiously.
 - Choose the right tool depending on whether your branch is public or private.
+  
