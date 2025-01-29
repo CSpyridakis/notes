@@ -40,7 +40,7 @@ Pre-configured templates used to launch instances. AMIs include operating system
     end
 
     az1-ec2-1 --> |Create AMI| iam
-    iam["IAM"]
+    iam["AMI"]
     iam --> |Launch from AMI| az2-ec2-1
    ```
     There are two ways to create AMIs. Either create them manually or using Image Builder. 

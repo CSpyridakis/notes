@@ -82,10 +82,10 @@ flowchart TB
 Provides virtualized computing resources over the internet. This includes servers, storage, and networking.
 
 **Examples:**
-1. [Amazon EC2 (Elastic Compute Cloud):](./services/ec2.md)
+1. [Amazon EC2 (Elastic Compute Cloud):](../services/ec2.md)
 Provides virtual servers to run applications.  
 
-1. [Amazon S3 (Simple Storage Service):](./services/s3.md)
+1. [Amazon S3 (Simple Storage Service):](../services/s3.md)
 Scalable object storage for backup, data archiving, and big data analytics.  
 
 1. **Amazon VPC (Virtual Private Cloud):**  
