@@ -7,7 +7,7 @@ AWS Lambda is a [serverless](../onboarding/serverless.md) compute service provid
 | Serverless | **No servers to manage**, automatically scales to accommodate workload.
 | Event-Driven | Lambda functions are **triggered by events** (e.g., HTTP requests, changes in data, etc.).
 | Time Limitations | Functions have a maximum execution time (15 minutes).
-| On-Demand Execution | Functions run **only when triggered**, ensuring efficiency and cost savings.
+| On-Demand Execution | Virtual functions run **only when triggered**, ensuring efficiency and cost savings.
 | Auto-Scaling | Lambda **automatically handles scaling** based on incoming requests.
 | Multi-Language Support: | Supports **several programming languages** (Node.js, Python, Java, C#, Go, etc.).
 | Cost-Effective | **Pay-per-use** model—charged **per request** (\$0.20 per 1 million requests) and **duration** (\$1.00 per 600,000 GB-seconds).
