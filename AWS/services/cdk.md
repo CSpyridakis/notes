@@ -23,3 +23,27 @@ app = core.App()
 MyS3Stack(app, "MyS3Stack")
 app.synth()
 ```
+
+**Use cases**:
+- When deploying with docker via [ECS](./ecs.md)/[EKS](./eks.md).
+- When deploying with [Lambda](./lambda.md) functions.
+
+```mermaid
+graph LR
+
+subgraph langs["Programming languages"]
+direction LR
+    subgraph cdk-app["CDK Application"]
+    direction LR
+        lambda
+        s3
+        etc["..."]
+        style etc opacity:0
+    end
+end
+
+cdk-app --> cdk-cli
+
+cdk-cli["CDK CLI"] --> cloudformation-template["Cloudformation Template"]
+cloudformation-template --> Cloudformation
+```
