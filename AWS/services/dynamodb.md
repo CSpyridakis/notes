@@ -1,5 +1,5 @@
 # DynamoDB
-Amazon DynamoDB is a **fully managed serverless NoSQL database** service offered by AWS. It is designed for **high-performance**, **scalable**, and **highly available** applications that require **low-latency** (single-digit millisecond) data access. DynamoDB is ideal for handling **large amounts** of data and provides both document and **key-value** data models. It automatically is replicated accross 3 Availability Zones.
+Amazon DynamoDB is a **fully managed [serverless](../onboarding/serverless.md) NoSQL database** service offered by AWS. It is designed for **high-performance**, **scalable**, and **highly available** applications that require **low-latency** (single-digit millisecond) data access. DynamoDB is ideal for handling **large amounts** of data and provides both document and **key-value** data models. It automatically is replicated accross 3 Availability Zones.
 
 > [!IMPORTANT]
 > For **Relational** databases use [RDS](./rds.md).

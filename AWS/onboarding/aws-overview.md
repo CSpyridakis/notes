@@ -91,7 +91,6 @@ Scalable object storage for backup, data archiving, and big data analytics.
 1. **Amazon VPC (Virtual Private Cloud):**  
 Allows you to define and control a virtual network isolated from other AWS customers.  
 
-
 ---
 
 ### **2. Platform as a Service (PaaS)**
@@ -124,7 +123,7 @@ A business intelligence service to create interactive dashboards and visualizati
 ### **4. Function as a Service (FaaS)**
 
 1. [AWS Lambda:](../services/lambda.md)  
-Serverless compute service where you run code in response to events.
+[Serverless](../onboarding/serverless.md) compute service where you run code in response to events.
 
 ---
 
@@ -133,8 +132,9 @@ Serverless compute service where you run code in response to events.
 | Model   | Definition                                  | AWS Example                          | Use Case                                   |
 |---------|--------------------------------------------|---------------------------------------|-------------------------------------------|
 | **IaaS** | Virtualized computing resources            | Amazon EC2, Amazon S3                | Hosting a website, storing backups        |
-| **PaaS** | Managed platform for application development | AWS Elastic Beanstalk, AWS Lambda    | Deploying web apps, running serverless code |
+| **PaaS** | Managed platform for application development | AWS Elastic Beanstalk              | Deploying web apps |
 | **SaaS** | Ready-to-use software applications         | Amazon WorkSpaces, Amazon QuickSight | Remote work, data analysis                |
+| **FaaS** | [Serverless](../onboarding/serverless.md) compute service, running functions in response to events | AWS Lambda | Event-driven applications, real-time data processing. Running [serverless](../onboarding/serverless.md) code |
 
 Full AWS services comparison is available [here](./saas-paas-vs-iaas.md).
 

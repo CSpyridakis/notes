@@ -61,7 +61,7 @@ graph LR
 | **SQL Server**      | Relational database for Windows-based applications.                        | Microsoft ecosystem (.NET apps, SharePoint), transactional systems, BI and reporting needs.   | Integration with Microsoft services, Always On Availability Groups, advanced reporting tools.  |
 
 
-### Aurora Serverless
+### Aurora [Serverless](../onboarding/serverless.md)
 Amazon Aurora is an ideal choice for applications that require high performance and scalability but have **unpredictable** or **infrequent** workloads. It eliminates the need for complex capacity planning and offers a fully managed database solution that automatically adjusts to changing demands.
 
 Concept:

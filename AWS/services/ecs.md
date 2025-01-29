@@ -8,7 +8,7 @@ However, there is also an alternative option, to run containers using **Fargate*
 
 | Feature	| Fargate |	EC2 |
 | ----------| -----| -------|
-| Definition|	Serverless mode: AWS manages compute infrastructure. | User-managed mode: Full control over EC2 instances.
+| Definition|	[Serverless](../onboarding/serverless.md) mode: AWS manages compute infrastructure. | User-managed mode: Full control over EC2 instances.
 | Infrastructure |No EC2 instances; AWS handles provisioning. | Requires managing and provisioning EC2 instances.
 | Scaling | Automatic scaling of tasks based on resource needs. | Requires manual configuration or auto-scaling setup.
 | Cost Model | Pay for resources used by containers (CPU, memory).| Pay for EC2 instances (even if underutilized).

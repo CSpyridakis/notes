@@ -4,18 +4,18 @@
 |-----------------------------|--------------------------------------------------------------------------------------------------|
 | [RDS & Aurora](#rds--aurora)           | Managed **relational** databases for **OLTP** with SQL engine support (MySQL, PostgreSQL, etc.).        |
 | [ElastiCache](#elasticache)            | **In-memory** database service optimized for real-time applications (Redis, Memcached).             |
-| [DynamoDB](#dynamodb)                 | Fully managed **NoSQL** key/value database with high throughput and serverless scalability.          |
+| [DynamoDB](#dynamodb)                 | Fully managed **NoSQL** key/value database with high throughput and [serverless](../onboarding/serverless.md) scalability.          |
 | [Redshift](#redshift)                    | **OLAP** data **warehouse** designed for analytics and complex queries on large datasets.             |
 | [Elastic MapReduce (EMR)](#elastic-mapreduce-emr)                 | Managed big data platform for creating **Hadoop** or Spark clusters.                                |
-| [Athena](#athena)                | **Serverless** query engine for analyzing data in Amazon S3 using SQL.                         |
+| [Athena](#athena)                | [Serverless](../onboarding/serverless.md) query engine for analyzing data in Amazon S3 using SQL.                         |
 | [QuickSight](#quicksight)           | **Business Intelligence (BI)** service for interactive dashboards and real-time insights.   |
 | [DocumentDB](#documentdb)            | Managed **NoSQL** database for JSON data, fully compatible with MongoDB.                   |
 | [Quantum Ledger Database (QLDB)](#quantum-ledger-database-qldb)            | **Immutable** ledger database for tracking and verifying transactions cryptographically.               | 
 | [Managed Blockchain](#managed-blockchain) | **Blockchain** service for creating private or public networks using Ethereum or Hyperledger Fabric.| 
-| [Glue](#glue)          | **Serverless ETL** service for data preparation and transformation.                                 |
+| [Glue](#glue)          | [Serverless](../onboarding/serverless.md) **ETL** service for data preparation and transformation.                                 |
 | [Database Migration Service (DMS)](#database-migration-service-dms)                     | **Migration** service to securely move databases with minimal downtime.                            |
 | [Neptune](#neptune)                | Fully managed **graph database** for storing and querying highly connected datasets.                | 
-| [Timestream](#timestream)            | **Serverless time-series** database for IoT and operational analytics.                             |
+| [Timestream](#timestream)            | [Serverless](../onboarding/serverless.md) **time-series** database for IoT and operational analytics.                             |
 
 ---
 
@@ -35,7 +35,7 @@
 
 ## [DynamoDB](./dynamodb.md)
 - Fully managed **NoSQL** database for **key/value** storage.
-- **Serverless** with high scalability and predictable performance.
+- [Serverless](../onboarding/serverless.md) with high scalability and predictable performance.
 - **DAX** (DynamoDB Accelerator) provides **caching** for faster queries.
 
 ---
@@ -49,7 +49,7 @@
 - **Warehouse**
 - Not frequent data load, maybe every hour for example.
 
-### Redshift Serverless
+### Redshift [serverless](../onboarding/serverless.md)
 - **Pay-as-you-go** OLAP service.
 - Automatically provisions and scales without managing **warehouse** infrastructure.
 - Best for **Dashboards, real-time analytics**.
@@ -64,7 +64,7 @@
 ---
 
 ## Athena
-- **Serverless SQL** query service for analyzing data in **Amazon S3**.
+- [Serverless](../onboarding/serverless.md) **SQL** query service for analyzing data in **Amazon S3**.
 - Built on **Presto**, supports standard SQL and formats like **CSV, JSON**, and Parquet.
 - Cost-effective (~$5 per TB of data scanned) can analyze compressed data too.
 - Best for Business intelligence, analytics and reporting.
@@ -100,7 +100,7 @@ athena --> |Report| quichsighe["Amazon QuickSight"]
 - **Immutable** ledger database for tracking transactions.
 - Cryptographically verifiable **history of changes**.
 - Ideal for **financial** applications and compliance **tracking**.
-- Serverless and centralized.
+- [Serverless](../onboarding/serverless.md) and centralized.
 - **Finanacial Transactions Ledger**
 
 ---
@@ -157,7 +157,7 @@ db-s --> ec2-dms --> db-t
 ---
 
 ## Timestream
-- **Serverless** time-series database for storing evolving data.
+- [Serverless](../onboarding/serverless.md) time-series database for storing evolving data.
 - Automatically scales to handle **trillions of events** per day.
 - Ideal for IoT and operational analytics.
 
