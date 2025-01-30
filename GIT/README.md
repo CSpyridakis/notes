@@ -1,4 +1,60 @@
 # Git
+[Distributed](./concepts.md) Version Control System.
+
+---
+
+```mermaid
+sequenceDiagram
+  participant Stash
+  participant Workspace
+  participant Staging
+  participant Local Repository
+  participant Remote Repository
+
+  %% -------------------------
+  %% Initialize
+  %% -------------------------
+  opt Initialize
+    Local Repository ->> Workspace: git init
+    Remote Repository ->> Workspace: git clone
+  end
+
+  %% -------------------------
+  %% Update
+  %% -------------------------
+  opt Update
+    Remote Repository ->> Local Repository: git fetch
+    Local Repository ->> Workspace: git merge/rebase
+    Remote Repository ->> Workspace: git pull
+  end
+
+  %% -------------------------
+  %% Develop
+  %% -------------------------
+  opt Develop
+    Workspace ->> Staging: git add/mv/rm
+    Staging ->> Local Repository : git commit
+    Workspace ->> Local Repository : git commit -a
+    Local Repository ->> Remote Repository: git push
+  end
+
+  %% -------------------------
+  %% Revert
+  %% -------------------------
+  opt Revert
+    Local Repository->> Workspace: git checkout HEAD/git reset --hard
+    Staging ->> Workspace: git checkout 
+    Local Repository ->> Staging: git reset --soft
+  end
+
+  %% -------------------------
+  %% Revert
+  %% -------------------------
+  opt Stash
+    Workspace ->> Stash: git stash
+    Stash ->> Workspace: git stash apply
+  end
+```
 
 ---
 
