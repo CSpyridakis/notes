@@ -1,0 +1,73 @@
+pipeline {
+    /************ AGENT CONFIGURATION ************/
+    agent {
+        // Use 'any' to allow execution on any available Jenkins node
+        // label 'docker-agent'
+        agent any
+    }
+
+
+    /************ TOOLS CONFIGURATION ************/
+    tools {
+
+    }
+
+
+    /************ ENVIRONMENT VARIABLES ************/
+    environment {
+
+    }
+
+
+    /************ STAGES ************/
+    stages {
+        // 1. Fetch source code
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-repo.git'
+            }
+        }
+
+        // 2. Build process (replace with actual build command)
+        stage('Build') {
+            steps {
+                sh './build.sh'  // Replace with the appropriate build command
+            }
+            post {
+                success {
+                    echo "[Build] Success"
+                    archiveArtifacts artifacts: '**/*.<war/zip/exe/etc>'
+                }
+            }
+        }
+
+        // 3. Run tests (unit tests, integration tests, etc.)
+        stage('Test') {
+            steps {
+                sh './run-tests.sh'  // Adjust based on the project
+            }
+            post {
+                success {
+                    echo "[Tests] Success"
+                }
+                failure {
+                    echo "[Tests] Failure"
+                }
+            }
+        }
+    }
+
+
+    /************ POST ACTIONS ************/
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}

@@ -1,7 +1,10 @@
 # PostgreSQL
 
-Connect to postgreSQL server
+Connect to PostgreSQL server **terminal**
 `psql -h <hostname/ip> -p <port> -U <username> `
+
+Conenct to PostgreSQL server **jdbc**
+`jdbc:postgresql://<hostname/ip>:5432/<db-name>?user=<username>&password=<mypass>`
 
 ## General commands
 | Command | Description |
