@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+  "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+  "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <!-- Non-tree-based checks -->
+  <module name="LineLength">
+    <property name="max" value="150"/>
+  </module>
+
+  <module name="TreeWalker">
+    <!-- Tree-based checks -->
+    <module name="AvoidStarImport"/>
+    <module name="MethodLength">
+      <property name="max" value="50"/>
+    </module>
+  </module>
+</module>
