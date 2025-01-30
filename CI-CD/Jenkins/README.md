@@ -147,30 +147,55 @@ pipeline {
 
 ---
 
+## Connect Nodes
+It is a good practice to keep in a `main` node 0 
+
+1. **Main:** `Manage jetkins` > `Nodes` > `New Node` 
+2. **Node:** `Manage jetkins` > `Nodes` > Self and run script
+
+```bash
+#!/bin/bash
+
+# TODO: Update these values
+HOST_IP="http://192.168.0.1:8080"
+SECRET="123456123456123456123456123456123456123456123456"
+NODE_NAME="jetkins-node"
+NODE_IP="http://192.168.0.2.1080/"
+
+# Assumed that a docker-compose exists in the same dir that will create a container titled jenkins-lts
+
+docker compose up -d
+command="
+    apt update -y && apt install openjdk-17-jdk maven -y &&
+    curl -sO ${HOST_IP}/jnlpJars/agent.jar && 
+    java -jar agent.jar -url ${HOST_IP} -secret ${SECRET} -name ${NODE_NAME} -webSocket -workDir ${NODE_IP}"
+docker exec -it jenkins-lts bash -c "${command}" 
+```
+---
+
 ## Tools
 
 ### 1. JDK/MAVEN
 1. Login to Jetkins VM/Container and run
 ```bash
-apt install openjdk-17-jdk -y
+apt install openjdk-17-jdk maven -y
 ```
 
-2. In the `Jetkins Manage`, give a nake in the JDK installation, like `JDK17`  and fill this:
+2. In the `Jetkins Manage` > `Tools`, give a `name` in the JDK installation, like `JDK17`  and fill this:
 ```text
 JAVA_HOME='/usr/lib/jvm/java-17-openjdk-amd64'
 ```
 
-3. In the `Maven installation` just give a name.
+3. In the `Maven installation` just give a `name` in the MVN.
 
----
-
-## Plugins
-
-### 1. Build Time stamp
-
-1. Go to `Manage Jetkins` -> `Available Plugins` -> Search Build timestamp -> `Install`
-2. Go to `Manage Jetkins` -> `System` -> `Build Timestamp` -> Setup
-
+> [!CAUTION]
+> REMEMBER TO ADD IN YOUR JETKINSFILE (If Pipeline as Code is used)
+> ```
+> tools {
+>	  maven "<MAVEN-NAME>"
+>	  jdk "<JDK-NAME>"
+> }
+> ``` 
 ---
 
 ## Example
@@ -217,4 +242,39 @@ Plugins
 - `Pipeline Maven Integration`
 - `Nexus Artifact Uploader`
 - `Sonarqube Scanner`
+
+### Integration of plugins
+
+####  Build Timestamp
+1. Go to `Manage Jetkins` > `Available Plugins` > Search Build timestamp > `Install`
+2. Go to `Manage Jetkins` > `System` > `Build Timestamp` > Setup
+
+#### SonarQube integration
+1. Install Plugin
+2. In `Sonarqube` > `My Account` > `Security` > `Generate Tokens`
+   - Give a name
+   - Set token type to `User token`
+   - Generate token
+
+3. In `Jetkins` > `Manage Jetkins` > `Tools` > `SonarQube Scanner installations`
+   - Give a 'name' and choose a 'version' (the same name will be used during the pipeline)
+
+4. In `Jetkins` > `Manage Jetkins` > `System` > `SonarQube servers`
+   - Check `Environment variables` 
+   - `Add SonarQube`
+   - Give name
+   - Give Server URL
+   - `Add` token
+   - Kind: `Secret text`
+   - Secret: token generated earlier
+   - ID: name the token
+
+5. Make sure that you have first **created a report** (e.g. `mvn checkstyle:checkstyle` ) 
+   
+6. In the Jenkinsfile
+```groovy
+
+```
+
+#### NexusOSS integration
 
