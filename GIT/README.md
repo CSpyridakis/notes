@@ -135,6 +135,16 @@ Git allows customization through its configuration system.
   git update-index --assume-unchanged <file>
   ```
 
+  - List all files marked as "assume unchanged"
+  ```bash
+  git ls-files -v | grep '^[a-z]'
+  ```
+
+  - Remove "assume unchanged" flag
+  ```bash
+  git update-index --no-assume-unchanged <file>
+  ```
+
 - Sign commits and tags with a GPG key:
   ```bash
   git config --global user.signingkey <your-gpg-key-id>
@@ -164,6 +174,11 @@ Log Customization
 ```bash
 git config --global log.date relative            # Show relative dates (e.g., "2 days ago")
 git config --global log.showSignature true       # Show GPG signatures in log output
+```
+
+Show commit changes
+```bash
+git show <commit-hash>
 ```
 
 ---
