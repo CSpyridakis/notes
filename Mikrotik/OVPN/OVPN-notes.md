@@ -93,7 +93,7 @@ Hence, the final table should look like this:
          4. Click on `Export`
          5. Close window
  2. Client Certificate
-     1. (Right click on 'CA') > `Export`
+     1. (Right click on 'Client') > `Export`
          1. Set `Certificate:` to 'Client'
          2. Set `Type:` to 'PEM'
          3. Set `Export Passphrase:` to somethign strong
