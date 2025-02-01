@@ -153,6 +153,12 @@ It is a good practice to keep in a `main` node 0
 1. **Main:** `Manage jetkins` > `Nodes` > `New Node` 
 2. **Node:** `Manage jetkins` > `Nodes` > Self and run script
 
+> [!IMPORTANT]
+> If one of the nodes disk space is 0B, then login to the VM/Container/Machine and run the following command.
+>
+> CAUTION! Make sure that you know what is executed!
+> `sudo rm -rf /var/jenkins_home/workspace/*`
+ 
 ```bash
 #!/bin/bash
 
@@ -257,7 +263,7 @@ Plugins
    - Generate token
 
 3. In `Jetkins` > `Manage Jetkins` > `Tools` > `SonarQube Scanner installations`
-   - Give a 'name' and choose a 'version' (the same name will be used during the pipeline)
+   - Give a '**name**' and choose a 'version' (the same name will be used during the pipeline)
 
 4. In `Jetkins` > `Manage Jetkins` > `System` > `SonarQube servers`
    - Check `Environment variables` 
@@ -271,10 +277,66 @@ Plugins
 
 5. Make sure that you have first **created a report** (e.g. `mvn checkstyle:checkstyle` ) 
    
-6. In the Jenkinsfile
-```groovy
+6. In the Jenkinsfile add this configuration
+    ```groovy
+    stage("Sonar Code Analysis") {
+        environment {
+            scannerHome = tool '<sonar-name-from-tools>'
+        }
+        steps {
+            withSonarQubeEnv('<sonar-server-name-from-system>') {
+            sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=<project-name> \
+                -Dsonar.projectName=<project-name> \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=src/ \
+                -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+            }
+        }
+    }
+    ```
 
-```
+7. We need to create in SonarQube a Quality Gate (the assestment rules) and assign the QG to the project.
+   - `Quality Gates` > `Create` > Give name > `Unlock editing` > `Add condition` > Edit
+   - Project > `Project Settings` > `Quality Gate` > Assign QG to project
+
+8. After evaluation, result will be returned back via Webhooks   
+   - Project > `Project Settings` > `Webhooks` > `Create` > Give name > Set URL as `http://<domain/ip>:<port>/sonarqube-webhook`
+    ```groovy
+    stage("Quality Gate") {
+        steps {
+            timeout(time: 1, unit:'HOURS') {
+                waitForQualityGate abortPipeline: true
+            }
+        }
+    }
+    ```
 
 #### NexusOSS integration
+1. Create a repository in NexusOSS
+2. Store Credentials in Jenkins
+   - In Jetkins `Dashboard` > `Manage Jenkins` > `Credentials` >  `Stores scoped to Jenkins` > `System` > `Global Credentials` > `Add Credentials` > Put NexusOSS username & password and give an **ID**
+3. Pun in the Jetkinsfile the proper code
+    ```groovy
+    stage("UploadArtifact"){
+        steps{
+            nexusArtifactUploader(
+                nexusVersion: 'nexus3',
+                protocol: 'http',
+                nexusUrl: '<domain/ip>:<port>',
+                groupId: '<give-your-group-name>',
+                version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                repository: '<repository-name>',
+                credentialsId: '<nexusoss-ID>',
+                artifacts: [
+                [artifactId: '<name-of-artifact>',
+                    classifier: '',
+                    file: 'target/<name-of-artifact>-v2.war',
+                    type: 'war']
+                ]
+            )
+        }
+    }
+    ```
 
