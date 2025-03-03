@@ -12,7 +12,11 @@
 | OS type  | `/proc/sys/kernel/ostype` |
 | Motherboard  | `/sys/class/dmi/id/board_name` |
 | BIOS Version | `/sys/class/dmi/id/bios_version` |
-| Disk info    | `/proc/partitions` |
+| System users    | `/etc/passwd` |
+| System groups    | `/etc/group` |
+| System user password hashes   | `/etc/shadow` * |
+
+\* Requires sudo privileges to access it
 
 ## Misc Files
 
