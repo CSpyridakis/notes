@@ -35,7 +35,7 @@ Where:
 `rsync -ahP --remove-source-files <source_dir>/ <destination_dir>/`
 
 This though will keep empty directories, it will not delete them.
-A workarround is to run afterwards: `find ${source_dir} -type -d -empty -delete`
+A workarround is to run afterwards: `find ${source_dir} -type d -empty -delete`
 
 ### Remote transfer 
 
