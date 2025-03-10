@@ -1,7 +1,7 @@
 # Ventoy
 
 ## 1. Download 
-Download [Ventoy](https://www.ventoy.net/en/download.html) and unzip it.
+Download [ventoy-1.1.05-linux.tar.gz](https://www.ventoy.net/en/download.html) and unzip it.
 
 ## 2. Determine the desired USB
 ```bash
