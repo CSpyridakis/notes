@@ -53,6 +53,22 @@ In your ***Cloudflare*** Account a `CNAME` record should be appeared.
     | ---- | ---- | ------- | ------------ | --- |
     | A | www | 192.0.2.1 | Proxied | Auto
 
+### 4. Email setup (gmail)
+1. Connect to [dash.cloudflare.com](dash.cloudflare.com)
+2. `Email`
+3. `Email Routing`
+4. Add an email first
+5. Verify email
+6. Then some records similar to the ones below should be automatically be appeared.
+    | Type | Name | Priority | Value | Status
+    | ---- | ---- | ------- | ------------ | ----|
+    | MX | `<your_domain>.com` |  36 | `route1.mx.cloudflare.net` | `Missing`
+    | MX | `<your_domain>.com` |  10 | `route2.mx.cloudflare.net` | `Missing`
+    | MX | `<your_domain>.com` |  94 | `route3.mx.cloudflare.net` | `Missing`
+    | TXT | `<your_domain>.com` |    | `v=spf1 include:_spf.mx.cloudflare.net ~all` | `Missing`
+7. `Add Records and enable`
+8. **Make sure that there are not any conficts with other email services.**
+
 ---
 
 ## Print hosting server info
