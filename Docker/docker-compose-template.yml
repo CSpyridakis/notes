@@ -1,0 +1,38 @@
+version: '3.8'  # Specify the Docker Compose file version
+
+services:
+  service1:  # Define the first service
+    image: <image1>:<tag>  # Specify the image to use for this service
+    ports:
+      - "<host-port>:<container-port>"  # Map ports from the host to the container
+    volumes:
+      - <host-path>:<container-path>  # Mount volumes from the host to the container
+    environment:
+      ENV_VAR_NAME: <value>  # Set environment variables
+    depends_on:
+      - service2  # Define dependencies on other services
+    networks:
+      - network1  # Specify networks to join
+
+  service2:  # Define the second service
+    build:  # Use this to build an image from a Dockerfile
+      context: <path-to-build-context>
+      dockerfile: <Dockerfile-name>
+    image: <image-name> # The name of the image I want to give
+    command: <override-default-command>  # Override the default command
+
+networks:  # Define networks
+  network1:
+    driver: <network-driver>  # Specify network driver
+
+volumes:  # Define volumes
+  volume1:
+    external: true  # Specify if the volume is external
+
+configs:  # Define configuration files
+  config1:
+    file: <path-to-config-file>  # Specify the path to the config file
+
+secrets:  # Define secrets for services
+  secret1:
+    file: <path-to-secret-file>  # Specify the path to the secret file
