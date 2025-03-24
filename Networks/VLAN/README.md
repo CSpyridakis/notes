@@ -21,10 +21,11 @@ Both are created to separate a network into smaller pieces.
 
 In order to transfer VLAN information **between network devices** (e.g. switches) a trunking cable is required.
 
-**Trunk/Tagged** ports: Contain multiple tag information
-**Access/Untagged** Ports: Contain on only one tag
+**Trunk/Tagged** ports: Contain tag information. Use this to connect to other switches or routers
+**Access/Untagged** Ports: Removes tag information. Use this to connect to end devices
 
 ---
+
 ### **802.1Q**
 
 #### 1. **Standard Ethernet Frame (802.3)**

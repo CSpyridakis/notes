@@ -58,9 +58,23 @@ If you want to install pfSense on a x86 machine with a single NIC, you can still
 ### Procedure
 1. Install pfSense on the desired device
 2. Reboot device
-3. Setup VLANs during first boot
+3. (pfSense) Setup VLANs during first boot
    1. Select as parent interface the available NIC and create a new VLAN
    2. Provide a tag for this VLAN (e.g. 10)
    3. Continue with the configuration
    4. Give for WAN the {interface}.VID 
    5. Give for LAN the {interface}
+4. (switch) Setup pfsense port as **trunk** port that has the VLAN ID as specified above. Then for WAN setup this port as **access** port with the above VLAN. 
+
+---
+
+## Access from WAN the Webconfigurator
+1. Firewall > rules > wan
+2. Add new rule
+   - `Action`: **PASS**
+   - `Interface`: **WAN**
+   - `Address Family`: **IPv4**
+   - `Protocol`: **TCP**
+   - `Source`: **Any**
+   - `Destination`: **This firewall (self)**
+    Place this rule at he top of the list. 
