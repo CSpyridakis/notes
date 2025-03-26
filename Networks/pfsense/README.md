@@ -1,6 +1,15 @@
 # pfsense
 
-pfsense is based on Free-BSD.
+pfsense is a fully open source firewall/router based on Free-BSD.
+
+## How it works?
+pfsense is a stateful inspection firewall
+
+Stateful inspection means that pfSense doesn't just look at each individual packet in isolation—it keeps track of the state of active connections. In other words, it maintains a table that records information about ongoing sessions, such as the source, destination, and protocol details. This allows pfSense to determine whether an incoming packet is part of an established connection or if it's unexpected (and potentially malicious).
+This means that you only need to specify the request policy and the return will be automatically be applied.
+
+The states are stored in a state table in RAM.
+
 
 --- 
 
@@ -69,6 +78,15 @@ If you want to install pfSense on a x86 machine with a single NIC, you can still
 ---
 
 ## Access from WAN the Webconfigurator
+### Option 1: Can access pfsense via consol
+Disabling packet filter (Useful for first time setup)
+1. Connect to the pfsense console.
+2. Choose option 8 (Shell)
+3. Type `pfctl -d` This will disable the packet filtering.
+4. To re-enable, execute `pfctl -e`
+
+### Option 2: Can access through LAN the Webconfigurator
+Using the web Webconfigurator
 1. Firewall > rules > wan
 2. Add new rule
    - `Action`: **PASS**
@@ -78,3 +96,19 @@ If you want to install pfSense on a x86 machine with a single NIC, you can still
    - `Source`: **Any**
    - `Destination`: **This firewall (self)**
     Place this rule at he top of the list. 
+
+---
+
+## Create new VLAN interface
+1. `Interfaces` > `Assignments` > `VLANs` > `Add`
+2. `Interfaces` > `Assignments` > `Interface Assignments` > Select it on `Available network ports` and click on `Add`
+3. `Interfaces` > Click on the new interface name
+   1. `Enable interface`: [x]
+   2. `IPv4 Configuration Type`: Static IPv4
+   3. `IPv6 Configuration Type`: Can also be `None`
+   4. `IPv4 Address`: Desired gateway IP / 24
+   5. `IPv4 Upstream gateway`: None
+4. `Services` > `DHCP Server` > New interface
+   1. `Enable DHCP server on DMZ interface`: [x]
+   2. `Address Pool Range`: Set these fields too
+   3. `DNS Servers`

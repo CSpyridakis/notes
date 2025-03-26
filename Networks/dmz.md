@@ -1,0 +1,3 @@
+# DMZ 
+
+A DMZ, or Demilitarized Zone, in networking is a separate subnetwork that sits between your trusted internal network and an untrusted external network (like the internet). It’s designed to expose external-facing services—such as web, email, or FTP servers—to the outside world while keeping your internal network protected. By isolating these services, even if an attacker compromises a server in the DMZ, your core internal network remains shielded from direct exposure.
