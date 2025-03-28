@@ -39,6 +39,9 @@ Copy key to remote
 Use a specific key during connection
 `ssh -o "IdentitiesOnly=yes" -i <key_path> -p <port> <user><hostname/ip>`
 
+Use **only** password authentication (if is is allowed)
+`ssh -o PubkeyAuthentication=no user>@<hostname/ip>`
+
 ## Proxy Jump
 SSH proxy jump
 `ssh -J <user-proxy>@<domain/ip-proxy> <user-target>@<domai/ip-target>`
