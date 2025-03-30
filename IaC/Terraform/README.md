@@ -1,6 +1,6 @@
 # Terraform Notes
 
-**Terraform** is an **Infrastructure as Code (IaC)** tool developed by HashiCorp, allowing you to **provision, manage, and version** infrastructure across multiple providers like AWS, Azure, GCP, etc or even private infrastructure like Proxmox.
+**Terraform** is a Cloud Agnostic **Infrastructure as Code (IaC)** tool developed by HashiCorp, allowing you to **provision, manage, and version** infrastructure across multiple providers like AWS, Azure, GCP, etc or even private infrastructure like Proxmox. Terraform uses the **HashiCorp Configuration Language (HCL)** to achieve that.
 
 ---
 
@@ -33,6 +33,8 @@ provider "aws" {
   region  = "us-east-1"
 }
 ```
+
+Browse available [providers](https://registry.terraform.io/).
 
 ### 2. Resource
 
@@ -78,7 +80,26 @@ output "instance_id" {
 
 Terraform tracks infrastructure with a local or remote **state file** (`terraform.tfstate`). This file contains the current known configuration and helps calculate deltas during `plan` and `apply`.
 
+> [!CAUTION]
+> Protect the State file, because it contains sensitive info like passwords.
+
+State is stored in a state file, which is a JSON file that include details regarding every resource and data object.
+
 > 📌 For teams: Use **remote backends** (e.g., S3 + DynamoDB) for shared state + locking.
+
+Example:
+```
+terraform {
+  backend "s3" {
+    bucket          = "bucket-name"
+    key             = "infra/terraform.tfstate"
+    region          = "us-east-1"
+    dynamodb_table  = "tf-state"
+    encrypt         = true
+  }
+}
+```
+In this example: S3 is used for the state file storage and DynamoDB for resource locking (it provides atomic operations), so, only one at a time can make changes.
 
 ### 6. Modules
 
@@ -91,10 +112,31 @@ module "vpc" {
 }
 ```
 
-### Concept Summary
+### Concept
 
 ```text
 Provider ➝ Resource ➝ Variables ➝ State ➝ Output ➝ Modules
+```
+
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+graph LR
+  subgraph coreCell[" "]
+  direction LR
+    subgraph left[" "]
+      direction LR
+      state["Terraform State"]
+      config["Terraform Config"]
+    end
+
+    core["Terraform Core"]
+
+    state <--> core
+    config --> core
+    style left stroke-width:0px
+  end
+
+  core <--> Provider["Provider (e.g. AWS provider)"] <--> |API| System["System (e.g. AWS)"]
 ```
 
 ---
@@ -103,25 +145,35 @@ Provider ➝ Resource ➝ Variables ➝ State ➝ Output ➝ Modules
 
 1. **Install Terraform**  
    - From [terraform.io](https://terraform.io)  
-   - macOS: `brew install terraform`  
+   - macOS: 
+    ```
+    brew tap hashicorp/tap
+    brew install hashicorp/tap/terraform
+    ```  
    - Windows: `choco install terraform`
+   - Linux: 
+    ```
+    wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update && sudo apt install terraform
+    ```
 
-2. **Write Configuration**  
+1. **Write Configuration**  
    - Create a `.tf` file (e.g., `main.tf`)
 
-3. **Initialize Project**  
+2. **Initialize Project**  
    - `terraform init`  
    - Downloads providers, sets up backend, etc.
 
-4. **Preview Changes**  
+3. **Preview Changes**  
    - `terraform plan`  
    - Shows what will change without applying
 
-5. **Apply Configuration**  
+4. **Apply Configuration**  
    - `terraform apply`  
    - Provisions infrastructure
 
-6. **Destroy Infrastructure (optional)**  
+5. **Destroy Infrastructure (optional)**  
    - `terraform destroy`  
    - Tears down what was provisioned
 

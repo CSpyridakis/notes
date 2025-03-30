@@ -61,7 +61,7 @@ Focus on managing the **state of existing systems**, like installing packages, s
 
 ---
 
-### 3. Templates
+### 3. Server Templating
 
 Preconfigured virtual machine or container images that include the OS, packages, and app configs.
 
