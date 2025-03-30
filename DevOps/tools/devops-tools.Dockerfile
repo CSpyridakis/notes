@@ -15,6 +15,7 @@ RUN apt-get update && \
         sudo \
         git \
         ssh \
+        iputils-ping \
         ca-certificates \
         apt-transport-https && \
     rm -rf /var/lib/apt/lists/*
@@ -35,6 +36,8 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/sh
     apt-get update && \
     apt-get install -y terraform packer && \
     rm -rf /var/lib/apt/lists/*
+# Set an alias for tf="terraform"
+RUN echo 'alias tf="terraform"' >> ~/.bashrc
 
 # Install kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \

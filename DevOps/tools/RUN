@@ -1,3 +1,0 @@
-#!/bin/bash
-
-docker run -it --rm -v "$(dirname "$(dirname "$PWD")")":/app -w /app devops-tools
