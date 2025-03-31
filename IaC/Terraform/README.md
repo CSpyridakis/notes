@@ -47,13 +47,25 @@ resource "aws_instance" "my_ec2" {
 }
 ```
 
+Inside the resource, expept from the provider/resource specific arguments, we can also have meta arguments which are used in any situation. 
+Exaples:
+  - `count`
+  - `depends_on`
+  - `for_each`
+  - `provider`
+  - `lifecycle`
+
 ### 3. Variables
 
+#### A. Input Variables
 Used to parameterize your configuration and make it reusable.
 
 ```
 variable "region" {
-  default = "us-east-1"
+  description = "Location"
+  type        = string
+  default     = "us-east-1"
+  sensitive   = false
 }
 
 provider "aws" {
@@ -66,7 +78,7 @@ You can pass variables through:
 - `-var` CLI argument
 - Environment variables
 
-### 4. Output
+#### B. Output Variables
 
 Used to display useful info after `apply`.
 
@@ -76,7 +88,24 @@ output "instance_id" {
 }
 ```
 
-### 5. State
+#### C. Local 
+
+```
+locals {
+  greeting = "Hello, Terraform!"
+}
+
+resource "aws_instance" "example" {
+  ami           = "ami-12345678"
+  instance_type = "t2.micro"
+  
+  tags = {
+    Name = local.greeting
+  }
+}
+```
+
+### 4. State
 
 Terraform tracks infrastructure with a local or remote **state file** (`terraform.tfstate`). This file contains the current known configuration and helps calculate deltas during `plan` and `apply`.
 
@@ -84,6 +113,8 @@ Terraform tracks infrastructure with a local or remote **state file** (`terrafor
 > Protect the State file, because it contains sensitive info like passwords.
 
 State is stored in a state file, which is a JSON file that include details regarding every resource and data object.
+
+Use `terraform state list` and `terraform state show <type>.<custom-name>` to display info about resources.
 
 > 📌 For teams: Use **remote backends** (e.g., S3 + DynamoDB) for shared state + locking.
 
@@ -101,7 +132,19 @@ terraform {
 ```
 In this example: S3 is used for the state file storage and DynamoDB for resource locking (it provides atomic operations), so, only one at a time can make changes.
 
-### 6. Modules
+> [!CAUTION]
+> **State Drift**
+> One terminology is **State Drift**. This terminology is used whenever the actual infrastructure
+> is **NOT** the same as the tfstate 
+>
+> Solution:
+> To fix **State Drift** you can:
+> 1. Rerun `terraform plan`: .tf --> tf.state --> infrastructure
+> 2. Run `terraform refresh`: tf.state <-- infrastructure **! THIS IS NOT THE BEST PRACTICE TO DO ON A WORKING ENVIRONMENT !** Use it only for experimentation.
+
+To reconfigure after an update the statefile run `terraform init -reconfigure`
+
+### 5. Modules
 
 Think of modules as functions or packages. They encapsulate and reuse infrastructure components.
 
@@ -174,10 +217,13 @@ graph LR
    - `terraform apply`  
    - Provisions infrastructure
    - If you want to apply from a plan file use `terraform apply "./plan"`
+ -  If you want to apply the changing without verification run `terraform apply -auto-aprove` **! THIS IS NOT THE BEST PRACTICE TO DO ON A WORKING ENVIRONMENT !** Use it only for experimentation.
 
 5. **Destroy Infrastructure (optional)**  
    - `terraform destroy`  
    - Tears down what was provisioned
+   - If you want to apply the changing without verification run `terraform destroy -auto-aprove` **! THIS IS NOT THE BEST PRACTICE TO DO ON A WORKING ENVIRONMENT !** Use it only for experimentation.
+   - Or you can destroy specific targets `terraform destroy -target=<type>.<custom-name>` **! THIS IS NOT THE BEST PRACTICE TO DO ON A WORKING ENVIRONMENT !** Use it only for experimentation.
 
 ---
 
