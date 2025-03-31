@@ -52,8 +52,18 @@ RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor -o /usr/share/key
     apt-get install -y helm && \
     rm -rf /var/lib/apt/lists/*
 
+# Add user and group with UID and GID 1000
+RUN groupadd -g 1000 devops && \
+    useradd -m -u 1000 -g devops -s /bin/bash devops
+# Set an alias for tf="terraform"
+RUN echo 'alias tf="terraform"' >> /home/devops/.bashrc
+
+# Optional: add sudo access if needed
+RUN echo "devops ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 # Set default shell to bash
 SHELL ["/bin/bash", "-c"]
 
 # Default command
 CMD ["bash"]
+

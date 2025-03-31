@@ -168,10 +168,12 @@ graph LR
 3. **Preview Changes**  
    - `terraform plan`  
    - Shows what will change without applying
+   - To store the plan file use `terraform plan -out=./plan`
 
 4. **Apply Configuration**  
    - `terraform apply`  
    - Provisions infrastructure
+   - If you want to apply from a plan file use `terraform apply "./plan"`
 
 5. **Destroy Infrastructure (optional)**  
    - `terraform destroy`  
