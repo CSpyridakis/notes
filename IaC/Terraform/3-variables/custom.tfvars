@@ -1,0 +1,1 @@
+resource_custom_tfvars = "From inside the custom.tfvars"

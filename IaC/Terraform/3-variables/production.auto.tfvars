@@ -1,0 +1,1 @@
+resource_auto_tfvars    = "From inside the production.auto.tfvars"

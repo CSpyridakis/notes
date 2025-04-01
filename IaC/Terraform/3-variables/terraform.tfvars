@@ -1,0 +1,1 @@
+resource_tfvars =   "From inside the terraform.tfvars"
