@@ -1,0 +1,4 @@
+*
+!*.tf
+!*.tfvars
+!.gitignore

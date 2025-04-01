@@ -57,6 +57,8 @@ Exaples:
 
 ### 3. Variables
 
+See [examples](./3-variables/variables.tf)
+
 #### A. Input Variables
 Used to parameterize your configuration and make it reusable.
 
@@ -107,6 +109,8 @@ resource "aws_instance" "example" {
 
 ### 4. State
 
+See [examples](./2-tfstate-backends/)
+
 Terraform tracks infrastructure with a local or remote **state file** (`terraform.tfstate`). This file contains the current known configuration and helps calculate deltas during `plan` and `apply`.
 
 > [!CAUTION]
@@ -146,8 +150,23 @@ To reconfigure after an update the statefile run `terraform init -reconfigure`
 
 ### 5. Modules
 
-Think of modules as functions or packages. They encapsulate and reuse infrastructure components.
+Think of modules as functions or packages. They encapsulate and reuse infrastructure components. A self-contain package for multiple resources.
 
+It is implemented as numerout `*.tf` & `*.tfvars` files in a directory.
+
+#### Module types: 
+1. Root (default)
+2. Child
+3. Published (fetch existing moduled from the [Terraform registry](https://registry.terraform.io/))
+
+Example 1
+```
+Infrastructure/    # Root module
+├── S3/            # Child module
+└── RDS/           # Child module
+```
+
+Example 2
 ```
 module "vpc" {
   source = "./modules/vpc"
