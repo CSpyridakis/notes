@@ -1,0 +1,5 @@
+*
+!*.tf
+!*.tfvars
+!.gitignore
+!s3-files/
