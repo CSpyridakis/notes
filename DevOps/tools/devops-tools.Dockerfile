@@ -15,6 +15,8 @@ RUN apt-get update && \
         sudo \
         git \
         ssh \
+        vim \
+        tmux \
         iputils-ping \
         ca-certificates \
         apt-transport-https && \

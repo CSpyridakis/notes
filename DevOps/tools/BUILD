@@ -11,3 +11,6 @@ echo "B. Or if you prefer, you can append this, at the bottom of your bashrc/zsh
 echo "function devopstools(){"
 echo "    docker run -it --rm -v \"\$PWD\":/app -w /app -u 1000:1000 devops-tools"
 echo "}"
+echo
+echo "Note: If you already have on your machine AWS credentials under ~/.aws/ then"
+echo "you can also bind mount this directory: -v \"\$HOME/.aws\":/home/devops/.aws:ro"
