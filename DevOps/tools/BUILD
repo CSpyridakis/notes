@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO: After any major update, modify the version number
-VERSION="1.4"
+VERSION="1.5"
 
 docker build \
     -t cspyridakis/devopstools:latest \
@@ -14,12 +14,14 @@ docker tag cspyridakis/devopstools:latest cspyridakis/devopstools:${VERSION}
 echo "[Complete]"
 echo
 echo "A. Run now from the directory of your choice:"
-echo "$ docker run -it --rm -v \$(pwd):/app -w /app -u 1000:1000 cspyridakis/devopstools:latest"
+echo "$ docker run -it --rm -v \$(pwd):/app cspyridakis/devopstools:latest"
 echo
-echo "B. Or if you prefer, you can append this, at the bottom of your bashrc/zshrc:"
+echo "B. Or if you prefer, you can append this, at the bottom of your .bashrc/.zshrc:"
 echo "function devopstools(){"
-echo "    docker run -it --rm -v \"\$PWD\":/app -w /app -u 1000:1000 cspyridakis/devopstools:latest"
+echo "    docker run -it --rm \ "
+echo "        -v \"\$PWD\":/home/apps/ \ "
+echo "        -v \"\$HOME/.aws\":/home/devops/.aws:ro \ "
+echo "        -v \"\$HOME/.ssh\":/home/devops/.ssh:ro \ "
+echo "        -v /var/run/docker.sock:/var/run/docker.sock \ "
+echo "        cspyridakis/devopstools:latest"
 echo "}"
-echo
-echo "Note: If you already have on your machine AWS credentials under ~/.aws/ then"
-echo "you can also bind mount this directory: -v \"\$HOME/.aws\":/home/devops/.aws:ro"
