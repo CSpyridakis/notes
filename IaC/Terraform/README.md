@@ -17,6 +17,56 @@
 - **Disaster Recovery**: Easily recreate infrastructure.  
 - **Minimize Human Error**: Automated, repeatable, and validated workflows.
 
+## Basic Concepts
+
+| Term             | Description |
+|------------------|-------------|
+| **Provider**     | Plugin to interact with APIs of different platforms (e.g., AWS, Azure). |
+| **Resource**     | A single infrastructure object (e.g., EC2 instance, S3 bucket). |
+| **Module**       | A container for multiple resources used together. Promotes reuse. |
+| **State**        | Keeps track of infrastructure. Stored locally or remotely (e.g., S3). |
+| **Data Source**  | Reads information from the cloud provider for use in configuration. |
+| **Output**       | Values shown after execution (e.g., IPs, DNS names). |
+| **Variable**     | Dynamic input to Terraform configurations. |
+
+## Installation (Debian)
+
+```bash
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update
+sudo apt install terraform
+```
+
+## Common Commands
+
+```bash
+terraform init        # Initialize the configuration directory
+terraform validate    # Validate the config
+terraform fmt         # Format the code
+terraform plan        # Show what will be created/changed
+terraform apply       # Apply the changes
+terraform destroy     # Tear down infrastructure
+terraform output      # Show output values
+terraform state list  # Show managed resources
+terraform providers   # Show used providers
+```
+
+---
+
+## Project Structure
+
+```
+my-terraform-project/
+├── main.tf          # Main config file
+├── variables.tf     # Declares input variables
+├── outputs.tf       # Declares output values
+├── terraform.tfvars # Sets the values for variables
+├── modules/         # Reusable modules
+└── .terraform/      # Internal Terraform files
+```
+
 ---
 
 ## Core Concepts
