@@ -2,12 +2,23 @@
 
 ## Enable SSH Server (Debian)
 
-```
+```bash
 sudo apt install openssh-server
 sudo systemctl enable ssh
 sudo systemctl start ssh
 sudo ufw allow ssh
 sudo ufw enable
+```
+
+## Enable SSH Server (Red Hat)
+```bash
+sudo dnf install -y openssh-server
+sudo systemctl enable sshd
+sudo systemctl start sshd
+sudo systemctl status sshd
+sudo firewall-cmd --permanent --add-service=ssh
+sudo firewall-cmd --reload
+# sudo firewall-cmd --list-all # Just to comfirm
 ```
 
 ## SSH Agent
@@ -69,6 +80,17 @@ Check SSH Configuration
 
 Global configuration filepath
 `/etc/ssh/ssh_config`
+
+### Disable both password and keyboard-interactive
+
+1. `sudo vim /etc/ssh/sshd_config`
+2. Set the following options:
+    ```
+    PasswordAuthentication no
+    ChallengeResponseAuthentication no
+    UsePAM no
+    ```
+3. `sudo systemctl restart ssh`
 
 ## Other connections
 Remote Command Execution
