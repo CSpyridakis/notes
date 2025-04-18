@@ -1,0 +1,29 @@
+#!/bin/bash
+
+## =======================================================================================
+## Update packages list
+## =======================================================================================
+
+ansible all -m apt -a update_cache=true --become --ask-become-pass
+
+#  Command explaination
+#       -m <module>
+#       -a <argument>
+#       --become 
+#       --ask-become-pass
+
+# i.e. 
+#   -m apt -a update_cache  --> is the same as running: `sudo apt update` on a Debian system
+
+## =======================================================================================
+## Install all updates
+## =======================================================================================
+
+# ansible all -m apt -a "upgrade=dist" --become --ask-become-pass
+
+## =======================================================================================
+## Install application
+## =======================================================================================
+
+# Install nox version of vim
+ansible all -m apt -a "name=figlet state=latest" --become --ask-become-pass

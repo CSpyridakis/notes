@@ -1,0 +1,11 @@
+- name: Update packages (Debian)
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  tags: ubuntu,packages
+  apt:
+    update_cache: yes
+
+- name: Update packages (Red Hat)
+  when: ansible_distribution in ["Fedora", "CentOS"]
+  tags: redhat,packages
+  dnf:
+    update_cache: yes

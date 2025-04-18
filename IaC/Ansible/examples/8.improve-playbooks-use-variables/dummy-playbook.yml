@@ -1,0 +1,17 @@
+---
+  - name: A dummy playbook
+    hosts: servers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+    
+      - name: Ensure that packages are installed
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        package:              # package is a generic package manager (it will user whatever package manager used, e.g. pacman, apt, dnf)
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - nano
+            - tmux
+            - vim
+            - "{{ apache_package }}"  # See hosts
+          state: latest
+      

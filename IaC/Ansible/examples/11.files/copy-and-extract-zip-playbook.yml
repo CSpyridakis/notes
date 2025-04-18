@@ -1,0 +1,34 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+
+      # Task 1
+      - name: Copy file to servers
+        copy: 
+          # Even though this file is located in the files/ dir only the filename is used
+          # this is because the files/ dir is assumed
+          src: dummy_folder.zip
+          dest: /home/vm/dummy_folder.zip
+          owner: vm 
+          group: vm 
+          mode: 0644
+          
+      # Task 2  
+      - name: Install zip
+        package:
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - zip
+          state: latest
+
+      # Task 3
+      - name: Unzip dir
+        unarchive:
+          src: /home/vm/dummy_folder.zip
+          dest: /home/vm/
+          remote_src: true   # <-- This tells Ansible the file is already on the remote
+                             #     If we do not include it, we can also use a URL directly 
+          owner: vm 
+          group: vm 
+          mode: 0755

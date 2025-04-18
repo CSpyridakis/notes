@@ -1,0 +1,7 @@
+[servers]
+
+# Server 1 IP
+192.168.10.79   ansible_user=vm
+
+# Server 2 IP
+192.168.10.78   ansible_user=vm

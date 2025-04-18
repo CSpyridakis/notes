@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ansible-playbook --ask-become-pass remove_package.yml
+ansible-playbook --ask-become-pass install_package.yml

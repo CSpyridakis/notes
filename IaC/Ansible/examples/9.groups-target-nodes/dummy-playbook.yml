@@ -1,0 +1,31 @@
+---
+  - name: Debian install packages
+    hosts: debianservers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+      - name: Ensure that packages are installed
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        apt:
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - nano
+            - tmux
+            - vim
+            - apache2
+          state: latest
+      
+
+  - name: Red Hat install packages
+    hosts: redhatservers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+    
+      - name: Ensure that packages are installed
+        when: ansible_distribution == "Fedora"
+        dnf:
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - python3-libdnf5
+            - httpd
+          state: latest
+      

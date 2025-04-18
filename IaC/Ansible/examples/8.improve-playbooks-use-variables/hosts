@@ -1,0 +1,40 @@
+# ===================================================================
+
+# Group of servers, can have any name
+[servers:children]
+debianservers
+redhatservers
+
+
+[debianservers]
+# Server 1 IP
+192.168.10.78
+
+# Server 2 IP
+192.168.10.79
+
+[redhatservers]
+192.168.10.77
+
+# ===================================================================
+
+# Vars for all machines that this group have
+[servers:vars]
+
+# User username
+ansible_user=vm
+
+# User password (NOT recommended for production, better use SSH key)
+# ansible_ssh_pass=vm
+
+# For sudo privileges password (see also in playbook become: true)
+# This is NOTErecommended
+ansible_become_pass=vm  
+
+# ===================================================================
+
+[debianservers:vars]
+apache_package = apache2
+
+[redhatservers:vars]
+apache_package = httpd

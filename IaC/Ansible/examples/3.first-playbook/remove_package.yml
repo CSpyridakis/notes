@@ -1,0 +1,11 @@
+---
+  # SPACING MATTERS!
+  - name: Remove package
+    hosts: servers  # Can be one of the groups defined in servers file
+    become: true    # Become sudo user
+
+    tasks:
+    - name: Remove figlet
+      apt:
+        name: figlet
+        state: absent

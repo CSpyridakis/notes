@@ -1,0 +1,29 @@
+---
+  - name: A dummy playbook
+    hosts: servers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+    
+      # ----------------------------------------------
+      # Debian based distributions
+      - name: Debian - Ensure that packages are installed
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        apt:
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - nano
+            - tmux
+            - vim
+          state: latest
+      
+      # ----------------------------------------------
+      # Red Hat distributions
+      - name: Red Hat - Ensure that packages are installed
+        when: ansible_distribution in ["Fedora", "CentOS"]
+        dnf:
+          update_cache: yes   # Combine cache update with the installation
+          name: 
+            - nano
+            - tmux
+            - vim
+          state: latest

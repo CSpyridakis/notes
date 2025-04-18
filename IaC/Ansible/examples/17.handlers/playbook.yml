@@ -1,0 +1,18 @@
+--- 
+  - hosts: all
+  
+    handlers:
+    - import_tasks: handlers.yml
+
+    tasks:
+      - name: This task will trigger handler
+        debug:
+          msg: "Trigger handler..."
+        # This tell Ansible that this task should be marked as "changed" no matter what happens.
+        changed_when: true
+
+        # This is required to trigger handler
+        # REMEMBER! This will be triggered, only
+        # if a change occured, for this reason, in this example
+        # changed_when: true is used
+        notify: trigger-demo-handler

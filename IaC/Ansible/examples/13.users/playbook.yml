@@ -1,0 +1,28 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+      - name: Create a new user
+        user:
+          name: superuser
+          groups: root
+
+      - name: Add sudoers file for user
+        copy:
+          src: sudoer_superuser
+          dest: /etc/sudoers.d/superuser
+          owner: root
+          group: root
+          mode: 0440
+
+      - name: Create a new user
+        user:
+          name: anotheruser
+          groups: root
+
+      - name: Add sudo privileges to user with password prompt
+        lineinfile:
+          path: /etc/sudoers.d/anotheruser
+          line: "anotheruser ALL=(ALL) ALL"
+          create: yes
+          mode: '0440'

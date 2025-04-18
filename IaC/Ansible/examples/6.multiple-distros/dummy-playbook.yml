@@ -1,0 +1,15 @@
+---
+  - name: A dummy playbook
+    hosts: servers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+      - name: Update cache  
+        when: ansible_distribution in ["Debian", "Ubuntu"]
+        apt:    # This is a module
+          update_cache: yes
+
+      - name: ensure nano is there  
+        when: ansible_distribution == "Ubuntu"
+        apt:    # This is a module
+          name: nano
+          state: latest

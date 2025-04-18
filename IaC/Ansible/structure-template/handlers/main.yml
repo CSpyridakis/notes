@@ -1,0 +1,5 @@
+# The name of the handler task, should be the same
+# as the reference used during `notify`
+- name: root-level-trigger-demo-handler
+  debug:
+    msg: "Root level handler was triggered"

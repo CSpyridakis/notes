@@ -1,0 +1,51 @@
+---
+  - hosts: all
+
+    # Host vars
+    vars:
+      host_var_example: "This kind of var is not recommended"
+      root_level_template: "This is a dummy root level template file content"
+    
+    # Playbook Tags
+    tags: root-tag
+
+    # Root level handlers
+    handlers:
+      - import_tasks: handlers/main.yml
+
+    # Tasks
+    tasks:
+      - name: Copy role dummy file to servers
+        
+        # Task Tags
+        tags: copy,dummy-file
+        
+        # Module used
+        copy: 
+          src: root-dummy-file
+          dest: /home/vm/root-dummy-file
+          owner: vm
+          group: vm 
+          mode: 0644
+          
+      # Root level handler
+      - name: This task will trigger a root level handler
+        changed_when: true
+        notify: root-level-trigger-demo-handler
+        debug:
+          msg: "Trigger root level handler..."
+
+
+      # Root level template
+      - name: Some kind of name
+        template:
+          src: "dummy-root-template.j2"
+          dest: "/home/vm/dummy-template.txt"
+          owner: vm
+          group: vm
+          mode: 0644
+
+  # Roles
+  - hosts: all
+    roles: 
+      - base

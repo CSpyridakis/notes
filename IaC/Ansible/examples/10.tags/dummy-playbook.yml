@@ -1,0 +1,46 @@
+---
+  # Ping Ubuntu
+  - hosts: all
+    pre_tasks:
+      - name: UBUNTU ping servers
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        tags: ubuntu,ping
+        ansible.builtin.ping:
+
+  # Ping Fedora
+  - hosts: all
+    pre_tasks:
+      - name: FEDORA ping servers
+        when: ansible_distribution == "Fedora"
+        tags: fedora,ping
+        ansible.builtin.ping:
+
+  # Uptime Ubuntu
+  - hosts: all
+    tasks:
+      - name: UBUNTU Show uptime
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        tags: ubuntu,uptime
+        ansible.builtin.shell: uptime
+        register: uptime_output
+
+      - name: UBUNTU Print uptime result
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        tags: ubuntu,uptime
+        ansible.builtin.debug:
+          msg: "{{ uptime_output.stdout }}"
+
+  # Uptime Fedora
+  - hosts: all
+    tasks:
+      - name: FEDORA Show uptime
+        when: ansible_distribution == "Fedora"
+        tags: fedora,uptime
+        ansible.builtin.shell: uptime
+        register: uptime_output
+
+      - name: FEDORA Print uptime result
+        when: ansible_distribution == "Fedora"
+        tags: fedora,uptime
+        ansible.builtin.debug:
+          msg: "{{ uptime_output.stdout }}"

@@ -1,0 +1,17 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+      
+      # Keep this play here, because you may need in the future to remove or update your key
+      - name: Add SSH key for user
+        authorized_key:
+          user: mrmachine2
+          key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpCBoxrn+mROgjyVxRTxmH76gLwPCdkkcYbKjFHEswC ansible"
+
+      # 
+      - name: Install packages
+        package:
+          update_cache: yes
+          name: 
+            - figlet

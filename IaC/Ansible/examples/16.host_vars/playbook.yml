@@ -1,0 +1,7 @@
+---
+  # Installation
+  - hosts: all
+    tasks:
+      - name: Display message with variables
+        debug:
+          msg: "host_var_specific_to_this: {{ host_var_specific_to_this }}, IP: {{ ansible_default_ipv4.address }}"

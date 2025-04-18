@@ -1,0 +1,24 @@
+- name: Install packages (Debian)
+  when: ansible_distribution in ["Ubuntu", "Debian"]
+  apt:
+    update_cache: true
+    name: 
+      - apache2
+    state: latest
+
+- name: Install packages (Red Hat)
+  when: ansible_distribution in ["Fedora", "CentOS"]
+  dnf:
+    update_cache: true
+    name: 
+      - httpd
+    state: latest
+
+
+- name: Copy file to servers
+  copy:
+    src: dummy-file-from-roles-example
+    dest: /home/vm/dummy-file-from-roles-example
+    owner: vm
+    group: vm 
+    mode: 0644

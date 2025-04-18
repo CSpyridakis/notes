@@ -1,0 +1,9 @@
+[servers]
+192.168.10.78
+192.168.10.79
+192.168.10.77
+
+[servers:vars]
+# This is needed to become sudo (see bootstrap.yml)
+ansible_user = vm
+

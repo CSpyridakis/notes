@@ -1,0 +1,21 @@
+# ===================================================================
+
+# Group of servers, can have any name
+[servers]
+192.168.10.78
+192.168.10.79
+192.168.10.77
+
+# ===================================================================
+
+# Vars for all machines that this group have
+[servers:vars]
+
+# User username
+ansible_user=vm
+
+# For sudo privileges password (see also in playbook become: true)
+# This is NOTErecommended
+ansible_become_pass=vm  
+
+# ===================================================================

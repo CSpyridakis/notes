@@ -1,0 +1,12 @@
+---
+  - hosts: all
+    tasks:
+      - name: Copy file to servers
+        copy: 
+          # Even though this file is located in the files/ dir only the filename is used
+          # this is because the files/ dir is assumed
+          src: dummy_file.txt
+          dest: /home/vm/dummy_file.txt
+          owner: vm 
+          group: vm 
+          mode: 0644

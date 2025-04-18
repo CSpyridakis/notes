@@ -1,0 +1,13 @@
+--- 
+  - hosts: all
+    vars:
+      template_dummy_variable: "this is a dummy variable to test templates"
+
+    tasks:
+      - name: Some kind of name
+        template:
+          src: "dummy-template.j2"
+          dest: "/home/vm/dummy-template.txt"
+          owner: vm
+          group: vm
+          mode: 0644

@@ -1,0 +1,15 @@
+---
+  # SPACING MATTERS!
+  - name: Install package
+    hosts: servers  # Can be one of the groups defined in servers file
+    become: true    # Become sudo user
+
+    tasks:
+    - name: Update index
+      apt:
+        update_cache: yes
+        
+    - name: Install figlet
+      apt:
+        name: figlet
+        state: latest

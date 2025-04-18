@@ -1,0 +1,21 @@
+---
+  - name: A dummy playbook
+    hosts: servers   # Can be one of the groups defined in ./host files
+    become: true     # Become sudo user
+    tasks:
+
+      # Option 1
+      - name: Print a custom message
+        debug:
+          msg: "Print a custom message"
+
+      # Option 2
+      - name: Print a variable 
+        debug:
+          var: ansible_default_ipv4.address
+
+      # Option 3
+      - name: Display message with variables
+        debug:
+          msg: "Interface: {{ ansible_default_ipv4.interface }}, IP: {{ ansible_default_ipv4.address }}"
+

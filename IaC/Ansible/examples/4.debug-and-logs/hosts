@@ -4,24 +4,23 @@
 [servers]
 
 # Server 1 IP
-192.168.10.80
+192.168.10.78
 
 # Server 2 IP
-192.168.10.81
+192.168.10.79
 
-# Server 3 IP
-192.168.10.82
 
 # ===================================================================
 
-# Vars for this group of servers
+# Vars for all machines that this group have
 [servers:vars]
 
 # User username
-ansible_ssh_user=vm
+ansible_user=vm
 
 # User password (NOT recommended for production, better use SSH key)
-ansible_ssh_pass=vm
+# ansible_ssh_pass=vm
 
 # For sudo privileges password (see also in playbook become: true)
+# This is NOTE recommended
 ansible_become_pass=vm  

@@ -1,0 +1,5 @@
+# The name of the handler task, should be the same
+# as the reference used during `notify`
+- name: trigger-role-base-handler
+  debug:
+    msg: "Role base handler was triggered"

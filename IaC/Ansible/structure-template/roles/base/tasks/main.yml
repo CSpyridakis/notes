@@ -1,0 +1,19 @@
+- name: Copy role dummy file to servers
+  copy: 
+    src: base-role-dummy-file
+    dest: /home/vm/base-role-dummy-file
+    owner: vm
+    group: vm 
+    mode: 0644
+  
+# Use hostvars
+- name: Print a custom message from inside base role
+  debug:
+    msg: "This is a dummy message from host_var_specific_to_this: {{ host_var_specific_to_this }}" 
+
+# Trigger role base handler
+- name: This task will trigger handler
+  changed_when: true
+  notify: trigger-role-base-handler
+  debug:
+    msg: "Trigger role base handler..."
