@@ -53,3 +53,10 @@ Where:
 Where: 
 * -z: Compress before transfer
 * -e: Put ssh arguments on '' similar to a ssh command.
+
+## date
+Usage: `date +"<FORMAT>"`
+    Where FORMAT all %X available options (see `date --help`)
+
+E.g.
+- `date +"%d-%m-%Y %T"`: 21-04-2025 22:21:31
