@@ -1,0 +1,114 @@
+# --------------------------------------------------
+# General metadata and dependency declaration
+# --------------------------------------------------
+
+[Unit]
+
+# A short description of the service. Appears in `systemctl status` and logs.
+Description=My Dummy Service
+
+# Link to documentation: man pages, URLs, or local files.
+Documentation=https://example.com/
+#Ducumentation=man:dummyservice.special(n)
+
+
+# Dependencies:
+# A. This unit cannot run without the listed units being active.
+#    Typically used for hard dependencies.
+Requires=<target-name>.target
+
+# B. This unit wants the listed units to run, but will still run if they are inactive.
+#    Used for soft dependencies.
+Wants=<target-name>.target <service-name>.service
+
+
+# Orders:
+# A. Specifies that this unit should start after the listed units are active.
+#    This is about ordering, not dependencies.
+#    You can list multiple units separated by spaces.
+After=<target-name>.target <target-name>.target
+
+# B.Opposite of After. Specifies that this unit should start before the listed units.
+Before=<target-name>.target
+
+
+# Allows you to isolate this unit, which shuts down all other units not needed by it.
+# i.e. can run `sudo systemctl isolate <service-name>.service`
+AllowIsolate=true
+
+# Units listed here cannot run at the same time as this one.
+# Use to avoid conflicts between services (e.g., two web servers using the same port).
+Conflicts=<service-name>.service
+
+
+# --------------------------------------------------
+# Runtime behavior of the service
+# --------------------------------------------------
+
+[Service]
+
+# Type of the service. Common values:
+# - simple (default): ExecStart starts the main process.
+# - forking: for daemons that fork (e.g., traditional init.d scripts).
+# - oneshot: runs a single task and exits.
+# - notify: the service will notify systemd when it's ready.
+# - dbus: waits for a specific D-Bus name to appear.
+Type=simple
+
+# Set environment variables. Multiple entries allowed.
+# Format: VAR=value
+Environment="ENVIRONMENT=production" "DEBUG=false"
+
+# Command to start the service. Absolute path required.
+ExecStart=/usr/bin/my-dummy-service --config /etc/my-dummy-service/config.yml
+
+# [Optional] Command to stop the service.
+ExecStop=/usr/bin/my-dummy-service --shutdown
+
+# [Optional] Command to reload the configuration without restarting.
+ExecReload=/bin/kill -HUP $MAINPID
+
+# How systemd kills the service:
+# - control-group (default): kills all processes in the control group.
+# - process: kills only the main process.
+# - mixed: sends SIGTERM to main and SIGKILL to all.
+KillMode=control-group
+
+# Gives the service a private /tmp and /var/tmp directory.
+PrivateTmp=true
+
+# Restart options:
+# - always: always restart on exit, regardless of status.
+# - on-failure: restart only on failure (non-zero exit codes).
+# - no: never restart.
+# - on-success: when the program terminates on success
+# - on-abnormal: on an abnormal execution
+# - on-abort: when the program terminate and has some issue
+Restart=on-failure
+
+# Restart delay in seconds.
+RestartSec=<seconds>
+
+# Optionally limit the number of restarts in a time period to avoid loops.
+StartLimitInterval=30
+StartLimitBurst=5
+
+# Run service as specific user and group.
+User=<user>
+Group=<group>
+
+# Logs stdout/stderr to journal and syslog.
+StandardOutput=journal
+StandardError=journal
+
+
+# --------------------------------------------------
+# Installation targets for enabling/disabling
+# --------------------------------------------------
+
+[Install]
+
+# Determines when this service is started when enabled.
+# Most services use multi-user.target (for system services).
+# You can specify multiple targets (space-separated).
+WantedBy=<target-name>.target <target-name>.target

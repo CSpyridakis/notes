@@ -1,0 +1,23 @@
+[Unit]
+Description=My Dummy Service
+
+[Service]
+Type=oneshot
+
+# Set environment variables
+Environment="MY_DUMMY_SERVICE=dummy-service-env-var"
+
+ExecStart=date +"%%d-%%m-%%Y %%T"
+ExecStart=echo "My dummy service ENV VAR: ${MY_DUMMY_SERVICE}"
+
+PrivateTmp=true
+
+Restart=no
+
+StandardError=journal
+StandardOutput=journal
+# Or
+# StandardOutput=append:/tmp/my-dummy-service.log
+
+[Install]
+WantedBy=multi-user.target
