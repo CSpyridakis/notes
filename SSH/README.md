@@ -119,22 +119,34 @@ Host <server-alias>
 ---
 
 ## Server Configuration
+Location `/etc/ssh/sshd_config`
 
-### Disable both password and keyboard-interactive
+### Enhance server security
 
-1. `sudo vim /etc/ssh/sshd_config`
-2. Set the following options:
-    ```
-    PasswordAuthentication no
-    ChallengeResponseAuthentication no
-    UsePAM no
-    ```
-3. `sudo systemctl restart ssh`
-
-### Change port to another one
+#### 1. Change port to another one
 ```
 Port <port_num>
 ```
+
+#### 2. Disable both password and keyboard-interactive
+```
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+```
+
+#### 3. Disable root connection
+```
+PermitRootLogin no
+```
+
+#### Restart sshd
+```
+sudo systemctl restart ssh
+```
+
+#### Use a firewall
+Use a firewall to allow only to specific ports connections.
 
 ---
 
