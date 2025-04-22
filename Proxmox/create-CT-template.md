@@ -48,3 +48,12 @@ Right-click the powered-off CT > Select `Convert to Template`.
    - **Mode**: Full Clone (recommended to make a complete copy)
    - Assign CT ID, Hostname, and Target Node
 4. Click Clone
+
+
+## 4. Regenerate SSH keys
+Connect to the CT and run the following commands
+
+```
+sudo rm -rf /etc/ssh/ssh_host_*
+sudo dpkg-reconfigure openssh-server
+```
