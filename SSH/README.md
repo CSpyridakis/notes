@@ -84,7 +84,7 @@ Host <private-server-name>
 
 ---
 
-## Configuration
+## Client Configuration
 Check SSH Configuration
 `ssh -G <hostname>`
 
@@ -103,6 +103,23 @@ Include servers/config
 Host ...
 ```
 
+Then in the servers/config
+```
+Host <server-alias>
+  HostName <IP-address-or-domain>
+  User <user-name>                  # Not important
+  Port <port-number>                # Not important
+  IdentityFile ~/.ssh/<file>        # Not important
+
+  IdentitiesOnly yes        # Optional
+  IdentityAgent none        # Optional
+  AddKeysToAgent no         # Optional
+```
+
+---
+
+## Server Configuration
+
 ### Disable both password and keyboard-interactive
 
 1. `sudo vim /etc/ssh/sshd_config`
@@ -113,6 +130,11 @@ Host ...
     UsePAM no
     ```
 3. `sudo systemctl restart ssh`
+
+### Change port to another one
+```
+Port <port_num>
+```
 
 ---
 
@@ -408,6 +430,35 @@ sudo dnf install sshfs
 ### Mount
 ```bash
 sshfs <user>@<ip-or-domain>:</remote/path> </local/mountpoint>
+```
+
+#### If there are errors
+##### Step 1.
+Make sure that fuse group exists and that your user is part of it
+```
+sudo groupadd fuse
+sudo usermod -aG fuse $USER
+```
+
+##### Step 2.
+Update configuration
+Edit `sudo vim /etc/fuse.conf` and uncomment `user_allow_other` option.
+
+##### Step 3
+Try using `allow_other` option.
+```bash
+sshfs -o allow_other,uid=$(id -u),gid=$(id -g) \
+  <user>@<ip-or-domain>:</remote/path> </local/mountpoint>
+```
+
+\* See this [url](https://askubuntu.com/questions/123215/sshfs-is-mounting-filesystems-as-another-user)
+
+##### Step 4
+Trubleshoot
+
+```bash
+sshfs -o allow_other,debug,sshfs_debug,loglevel=debug,uid=$(id -u),gid=$(id -g) \
+  <user>@<ip-or-domain>:</remote/path> </local/mountpoint>
 ```
 
 ### Verify 
