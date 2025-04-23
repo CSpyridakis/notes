@@ -29,6 +29,11 @@ Default Interface: `vmbr0`
 
 > [!TIP]
 > You may want to enable also icmp protocol in Datacenter level, so you are able to ping the server.
+> - `Direction`: In
+> - `Action`: ACCEPT
+> - `Interface`: Give your interface
+> - `Enable`: [x]
+> - `Protocol`: icmp
 
 ## Add rule
 Select the component (Datacenter, Node or VM/CT) > `Firewall` > `Add`
