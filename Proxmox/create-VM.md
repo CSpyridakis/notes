@@ -78,5 +78,5 @@ Adjust based on usage and load.
 ## 7. Network
 
 - **Best Practice**:  
-  - Separate **management** network from **VM** network for better security and performance.
+  - Separate **management** network from **VM** network for better security and performance (read [here](./networking.md)).
   - Use `virtio` for better network performance.
