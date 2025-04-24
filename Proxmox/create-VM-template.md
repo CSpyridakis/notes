@@ -75,6 +75,12 @@ Right-click the powered-off VM > Select `Convert to Template`.
    - Assign VM ID, Name, and Target Node
 4. Click Clone
 
+> [!NOTE]
+> If you try to connect via SSH and it fails. Propably, Cloud-init did not reconfigured ssh, then run it manually.
+> ```bash
+> sudo dpkg-reconfigure openssh-server
+> ```
+
 ---
 
 ## > Create Template using a Cloud Image & Cloud Init
