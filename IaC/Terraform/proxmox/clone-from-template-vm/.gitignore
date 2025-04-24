@@ -1,0 +1,6 @@
+*
+!main.tf
+!README.md
+!terraform.tfvars
+!variables.tf
+!.gitignore
