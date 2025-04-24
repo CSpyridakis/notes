@@ -6,56 +6,47 @@ A powerful open-source hypervisor for managing Virtual Machines (VMs) and Linux 
 - [Proxmox Wiki](https://pve.proxmox.com/wiki)
 - [Proxmox Community Forum](https://forum.proxmox.com)
 
----
+**Great Resources of learning**
+- [Learn Linux TV](https://www.youtube.com/playlist?list=PLT98CRl2KxKHnlbYhtABg6cF50bYa8Ulo)
 
-## > Installation
+**Installation**
 For Installation related topics read [this](./installation.md).
 
----
-
-## > Post-Installation
+**Post-Installation**
 For Post-Installation related topics read [this](./post-installation.md).
 
----
+**User Management**
+For User Management related topics read [this](./user-management.md).
 
-## > Create VM/CT
+**Create VM/CT**
 
 - To create a VM read [this](./create-VM.md).
 - To create a CT read [this](./create-CT.md).
 
----
+**Templates**
 
-## > Templates
+To create VM templates to standardize VM creation and reduce setup time read [this](./create-VM-template.md).
 
-### VM Templates
-Create VM templates to standardize VM creation and reduce setup time.
+To use CT templates for lightweight, fast deployment of containerized environments read [this](./create-CT-template.md).
 
-Read [this](./create-VM-template.md)
+**CLI**
+To manage VMs/CTs from the CLI read [this](./cli.md).
 
-### Container Templates
-Use CT templates for lightweight, fast deployment of containerized environments.
+**Firewall**
+For Firewall related topics read [this](./firewall.md).
 
-Read [this](./create-CT-template.md)
+**Networking**
+For Networking related topics read [this](./networking.md).
 
----
+****Storage****
+For Storage related topics read [this](./storage.md).
 
-## > Clustering
+**Backup & Snapshots**
+For Backup & Snapshots related topics read [this](./backup-and-snapshots.md).
 
-> [!IMPORTANT]
-> Datacenter-wide settings will override individual node configurations.
+**Clustering**
 
-Use clustering to manage multiple Proxmox nodes from a single interface.
+For Clustering related topics read [this](./clustering.md).
 
-
-
----
-
-
-
-## > Migration
-
-### VM Migration
-VMs can be **live migrated** between nodes (e.g., Node A → Node B) without downtime, thanks to Proxmox's built-in HA (High Availability) support.
-
-### Container Migration
-Container (CT) migration requires the container to be shut down. **Live migration** is not supported for containers.
+**High Availability**
+For High Availability related topics read [this](./high-availability.md).
