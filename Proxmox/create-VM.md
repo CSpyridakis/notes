@@ -49,6 +49,7 @@ sudo systemctl enable --now qemu-guest-agent
 ## 4. Disks
 
 - **Discard (Trim)**: Enable if the VM is stored on an SSD. Helps with storage optimization.  
+- **SSD Emulation**: Enable if the VM is stored on an SSD. (Advanced)
 - **Recommended Disk Sizes**:
   - Linux Server: ~15 GB (adjust as needed)
   - Linux Desktop: 20–30 GB minimum
@@ -67,6 +68,7 @@ sudo systemctl enable --now qemu-guest-agent
 
 | **Use Case**       | **Recommended Memory** |
 |--------------------|------------------------|
+| Linux Server Templates | 1 GB (Can adjust them later)
 | Linux Server       | 2 GB                   |
 | Linux Desktop      | 4 GB                   |
 | Windows Desktop    | 4–8 GB                 |
