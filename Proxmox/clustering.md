@@ -1,5 +1,10 @@
 # Clustering
 
+> [!IMPORTANT]
+> Datacenter-wide settings will override individual node configurations.
+
+Use clustering to manage multiple Proxmox nodes from a single interface.
+
 > [!NOTE]
 > **Best practice:** Any networks created on one Node, needs to be created on other Nodes too.
 
@@ -56,11 +61,34 @@ Then
 
 ---
 
+## Enable Shared Storage
+## Existing VMs
+1. Select Existing VM
+2. `Shutdown`
+3. Wait...
+4. `Hardware`
+5. `Hard Disk`
+6. `Disk Action`
+7. `Move Storage`
+   - `Target Storage`: The Shared Storage
+   - `Delete source`: [x] To move it to the target and purge the source
+
+## New VMs
+Make sure during the Creation of a new VM the **shared storage** will be selected as disk.
+
+---
+
 ## Migrate
 Select VT/CT to migrate and right click on it > `Migrate`
 
 Then: 
 - `Target node`: The Node to which you want to migrate the resource
 - `Target storage`: The storage to be used (propably local-lvm)
+
+### VM Migration
+VMs can be **live migrated** between nodes (e.g., Node A → Node B) without downtime, thanks to Proxmox's built-in HA (High Availability) support.
+
+### Container Migration
+Container (CT) migration requires the container to be shut down. **Live migration** is not supported for containers.
 
 
