@@ -41,6 +41,9 @@ E.g.
 /home/user/nfs_shares/backups/ 192.168.0.0/255.255.255.0(rw,no_subtree_ckeck)
 ```
 
+> [!IMPORTANT]
+> If you need root access from the client, then include `no_root_squash` in the options list.
+
 ### 5. Restart nfs server
 ```bash
 sudo systemctl restart nfs-kernel-server
