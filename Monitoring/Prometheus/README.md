@@ -149,9 +149,10 @@ Where:
 
 | Metric Type | Description | Use Case | Example |
 |-------------|-------------|----------|---------|
-| **Counter** | A monotonically increasing value | Tracking the total number of something | # of HTTP requests
-| **Gauge**     | A value that can go up and down  | Monitoring the current number of something | Current CPU usage
+| **Counter** | A monotonically increasing value | Tracking the **total** number of something | # of HTTP requests
+| **Gauge**     | A value that can go up and down  | Monitoring the **current** number of something | Current CPU usage
 | **Histogram** | A metric that measures the distribution of values in defined buckets | Measuring how big a value is or how long it last | Track response times for HTTP requests
+| **Summaries** | | | 
 
 ---
 
@@ -275,6 +276,33 @@ Best Practices:
 - Keep rules modular: Use separate files for different types (e.g., cpu.rules.yml, memory.rules.yml, alerts.rules.yml).
 - Use recording rules for dashboards to reduce query load.
 - Alerting rules should be concise and actionable.
+
+---
+
+## Workflow
+
+**How to have a running setup?**
+Assume we want to monitor multiple Linux servers using a Prometheus server. To achieve this, follow these steps:
+
+1. **Run `node_exporter` on All Target Servers**  
+
+   Each server will expose metrics at:  
+   ```
+   http://<each-server-ip>:9100/metrics
+   ```
+2. **Prepare the Prometheus Configuration File (`prometheus.yml`)**  
+In the `scrape_configs` section, list all target servers running node_exporter.  
+3. **Start the Prometheus Server**
+    Run Prometheus using your preferred method (e.g., Docker, systemd, or binary), and ensure it uses the correct configuration file.
+2. **Access the Prometheus Web UI**
+    Open a browser and navigate to:
+    ```
+    http://<prometheus-ip>:9090
+    ```
+3. **Verify Targets Health**
+  In the Prometheus UI, go to: `Status` > `Targets`
+  Ensure all your configured targets are listed and their status is UP
+4. Now you can connect your Prometheus server to Grafana
 
 ---
 
