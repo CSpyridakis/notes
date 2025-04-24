@@ -33,8 +33,6 @@ In order to connect a Prometheus server to Grafana:
 2. Set Prometheus server URL (e.g., `http://localhost:9090`)
 3. Click Save & Test to verify the connection
 
-
-
 ## > Dashboards
 Dashboards in Grafana are composed of panels, each representing a visual element such as a graph, gauge, or stat.
 
@@ -55,5 +53,17 @@ The panel editor is divided into three key sections:
 7. Give a `Title` to the panel **[P]**
 8. Search and set `Unit` **[P]** to help Grafana display better the graphs
 9. When ready, click `Save dashboard`
+
+### Ready to use Dashboards 
+
+Instead of creating from scratch a dashboard, there is a list of ready to use dashboards, which is available [here](https://grafana.com/grafana/dashboards/)
+
+**How to leverage them?**
+1. Find the Dashboard `ID`.
+2. `Home` >`Dashboards` > `Import dashboard`
+3. Paste the Dashboard `ID`
+4. Click `Load`
+5. Choose `Data source`
+6. `Import`
 
 ---
