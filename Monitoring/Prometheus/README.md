@@ -2,12 +2,12 @@
 
 Prometheus is a powerful monitoring and alerting toolkit that collects and stores metrics from various systems in a unified, **time-series database**.
 
-It is **not a log collector**, but rather a **time-series database** designed to collect metrics such as CPU usage, memory consumption, and request rates from a variety of targets.
+It is **not a log collector**, but rather a **Time Series Database (TSDB)** designed to collect metrics such as CPU usage, memory consumption, and request rates from a variety of targets.
 
 Prometheus **pulls metrics** from configured **targets** at specified intervals and stores them efficiently.
 
 ---
-## Pull Model
+## Pull Model (Scrapes data)
 
 ```mermaid
 %%{init: {'theme':'neutral'}}%%
@@ -47,6 +47,11 @@ server["Prometheus Server"] --> |push alerts| aler["Alert Manager"] --> |Send No
 
 All **targets** and **alerting rules** are defined in the Prometheus configuration file (`prometheus.yml`).
 
+You can send notifications via:
+- Email
+- Slack
+- And many more
+
 ---
 
 ## Architecture
@@ -75,9 +80,12 @@ dataretrieve --> Targets
 ```
 
 - **Data Retrieval**: Pulls metrics from targets using HTTP
-- **Time Series Database**: Stores the retrieved metrics
+- **Time Series Database (TSDB)**: Stores the retrieved metrics
 - **PromQL Engine**: Allows querying the stored metrics using PromQL
 - **Web UI or Grafana**: Used to visualize and explore the metrics
+
+> [!NOTE]
+> You can push TSDB to a remote Storage too.
 
 ### Data Retrieval
 To retrieve metrics from a service, the service must expose an endpoint that Prometheus can scrape. 
@@ -121,12 +129,14 @@ Metrics are numeric values that represent the state of a system.
     - Uptime of a service
     - Disk space remaining
 
-### Format
+### Data model
 
 The Prometheus format is a **text-based** format used to expose metrics in a way that Prometheus can  understand. 
 
 The format consists of a series of lines, each representing a single metric or metadata about a metric. 
 ```
+# HELP <metric_name> <A string description about this metric>
+# TYPE <metric_name> <type>
 <metric_name>{<label_1>="<value_1>", <label_2>="<value_2>", ...} <metric_value> <timestamp>
 ```
 Where: 
@@ -161,3 +171,119 @@ Exporters are intermediary services or applications that collect data from an ap
     - [node_exporter](https://github.com/prometheus/node_exporter) (for system metrics)
     - [cadvisor](https://github.com/google/cadvisor) (for container metrics)
     - [blackbox_exporter](https://github.com/prometheus/blackbox_exporter) (for probing endpoints)
+
+---
+
+## Configuration
+Prometheus uses a YAML configuration file titled `prometheus.yml` to define how it discovers targets, scrapes metrics, and stores data.
+
+**Template**
+```yaml
+# ------------------------------------------------------------------
+# Section 1: 
+# Global settings applied to all scrape jobs unless overridden
+# ------------------------------------------------------------------
+
+global:
+  scrape_interval: 15s      # How often to scrape targets (default: 1m)
+  evaluation_interval: 15s  # How often to evaluate rules (default: 1m)
+
+# ------------------------------------------------------------------
+# Section 2:
+# [Optional]
+# Define recording rules and alerting rules
+# ------------------------------------------------------------------
+
+rule_files:
+  - "rules/recording.rules.yml"
+  - "rules/alerting.rules.yml"
+
+# ------------------------------------------------------------------
+# Section 3:
+# This section tells Prometheus what to monitor and how to find it
+# Define jobs and targets to scrape
+# ------------------------------------------------------------------
+
+scrape_configs:
+- job_name: "prometheus"                # A label for the group of targets
+  static_configs:                     # Manually define IPs or domain names
+  - targets: ["localhost:9090"]       # List of endpoints to scrape metrics from (each should expose /metrics)
+
+# Another one
+- job_name: "demo"
+  static_configs:
+  - targets: 
+    - demo.promlabs.com:10000   # Demo targets publicly available
+    - demo.promlabs.com:10001
+    - demo.promlabs.com:10002
+
+# Maybe there will be more...
+```
+
+\* Instead of `static_config`, the **discovery service** can also be used.
+
+### Rules
+
+#### 1. Recording Rules
+Recording rules precompute frequently-used or expensive queries and store their results as new time series.
+
+```yaml
+groups:
+  - name: example-recording-rules
+    interval: 30s
+    rules:
+        # Name of the new metric
+      - record: instance:cpu_usage:rate5m
+        # The PromQL expression to evaluate
+        expr: rate(node_cpu_seconds_total{mode!="idle"}[5m])
+```
+
+When/Why to use?
+- Improve performance by avoiding expensive computations during dashboard rendering.
+- Simplify complex queries by giving them a name.
+
+#### 2. Alerting Rules
+Alerting rules define conditions for triggering alerts, which are sent to the Alertmanager.
+
+```yaml
+groups:
+  - name: example-alerting-rules
+    rules:
+        # Name of the alert
+      - alert: HighCPUUsage
+        # PromQL expression to evaluate
+        expr: rate(node_cpu_seconds_total{mode!="idle"}[5m]) > 0.85
+        # Duration the condition must be true before firing
+        for: 2m
+        #  Extra metadata 
+        labels:
+          severity: warning
+        # Human-readable info for dashboards or notifications
+        annotations:
+          summary: "High CPU usage detected on {{ $labels.instance }}"
+          description: "CPU usage is above 85% for 2 minutes."
+```
+
+> [!TIP]
+> For multiline **expr**, follow this approach
+> ```
+> expr: | 
+>   ...
+> ```
+
+Best Practices:
+- Keep rules modular: Use separate files for different types (e.g., cpu.rules.yml, memory.rules.yml, alerts.rules.yml).
+- Use recording rules for dashboards to reduce query load.
+- Alerting rules should be concise and actionable.
+
+---
+
+## PromQL
+PromQL (Prometheus Query Language) is the powerful query language used in Prometheus. You can use it to retrieve, manipulate, and visualize time series data. 
+
+[PromQL Cheat Sheet](https://promlabs.com/promql-cheat-sheet/)
+
+---
+
+## Learning resources
+- [Prometheus Fundamentals](https://www.youtube.com/playlist?list=PLyBW7UHmEXgylLwxdVbrBQJ-fJ_jMvh8h)
