@@ -47,8 +47,9 @@ Then
 4. Shutdown the target Node.
 5. **MAKE SURE** that the target Node will not try again to reconnect in the future.
 6. Select one Node and from its CLI run (these will take effect to the other Nodes in the cluster):
-    1. Check nodes: `pvecm nodes` 
-    2. Delete node`pvecm delnode <node-hostname>`
+    1. Check nodes: `pvecm nodes` (This will print only active)
+    2. Delete node`pvecm delnode <node-hostname>` 
+   **\* (If you get this error "cluster not ready - no quorum?", then run this command `pvecm expected <num-of-nodes>`)**
     3. Verification: `pvecm status`
     4. Target Node configuration should still exist: `ls -l /etc/pve/nodes/<node-hostname>`
     5. So, you can delete it: `rm -rf /etc/pve/nodes/<node-hostname>`
