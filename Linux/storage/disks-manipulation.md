@@ -15,6 +15,21 @@ A command-line utility to create, delete, and modify disk partitions on a Linux 
 
 ---
 
+## cfdisk
+TUI Partition Manager, to create, delete, resize (non-destructively), and manage partitions, , great for MBR/GPT, visually intuitive.
+
+`sudo cfdisk`
+
+---
+
+## parted
+
+Resize, move, and create partitions, GPT and MBR support.
+
+`sudo parted /dev/sdX`
+
+---
+
 ## mkfs
 `mkfs` (make file system) is a command used to create a file system on a partition or disk.
 
