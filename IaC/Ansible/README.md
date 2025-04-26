@@ -163,23 +163,6 @@ private_key_file = ~/.ssh/ansible
 
 ---
 
-## Ansible commands
-```
-ansible servers -m ping     # This will ping the servers
-```
-
-```
-ansible servers -a "lsb_release -a"     # Run adhoc command
-```
-
-```
-ansible all --list-hosts
-```
-
-```bash
-ansible all -m gather_facts # --limit <ip/domain>  # Use this to print only for specific host
-```
-
 ### Common Commands
 
 ```bash
@@ -187,6 +170,52 @@ ansible servers -m ping                             # Ping servers
 ansible servers -a "lsb_release -a"                 # Run adhoc command
 ansible all --list-hosts                            # List all hosts
 ansible all -m gather_facts  # --limit <ip/domain>  # Collect system facts
+ansible all -m ansible.buildin.<module> -a "<param1>= ..." # Run one of the build in modules ad hoc
+```
+
+### Buildin modules
+
+| Name        | Description                                      | Common Parameters          |
+|-------------|--------------------------------------------------|--------------------------------|
+| `ping`      | Simple connection test to check if a host is reachable. | - |
+| `apt`       | Manages packages on Debian/Ubuntu using `apt`.   | `name`, `state` |
+| `yum`       | Manages packages on RHEL/CentOS using `yum`.     | `name`, `state` |
+| `package`   | Manages packages using the system package manager. | `name`, `state` |
+| `service`   | Manages services (start, stop, restart, enable). | `name`, `state`, `enabled` |
+| `debug`     | Prints variables and messages to the console.   | `msg` (optional, but needed for custom messages) |
+| `copy`      | Copies files from the local system to remote hosts. | `src`, `dest`, `mode` |
+| `stat`      | Retrieves information about files.              | `path` |
+| `file`      | Manages file properties like permissions, ownership, etc. | `path`, `state`, `mode`, `owner`, `group` |
+| `template`  | Renders a Jinja2 template on the remote server.  | `src`, `dest` |
+| `command`   | Executes a command on the remote host.            | Command string (positional, no named parameter) |
+| `shell`     | Executes a shell command on the remote host (can use shell features like pipes). | Command string (positional, no named parameter) |
+| `user`      | Manages user accounts.                           | `name` |
+| `group`     | Manages groups on remote hosts.                  | `name` |
+| `git`       | Manages Git repositories.                       | `repo`, `dest` |
+
+
+**Examples**
+```bash
+# Create a directory with specific permissions
+ansible all -m ansible.builtin.file -a "path=/opt/myapp state=directory mode=0755 owner=ubuntu group=ubuntu"
+
+# Copy a static file to remote hosts
+ansible all -m ansible.builtin.copy -a "src=./myconfig.conf dest=/tmp/config.conf mode=0644"
+
+# Run a simple command (no pipes or redirection allowed)
+ansible all -m ansible.builtin.command -a "ls -l /var/log"
+
+# Run a shell command (pipes and redirection allowed)
+ansible all -m ansible.builtin.shell -a "cat /var/log/syslog | wc -l"
+
+# Create a new user named 'developer'
+ansible all -b -m ansible.builtin.user -a "name=developer state=present shell=/bin/bash"
+
+# Create a new group named 'devs'
+ansible all -b -m ansible.builtin.group -a "name=devs state=present"
+
+# Clone a Git repository into /opt/myproject
+ansible all -m ansible.builtin.git -a "repo=https://github.com/example/myproject.git dest=/opt/myproject version=main"
 ```
 
 ---
