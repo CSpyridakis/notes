@@ -26,3 +26,11 @@ Instead of full access, you can give access to only certain commands:
 ```
 <username> ALL=(ALL) /path/to/command1 /path/to/command2 command3
 ```
+
+## Become sudo
+
+| Command         | Behavior                                              |
+|-----------------|--------------------------------------------------------|
+| `sudo -i`       | Simulates a full root login, loads root's profile (like `/root/`).        |
+| `sudo su`       | You become root, but with your user's environment and current directory |
+| `sudo su -`     | You become root, and also load root’s full environment (like `sudo -i`) |
