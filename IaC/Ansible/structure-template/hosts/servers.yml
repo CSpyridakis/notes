@@ -1,0 +1,36 @@
+# -----------------------------------------
+# Option 1:
+# all:
+#   children:
+#     servers:
+#       hosts:
+#         # These are just declarations, but could also be IP or domain names
+#         # See host_vars for actual
+#         ansible-test-server-1:
+#         ansible-test-server-2:
+#       vars:
+#         ansible_user: vm
+
+# -----------------------------------------
+# Option 2:
+all:
+  # A. First declare hosts
+  hosts:
+    # These are just declarations, but could also be IP or domain names
+    # See host_vars for actual
+    ansible-test-server-1:
+    ansible-test-server-2:
+  vars:
+    ansible_user: vm
+
+  # B. Then declare groups
+  children:
+    # Our servers group
+    servers:
+      ansible-test-server-1:
+      ansible-test-server-2:
+    
+    # Another example
+    group_in_group_example:
+      children:
+        servers:

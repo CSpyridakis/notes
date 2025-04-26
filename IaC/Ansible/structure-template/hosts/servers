@@ -1,7 +1,0 @@
-[servers]
-192.168.10.78
-192.168.10.77
-
-[servers:vars]
-ansible_user=vm
-
