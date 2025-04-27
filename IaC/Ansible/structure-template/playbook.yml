@@ -1,25 +1,45 @@
 ---
-  - hosts: all
+  # -----------------------------------------------------------
+  # First Play
+  # -----------------------------------------------------------
+  - name: General tasks play
+    hosts: all
 
-    # Host vars
+    # -----------------------------------------------------------
+    # Playbook vars
+    # -----------------------------------------------------------
     vars:
       host_var_example: "This kind of var is not recommended"
       root_level_template: "This is a dummy root level template file content"
     
+    # -----------------------------------------------------------
     # Playbook Tags
+    # -----------------------------------------------------------
     tags: root-tag
 
-    # Root level handlers
+    # -----------------------------------------------------------
+    # Import root level handlers
+    # -----------------------------------------------------------
     handlers:
       - import_tasks: handlers/main.yml
 
+    # -----------------------------------------------------------
     # Tasks
+    # -----------------------------------------------------------
     tasks:
-      - name: Copy role dummy file to servers
-        
+      # -----------------------------------------------------------
+      # 0. Just a debug message
+      # -----------------------------------------------------------
+      - name: This is a dummy task
+        debug:
+          msg: "Just print a group var - group_name: {{ group_name }}"
+
+      # -----------------------------------------------------------
+      # 1. Copy file
+      # -----------------------------------------------------------
+      - name: Copy role dummy file to servers        
         # Task Tags
         tags: copy,dummy-file
-        
         # Module used
         copy: 
           src: root-dummy-file
@@ -28,15 +48,18 @@
           group: vm 
           mode: 0644
           
-      # Root level handler
+      # -----------------------------------------------------------
+      # 2. Root level handler (need to import its file, see above)
+      # -----------------------------------------------------------
       - name: This task will trigger a root level handler
         changed_when: true
         notify: root-level-trigger-demo-handler
         debug:
           msg: "Trigger root level handler..."
 
-
-      # Root level template
+      # -----------------------------------------------------------
+      # 3. Root level template
+      # -----------------------------------------------------------
       - name: Some kind of name
         template:
           src: "dummy-root-template.j2"
@@ -45,7 +68,10 @@
           group: vm
           mode: 0644
 
-  # Roles
-  - hosts: all
+  # -----------------------------------------------------------
+  # First Play - Roles
+  # -----------------------------------------------------------
+  - name: Check Roles
+    hosts: all
     roles: 
       - base
