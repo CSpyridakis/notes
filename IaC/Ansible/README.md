@@ -43,6 +43,32 @@ sudo touch /etc/ansible/hosts           # Inventory file - List of things that w
 #### Local configuration
 Instead, you can do the same with local configuration files.
 
+#### Create configuration files
+Ansible contiguration file can help up to reduce the amount of arguments needed to execute an ansible command, since we can specify extra info there (e.g. ssh key, inventory, etc).
+
+```
+ansible-config init --disabled > ansible.cfg
+```
+
+Or manually create a `ansible.cfg` file that looks like this:
+```
+[defaults]
+inventory = hosts
+private_key_file = ~/.ssh/ansible
+```
+
+> [!NOTE]
+> `ANSIBLE_CONFIG` is also an ENV var to set the path of the configuration
+
+> [!IMPORTANT]
+> Configuration file priority
+> 1. `ANSIBLE_CONFIG` ENV var (ad hoc)
+> 2. `./ansible.cfg`  Project level
+> 3. `~/.ansible.cfg` Account level 
+> 4. `/etc/ansible/ansible.cfg` System level
+
+Official documentation regarding configuration is available [here](https://docs.ansible.com/ansible/latest/installation_guide/intro_configuration.html#configuring-ansible)
+
 ---
 
 ### Inventory
@@ -144,22 +170,6 @@ ansible my_servers --key-file ~/.ssh/ansible -i ./hosts -m ping
 ```
 
 In this case the ssh key which will be used is `~/.ssh/ansible` the inventory will be `./hosts` file and the module that we want to execute is `ping`.
-
----
-
-## Create default configuration files
-Ansible contiguration file can help up to reduce the ammount of arguments needed to execute an ansible command, since we can specify extra info there (e.g. ssh key, inventory, etc).
-
-```
-ansible-config init --disabled > ansible.cfg
-```
-
-Or manually create a `ansible.cfg` file that looks like this:
-```
-[defaults]
-inventory = hosts
-private_key_file = ~/.ssh/ansible
-```
 
 ---
 
