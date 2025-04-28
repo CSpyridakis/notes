@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# First initiate the environment
+ansible-playbook --ask-become-pass bootstrap.yml
+
+# Then you can run playbooks like this one
+ansible-playbook bootstrap_complete.yml

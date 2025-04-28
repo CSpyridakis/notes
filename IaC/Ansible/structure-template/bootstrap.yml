@@ -1,0 +1,49 @@
+---
+  # ===========================================================================================================
+  # BOOTSTRAP PROCESS
+  # ===========================================================================================================
+  
+  - hosts: all
+    become: true
+
+    # [IMPORTANT] This is the SSH user
+    vars:
+      ansible_user : "vm"
+
+    pre_tasks:
+      # ========================================================
+      # Make sure that the system has all updates
+      # THis is not mandatory, but is a good practice
+      - name: Update packages (Debian)
+        when: ansible_distribution in ["Ubuntu", "Debian"]
+        apt:
+          update_cache: yes
+      
+      - name: Update packages (Red Hat)
+        when: ansible_distribution in ["Fedora", "CentOS"]
+        dnf:
+          update_cache: yes
+      # ========================================================
+
+
+      # ========================================================
+      # Create sudo user
+      # Instead of using the ssh user for sudo access, create a local user
+      # which will have sudo privileges, this way we do not need to pass 
+
+      - name: Create sudo user that will handle operations
+        user:
+          name: mrmachine2
+          groups: root
+
+      - name: Add sudo privileges to user with password prompt
+        lineinfile:
+          path: /etc/sudoers.d/mrmachine2
+          line: "mrmachine2 ALL=(ALL) NOPASSWD:ALL"
+          create: yes
+          mode: '0440'
+
+      - name: Add SSH key for user
+        authorized_key:
+          user: mrmachine2
+          key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpCBoxrn+mROgjyVxRTxmH76gLwPCdkkcYbKjFHEswC ansible"
