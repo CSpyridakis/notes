@@ -118,11 +118,14 @@ To run playbook based on given tags: `ansible-playbook --tags "<tag1>,<tag2>" <p
 
 ---
 
-## > Uptime
+## > Task OUTPUT & Uptime
 ```yml
 - name: Show uptime
   tags: uptime
   ansible.builtin.shell: uptime
+  
+  # Using register we can store the output the output of a task
+  # into a variable and use it later
   register: uptime_output
 
 - name: Print uptime result
