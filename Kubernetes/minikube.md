@@ -26,3 +26,11 @@ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && rm kubect
 minikube start
 ```
 
+## Configuration
+The configuration is available in the `~/.kube/config`
+
+## Cleanup
+```bash
+minikube stop
+minikube delete
+```
