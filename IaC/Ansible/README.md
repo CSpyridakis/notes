@@ -179,9 +179,18 @@ In this case the ssh key which will be used is `~/.ssh/ansible` the inventory wi
 ansible servers -m ping                             # Ping servers
 ansible servers -a "lsb_release -a"                 # Run adhoc command
 ansible all --list-hosts                            # List all hosts
-ansible all -m gather_facts  # --limit <ip/domain>  # Collect system facts
 ansible all -m ansible.buildin.<module> -a "<param1>= ..." # Run one of the build in modules ad hoc
+ansible-playbook playbook.yml -C                    # Do not make any changes (Dry run)
+ansible all -m gather_facts  # --limit <ip/domain>  # Collect system facts
+ansible all -m setup                                # Return all collected facts.
+ansible all -m setup -a 'filter=<fact_variable>'    # Return only specific facts
 ```
+
+---
+## Modules
+
+> [!IMPORTANT]
+> The official Ansible Index of Modules is available [here](https://docs.ansible.com/ansible/2.9/modules/modules_by_category.html)
 
 ### Buildin modules
 
@@ -230,6 +239,50 @@ ansible all -m ansible.builtin.git -a "repo=https://github.com/example/myproject
 
 ---
 
+## Variables
+
+> [!IMPORTANT]
+> Variables Precedence list is available [here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#understanding-variable-precedence).
+
+### Types
+```yaml
+
+# List
+# Access: foo[0] 
+foo:
+  - f1
+  - f2
+
+# Dictionary
+# Access: foo['f2'] or foo.f1
+foo:
+  f1: one
+  f2: two
+```
+
+### Fact Variables (setup module)
+| Fact Variable                   | Description                                |
+|----------------------------------|--------------------------------------------|
+| `ansible_processor_cores`        | Number of CPU cores                       |
+| `ansible_os_family`              | OS family (`Debian`, `RedHat`, `Windows`, etc.) |
+| `ansible_hostname`               | Short hostname (e.g., `server1`)           |
+| `ansible_fqdn`                   | Full hostname (e.g., `server1.example.com`)|
+| `ansible_all_ipv4_addresses`     | List of all IPv4 addresses                 |
+| `ansible_default_ipv4.address`   | Default IP address used to reach the host  |
+| `ansible_architecture`           | Machine architecture (`x86_64`, `arm64`, etc.) |
+| `ansible_distribution`           | Linux distribution name (`Ubuntu`, `CentOS`, etc.) |
+| `ansible_memory_mb.real.total`   | Total system memory in MB                 |
+
+\* Can be used with decision making 
+
+To disable gathering facts, include in your playbook
+```yml
+- hosts: all
+  gather_facts: False
+```
+
+---
+
 ## Ansible Playbook
 
 A `Playbook` contain `Plays`. Each `Play` contains `Tasks`.
@@ -250,6 +303,9 @@ PLAY RECAP
 
 ### 2. Conditional Tasks
 
+> [!IMPORTANT]
+> The official conditionals documentation is available [here](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html)
+
 #### 2.1 Single condition
 ```
 - name: task name
@@ -267,6 +323,11 @@ PLAY RECAP
 ```
 
 #### 2.3 Multiple conditions
+Use **parentheses** when needed, moreover available logical operators:
+- and
+- or
+- not
+
 ```
 - name: task name
   when: ansible_distribution == "Ubuntu" and ansible_distribution_version == "8.2"
@@ -274,7 +335,21 @@ PLAY RECAP
     ...
 ```
 
-#### 3.  Pre-Tasks
+### 3. Loops
+
+#### List iteration
+```yml
+- name: Install packages
+  apt: 
+    name: {{ item }}
+    state: present
+  loop:
+    - git
+    - tmux
+    - ...
+```
+
+### 4.  Pre-Tasks
 ```
 - host: all
   pre_tasks:
@@ -291,7 +366,7 @@ PLAY RECAP
 ```
 **pre_tasks** will be executed before **tasks**.
 
-#### 4. Tags
+### 5. Tags
 
 ```
 tasks:
