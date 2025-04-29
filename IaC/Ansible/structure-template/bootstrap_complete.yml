@@ -17,9 +17,12 @@
           user: mrmachine2
           key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpCBoxrn+mROgjyVxRTxmH76gLwPCdkkcYbKjFHEswC ansible"
 
-      # 
+      # Install packages (use loop)
       - name: Install packages
         package:
           update_cache: yes
-          name: 
-            - figlet
+          name:  "{{ item }}"
+        loop:
+          - figlet
+          - git
+          - tmux

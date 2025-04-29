@@ -15,11 +15,13 @@
       # Make sure that the system has all updates
       # THis is not mandatory, but is a good practice
       - name: Update packages (Debian)
+        # This is a condition
         when: ansible_distribution in ["Ubuntu", "Debian"]
         apt:
           update_cache: yes
       
       - name: Update packages (Red Hat)
+        # This is a condition
         when: ansible_distribution in ["Fedora", "CentOS"]
         dnf:
           update_cache: yes
@@ -47,3 +49,10 @@
         authorized_key:
           user: mrmachine2
           key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPpCBoxrn+mROgjyVxRTxmH76gLwPCdkkcYbKjFHEswC ansible"
+
+      # ========================================================
+      # Login message added to inform users that this server is managed by ansible
+      - name: Create Message of the Day file
+        copy:
+          content: "THIS MACHINE IS MANAGED BY ANSIBLE! PLEASE CONTACT SYSTEM ADMINISTRATOR FOR MODIFICATIONS"
+          dest: /etc/motd
