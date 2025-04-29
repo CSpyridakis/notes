@@ -39,3 +39,6 @@
 | **PCI Devices**         | `/proc/bus/pci` or `lspci`          | Information about PCI devices connected to the system.                         |
 | **USB Devices**         | `/proc/bus/usb` or `lsusb`          | Information about USB devices connected to the system.                         |
 | **Kernel Features**     | `/boot/config-$(uname -r)`          | Configuration file for the running kernel version.                             |
+| **Message of the Day**  | `/etc/motd`                         | System-wide messages like maintenance warnings, greetings, or legal notices (After you log in successfully)
+| **Pre-login message**   | `/etc/issue`                        | Printed before login at the login screen
+| **update-motd**         | `/etc/update-motd.d/`               | Ubuntu uses a system called **update-motd**, which dynamically creates the login message
