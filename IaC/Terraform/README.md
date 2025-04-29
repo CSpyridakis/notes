@@ -57,7 +57,7 @@ terraform providers   # Show used providers
 
 ## Project Structure
 
-```
+```bash
 my-terraform-project/
 ├── main.tf          # Main config file
 ├── variables.tf     # Declares input variables
@@ -221,6 +221,28 @@ Example 2
 module "vpc" {
   source = "./modules/vpc"
   cidr_block = "10.0.0.0/16"
+}
+```
+
+### 6. Data
+
+Sometimes we need to reference external data that:
+- already exists (e.g. VPC, AMI, certificates)
+- is generated dynamically
+- must not be recreated or owned by our Terraform project
+
+Instead of hardcoding values, you fetch them dynamically =
+more flexible, more maintainable, more robust.
+
+```yml
+data "<resource>" "<name>" {
+  ...
+  
+  # We can filter retrieved values
+  filter {
+    name   = "<what-to-filter>"
+    values = ["<desired-value>"]
+  }
 }
 ```
 
