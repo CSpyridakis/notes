@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+# Paths
+SCRIPT_SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DST="/usr/local/bin/update_ddns.sh"
+SERVICE_DST="/etc/systemd/system/update_ddns.service"
+TIMER_DST="/etc/systemd/system/update_ddns.timer"
+
+echo "Installing update_ddns.sh..."
+sudo install -m 755 "$SCRIPT_SRC_DIR/update_ddns.sh" "$SCRIPT_DST"
+
+echo "Installing systemd service and timer..."
+sudo install -m 644 "$SCRIPT_SRC_DIR/update_ddns.service" "$SERVICE_DST"
+sudo install -m 644 "$SCRIPT_SRC_DIR/update_ddns.timer" "$TIMER_DST"
+
+echo "Reloading systemd..."
+sudo systemctl daemon-reload
+
+echo "Enabling and starting the timer..."
+sudo systemctl enable --now update_ddns.timer
+
+echo "Installation complete!"

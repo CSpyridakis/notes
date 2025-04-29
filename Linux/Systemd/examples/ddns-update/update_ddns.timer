@@ -1,0 +1,10 @@
+# /etc/systemd/system/update_ip.timer
+[Unit]
+Description=Run update_ddns.service every hour
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
