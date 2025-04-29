@@ -149,6 +149,17 @@ To run playbook based on given tags: `ansible-playbook --tags "<tag1>,<tag2>" <p
     mode: 0644
 ```
 
+---  
+ 
+## > Create folder
+```yml
+- name: Create folder
+  file:
+    path: <path/to/remote>
+    state: directory
+    mode: '0755'
+```
+
 ---
 
 ## > Extract zip
@@ -255,7 +266,7 @@ To run playbook based on given tags: `ansible-playbook --tags "<tag1>,<tag2>" <p
     - <role-name>
 ```
 
-This requires a `roles/` dir following this structure, taat will contain taskbooks.
+This requires a `roles/` dir following this structure, that will contain taskbooks.
 
 ```
 roles
@@ -267,6 +278,41 @@ roles
     |   └── some-file 
     └── tasks
         └── main.yml
+```
+
+> [!TIP]
+> To automatically create a template structure of a role dir run this command:
+> ```bash
+> cd roles/
+> ansible-galaxy init <role-name>
+> ```
+
+Overwrite role vars
+```yml
+- hosts: all
+  roles:
+    - role: <role-name> 
+      vars:
+        <var1-name>: <var1-value>
+        <var2-name>: <var2-value>
+        <var3-name>: <var3-value>
+```
+
+> [!NOTE]
+> Community created roles  are available [here](https://galaxy.ansible.com/ui/)
+
+Use community roles:
+
+```yml
+# Use it directly
+- hosts: all
+  roles:
+    - <ansible-galaxy-role-name>
+```
+Before using it you can also first download it (the code snippet above, will do it automatically)
+
+```bash
+ansible-galaxy role install <ansible-galaxy-role-name>
 ```
 
 ## > Variables
@@ -289,6 +335,13 @@ host_var_specific_to_this: This_server_is_78
   - hosts: all
     vars:
       host_var_example: "This kind of var is not recommended"
+```
+
+### 4. vars_files
+```yml
+# Include them in the target playbook
+vars_files:
+  - /vars_files/other_vars.yml
 ```
 
 ## > Mark changed
@@ -391,4 +444,20 @@ Some random value: {{ template-dummy-variable }}
 **Host/Group var** (per host)
 ```ini
 template-dummy-variable: 
+```
+
+---
+
+## > AWS
+```bash
+export AWS_ACCESS_KEY_ID=''
+export AWS_SECRET_ACCESS_KEY=''
+```
+
+Playbook
+```yml
+- hosts: localhost
+  gather_facts: False
+  tasks:
+    ...
 ```
