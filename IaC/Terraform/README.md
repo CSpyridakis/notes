@@ -28,6 +28,7 @@
 | **Data Source**  | Reads information from the cloud provider for use in configuration. |
 | **Output**       | Values shown after execution (e.g., IPs, DNS names). |
 | **Variable**     | Dynamic input to Terraform configurations. |
+| **Provisioner**  | Run scripts or commands on a resource after it has been created
 
 ## Installation (Debian)
 
@@ -244,6 +245,55 @@ data "<resource>" "<name>" {
     values = ["<desired-value>"]
   }
 }
+```
+
+### 7. Provisioners
+Provisioners allow you to run scripts or commands after a resource is created. 
+
+Although they are discouraged for most use cases (in favor of tools like Ansible or cloud-init), they're sometimes useful for basic automation
+
+**Provisioner Types**
+| Provisioner | Description  |
+| ----------- | ------------ |
+| `file` | Uploads files from the local machine to the remote resource via SSH/WinRM
+| `remote-exec` | Executes commands on the remote machine after creation
+| `local-exec` | Executes commands on your local machine where Terraform is running
+
+```ini
+resource "null_resource" "provision_target" {
+  # Upload file to remote instance
+  provisioner "file" {
+    source      = "hello.txt"
+    destination = "/home/ubuntu/hello.txt"
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+      host        = data.aws_instance.target.public_ip
+    }
+  }
+
+  # Run remote command
+  provisioner "remote-exec" {
+    inline = [
+      "echo 'Executed on target!' >> /home/ubuntu/hello.txt"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file(var.private_key_path)
+      host        = data.aws_instance.target.public_ip
+    }
+  }
+
+  # Log to local machine
+  provisioner "local-exec" {
+    command = "echo Provisioned: ${data.aws_instance.target.public_ip} >> provisioned_targets.log"
+  }
+}
+
 ```
 
 ### Concept
