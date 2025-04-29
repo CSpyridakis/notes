@@ -3,8 +3,12 @@
 What is contains
 - Files
 - Handlers
-- Group and Host vars
+- Group, Host vars, vars
 - Roles
 - Templates
 - Playbook
 - Inventories
+- Conditions
+- Loops
+- Files/Copy
+- Package managers, Services

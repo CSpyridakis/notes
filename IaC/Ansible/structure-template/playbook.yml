@@ -11,6 +11,12 @@
     vars:
       host_var_example: "This kind of var is not recommended"
       root_level_template: "This is a dummy root level template file content"
+
+    # -----------------------------------------------------------
+    # Include vars files
+    # -----------------------------------------------------------
+    vars_files:
+      - ./vars/other_variables.yml
     
     # -----------------------------------------------------------
     # Playbook Tags
@@ -32,7 +38,7 @@
       # -----------------------------------------------------------
       - name: This is a dummy task
         debug:
-          msg: "Just print a group var - group_name: {{ group_name }}"
+          msg: "Just print a group var - group_name: {{ group_name }} and a variable from the other_variables file: {{ vars_file_variable }}"
 
       # -----------------------------------------------------------
       # 1. Copy file
