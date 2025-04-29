@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Run it like this:
-# bash <(curl -sL )
+# bash <(curl -sL https://raw.githubusercontent.com/CSpyridakis/notes/refs/heads/main/Docker/install-docker.sh)
 
 # Install docker
-curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh
+curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && rm get-docker.sh
 
 # ------------------------------------------------
 # POST INSTALLATION ACTIONS (see: https://docs.docker.com/engine/install/linux-postinstall/)
