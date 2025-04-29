@@ -51,6 +51,15 @@ resource "aws_instance" "ec2_ubuntu_instance" {
 }
 
 # ======================================================
+# Make sure that EC2 Ubuntu instance is running
+# ======================================================
+
+resource "aws_ec2_instance_state" "ec2_ubuntu_instance_state" {
+  instance_id = aws_instance.ec2_ubuntu_instance.id
+  state       = "running"
+}
+
+# ======================================================
 # Specify Security Group
 # ======================================================
 
