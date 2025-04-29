@@ -330,6 +330,24 @@ erDiagram
 
 ---
 
+## Stop -> Run again
+Private IP will be the same
+Public IP will change
+
+## Elastic IP
+If you need to give a static public IP address to any of your instances, use this.
+
+### Create IP
+`Network & Security` -> `Elastic IPs` -> `Allocate Elastic IP address`
+
+### Assosiate IP
+`Select Elastic IP` -> `Actions` -> `Associate Elastic IP address`
+
+Benefits:
+It will not be released back even if the server has stoped/changed/etc.
+
+Mostly used for load balancers.
+
 > [!TIP]
 > To monitor IP addresses:
 >
