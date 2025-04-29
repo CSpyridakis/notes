@@ -29,14 +29,33 @@ resource "aws_key_pair" "ec2_ubuntu_instance_key_pair" {
 }
 
 # ======================================================
+# Create the list of the instances
+# ======================================================
+locals {
+  instances = {
+    instance1 = {
+      ami           = data.aws_ami.ami_ubuntu.id
+      instance_type = "t2.micro"
+    }
+
+    instance2 = {
+      ami           = data.aws_ami.ami_ubuntu.id
+      instance_type = "t2.micro"
+    }
+  }
+}
+
+# ======================================================
 # Having found an AMI create the EC2
 # ======================================================
 
 resource "aws_instance" "ec2_ubuntu_instance" {
-  ami                         = data.aws_ami.ami_ubuntu.id
-  instance_type               = "t2.micro"
-  associate_public_ip_address = true
+  # Not mandatory the for loop, but handy to easily create multiple 
+  for_each                    = local.instances
+  ami                         = each.value.ami
+  instance_type               = each.value.instance_type
   availability_zone           = "us-east-1a"
+  associate_public_ip_address = true
 
   # Will use this key pair to connect
   key_name = var.ec2_key_pair_name # You need to have this key pair available in your AWS console  (see above)
@@ -55,7 +74,9 @@ resource "aws_instance" "ec2_ubuntu_instance" {
 # ======================================================
 
 resource "aws_ec2_instance_state" "ec2_ubuntu_instance_state" {
-  instance_id = aws_instance.ec2_ubuntu_instance.id
+  for_each    = local.instances
+
+  instance_id = aws_instance.ec2_ubuntu_instance[each.key].id
   state       = "running"
 }
 
