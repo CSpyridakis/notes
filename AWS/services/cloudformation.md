@@ -24,7 +24,7 @@ AWS CloudFormation is an **Infrastructure as Code (IaC)** service that allows us
 \* If a resource is not supported we can use `custom resources`.
 
 > [!IMPORTANT]
-> **CloudFormation** comes together with **Infrastructure Composer** and **Application Composer** (a tool for the visual representation of stacks).
+> **CloudFormation** comes together with **Infrastructure Composer** and **Application Composer** (a tool for the **visual** representation of stacks).
 
 **CloudFormation yaml example:**
 ```yaml
