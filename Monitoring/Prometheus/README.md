@@ -306,6 +306,56 @@ In the `scrape_configs` section, list all target servers running node_exporter.
 
 ---
 
+### Usage
+There are multiple ways to use Prometheus
+
+#### Binary
+
+##### Server 
+Download the prometheus monitoring system from [here](https://github.com/prometheus/prometheus/releases) or:
+```bash
+VERSION="3.3.0"
+wget "https://github.com/prometheus/prometheus/releases/download/v${VERSION}/prometheus-${VERSION}.linux-386.tar.gz"
+tar xzvf prometheus-${VERSION}.linux-386.tar.gz
+cd prometheus-${VERSION}.linux-386
+sudo useradd --no-create-home --shell /bin/false prometheus
+sudo mkdir -p /etc/prometheus
+sudo install -o prometheus -g prometheus -m 0755 prometheus /usr/local/bin/prometheus
+sudo install -o prometheus -g prometheus -m 0644 prometheus.yml /etc/prometheus/prometheus.yml
+echo "@reboot prometheus /usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml >> /var/log/prometheus.log 2>&1" | sudo tee -a /etc/crontab > /dev/null
+bash -c '/usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml &'
+```
+
+Then enable firewall
+```bash
+# Debian
+sudo ufw enable
+sudo ufw allow 9090
+```
+
+> [!IMPORTANT]
+> Make sure that you have a proper server configuration file, that will retrieve from all desired targets metrics.
+
+Access:
+```bash
+http://<server-ip-or-domain>:9090
+```
+
+##### VM/Physical Device
+Download and run the *node_exporter* binary from [here](https://github.com/prometheus/node_exporter/releases)
+```bash
+VERSION="1.9.1"
+wget https://github.com/prometheus/node_exporter/releases/download/v${VERSION}/node_exporter-${VERSION}.linux-386.tar.gz
+tar xzvf node_exporter-${VERSION}.linux-386.tar.gz
+cd node_exporter-${VERSION}.linux-386
+sudo useradd --no-create-home --shell /bin/false prometheus
+sudo install -o prometheus -g prometheus -m 0755 node_exporter /usr/local/bin/node_exporter
+echo "@reboot prometheus /usr/local/bin/node_exporter >> /var/log/node_exporter.log 2>&1" | sudo tee -a /etc/crontab > /dev/null
+bash -c '/usr/local/bin/node_exporter &'
+```
+
+---
+
 ## PromQL
 PromQL (Prometheus Query Language) is the powerful query language used in Prometheus. You can use it to retrieve, manipulate, and visualize time series data. 
 
