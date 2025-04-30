@@ -249,4 +249,42 @@ CRUD operations happen in the deployment level
 |------------------------------------------|-------------------------------------------------------|
 | `kubectl delete deployment <name>`       | Delete a deploymen             |
 
+---
+
+### Info & Logs
+
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl version`                        | 
+| `kubectl get nodes`                      | List all nodes in the cluster                         |
+| `kubectl logs <pod-name>`                | View logs of a pod                                    |
+| `kubectl describe pod <pod-name>`        | Show detailed info about a specific pod               |
+| `kubectl describe services <service-name>`|                |
+| `kubectl config view` |
+| `kubectl get events` |
+
+### Deploy Pods
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl run <name> --image=<image>`     | Run a pod with a specific container image             |
+| `kubectl create -f <file>.yaml`          | Create a resource from a YAML file                    |
+
+### Debugging
+
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl exec -it <pod> -- /bin/bash`    | Execute a shell inside a running pod                  |
+
+### Misc
+
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl cluster-info`                   | Show cluster info                                     |
+| `kubectl scale deployment <name> --replicas=N` | Scale a deployment to N replicas              |
+| `kubectl port-forward svc/<svc-name> 8080:80` | Forward port 8080 on local to 80 on service     |
+| `kubectl expose pod <pod-name> --port=80 --target-port=8080` | Expose a pod as a service              |
+| `kubectl config get-contexts`            | Show available contexts from kubeconfig               |
+| `kubectl config use-context <name>`      | Switch between clusters/contexts                      |
+| `kubectl expose deployment <deployment-name> --type=LoadBalancer --port=<port-number>` | Expose deployment to the web
+
 
