@@ -41,6 +41,42 @@ Kubernetes can handle thousand of containers and provide the following features:
    └── Kube-proxy (networking)
 ```
 
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+graph TD
+user((User)) --> kubectl[Kubec] --> API1
+
+subgraph cluster[" "]
+direction TB
+   subgraph control_plane[" "]
+   direction LR
+
+      subgraph master1["Master"]
+      direction TB
+         API1
+         Scheduler1
+         controller_manager1["Controller Manager"]
+         etcd1
+
+         API1 <--> Scheduler1
+         API1 <--> controller_manager1
+         API1 <--> etcd1
+      end
+   end
+
+   subgraph workers[" "]
+   direction TB
+      subgraph worker1["Worker"]
+      direction LR
+         Kube-proxy1
+         container_runtime1["Container Runtime"]
+         Kubelet1
+      end
+   end
+   API1 <--> Kubelet1
+end
+```
+
 ### Terminology
 
 1. **kubctl**: The CLI tool to manage apps and configure K8s
@@ -167,8 +203,8 @@ Stateful apps are harder to manage inside Kubernetes. For this reason, databases
 
 ## Cluster
 
-- **Master nodes** manage the cluster, requiring fewer resources.
-- **Worker nodes** run workloads and require more resources.
+- **Master nodes** manage the cluster, requiring fewer resources (>= 2cores and 2Gb of RAM).
+- **Worker nodes** run workloads and require more resources (>= 2cores and 2Gb of RAM).
 
 ### To add a Master/Worker node:
 
@@ -178,4 +214,39 @@ Stateful apps are harder to manage inside Kubernetes. For this reason, databases
 For testing, use **Minikube**, which runs both master and worker on the same machine using VirtualBox.
 
 Use `kubectl` to interact with the cluster.
+
+---
+
+## Common commands
+There also a cheat sheet available [here](https://kubernetes.io/docs/reference/kubectl/quick-reference/).
+
+### CRUD
+CRUD operations happen in the deployment level
+
+#### Create
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl create deployment <name> --image=<image>` | 
+| `kubectl apply -f <file>.yaml`           | Create or update resources from a YAML file    |
+
+#### Read
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl get pods`                       | List all pods in the current namespace                |
+| `kubectl get pods -o wide`               |                 |
+| `kubectl get all`                        | List all resources (pods, services, deployments, etc) |
+| `kubectl get services`                   | List all services                                     |
+| `kubectl get deployments`                | List all deployments                                  |
+| `kubectl get replicaset`                 | List all                                   |
+
+#### Update
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl edit deployment <name>`         | Edit a deployment in-place                            |
+
+#### Delete
+| Command                                  | Description                                           |
+|------------------------------------------|-------------------------------------------------------|
+| `kubectl delete deployment <name>`       | Delete a deploymen             |
+
 
