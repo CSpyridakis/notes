@@ -13,3 +13,6 @@ Navigate to the different directories or search for keywords to find solutions o
 
 ## ❓ After that?
 If you have any further questions or need help with another topic, feel free to create a pull request.
+
+> [!NOTE]
+> TODO: Create an index for future expansion
