@@ -106,6 +106,10 @@ end
 12. **Deployment**: Manages pod replicas, rolling updates, and rollbacks for stateless applications.
 13. **StatefulSet**: Manages stateful applications by giving each pod a unique identity and persistent storage.
     
+14. **Namespace**: A virtual cluster within a physical cluster; used for separating resources.
+15. **DaemonSet**: Ensures a specific pod runs on every node in the cluster (e.g., logging agents).
+16. **Job/CronJob**: Runs batch or scheduled tasks, where `Job` runs once and `CronJob` runs on a schedule.
+
 
 ---
 
