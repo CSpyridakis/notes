@@ -1,0 +1,11 @@
+*
+!.gitignore
+!*.tf
+
+# Only for this dummy example
+!*.tfvars
+
+!modules/
+!modules/*
+
+!README.md
