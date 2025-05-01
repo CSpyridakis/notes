@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # TODO: After any major update, modify the version number
-VERSION="1.5"
+VERSION="1.6"
 
 docker build \
     -t cspyridakis/devopstools:latest \
